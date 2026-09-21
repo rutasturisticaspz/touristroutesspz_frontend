@@ -1,0 +1,83 @@
+/* Notificacion flotante (Toast), usada en formularios del sitio publico. */
+
+.rt_toast {
+  position: fixed;
+  top: 24px;
+  right: 24px;
+  z-index: 9999;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  max-width: 380px;
+  padding: 16px 18px;
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  font: 400 14px "Poppins", sans-serif;
+  line-height: 1.5;
+  animation: rt_toast_entrar 0.25s ease-out;
+}
+
+.rt_toast_ok {
+  background: #eefaf3;
+  color: #1c7a4a;
+  border: 1px solid #a9dcc1;
+}
+
+.rt_toast_error {
+  background: #fdf2f1;
+  color: #a5352a;
+  border: 1px solid #e3b0aa;
+}
+
+.rt_toast_icono {
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 13px;
+  background: rgba(0, 0, 0, 0.08);
+}
+
+.rt_toast_texto {
+  flex: 1;
+}
+
+.rt_toast_cerrar {
+  flex-shrink: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 20px;
+  line-height: 1;
+  color: inherit;
+  opacity: 0.6;
+  padding: 0;
+}
+
+.rt_toast_cerrar:hover {
+  opacity: 1;
+}
+
+@keyframes rt_toast_entrar {
+  from {
+    opacity: 0;
+    transform: translateY(-12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 576px) {
+  .rt_toast {
+    top: 12px;
+    right: 12px;
+    left: 12px;
+    max-width: none;
+  }
+}

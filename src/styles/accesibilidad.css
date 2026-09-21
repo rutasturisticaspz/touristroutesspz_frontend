@@ -1,0 +1,320 @@
+/*
+ * Widget de accesibilidad.
+ *
+ * Los efectos se activan con clases en <html> (no en <body>) para que
+ * alcancen absolutamente todo, incluyendo cosas montadas fuera del
+ * árbol de React si algún día las hay. Todo lleva !important a
+ * propósito: el sitio hereda CSS de Bootstrap 4 y de hojas de estilo
+ * viejas con selectores muy específicos, y este widget tiene que
+ * ganarles siempre.
+ */
+
+/* ---------- Botón flotante ---------- */
+
+.accesibilidad-boton {
+  position: fixed;
+  left: 16px;
+  bottom: 16px;
+  z-index: 2147483000;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  border: none;
+  background: #1b56a3;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
+  cursor: pointer;
+}
+
+.accesibilidad-boton:hover,
+.accesibilidad-boton:focus-visible {
+  background: #164888;
+}
+
+.accesibilidad-boton svg {
+  width: 28px;
+  height: 28px;
+}
+
+/* ---------- Panel ---------- */
+
+.accesibilidad-fondo {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.25);
+  z-index: 2147482998;
+}
+
+.accesibilidad-panel {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: min(320px, 100vw);
+  background: #ffffff;
+  color: #1c1c1c;
+  z-index: 2147482999;
+  box-shadow: 2px 0 16px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  font-family: -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+}
+
+.accesibilidad-panel-encabezado {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  background: #1b56a3;
+  color: #fff;
+}
+
+.accesibilidad-panel-encabezado h2 {
+  font-size: 16px;
+  margin: 0;
+  font-weight: 700;
+}
+
+.accesibilidad-cerrar {
+  background: transparent;
+  border: none;
+  color: #fff;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.accesibilidad-cerrar:hover,
+.accesibilidad-cerrar:focus-visible {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.accesibilidad-panel-cuerpo {
+  padding: 14px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.accesibilidad-fila-texto {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 10px 12px;
+  margin-bottom: 12px;
+  border: 1px solid #d8dee5;
+  border-radius: 10px;
+  background: #f5f7fa;
+}
+
+.accesibilidad-fila-texto span {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.accesibilidad-fila-texto-botones {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.accesibilidad-paso {
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  border: 1px solid #b9c3cd;
+  background: #fff;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.accesibilidad-paso:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.accesibilidad-porcentaje {
+  min-width: 40px;
+  text-align: center;
+  font-size: 12px;
+  color: #445;
+}
+
+.accesibilidad-cuadricula {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.accesibilidad-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 12px 8px;
+  border: 1px solid #d8dee5;
+  border-radius: 10px;
+  background: #f5f7fa;
+  cursor: pointer;
+  text-align: center;
+}
+
+.accesibilidad-item svg {
+  width: 24px;
+  height: 24px;
+}
+
+.accesibilidad-item span {
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.accesibilidad-item:hover,
+.accesibilidad-item:focus-visible {
+  border-color: #1b56a3;
+}
+
+.accesibilidad-item[aria-pressed='true'] {
+  background: #1b56a3;
+  border-color: #1b56a3;
+  color: #fff;
+}
+
+.accesibilidad-restablecer {
+  margin-top: 4px;
+  width: 100%;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #b9c3cd;
+  background: #fff;
+  font-weight: 700;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.accesibilidad-restablecer:hover,
+.accesibilidad-restablecer:focus-visible {
+  background: #eef1f4;
+}
+
+.accesibilidad-panel-pie {
+  padding: 10px 16px;
+  font-size: 11px;
+  color: #7a8794;
+  border-top: 1px solid #e4e8ec;
+}
+
+/* El widget siempre debe verse normal, incluso en alto contraste. */
+html.a11y-contraste .accesibilidad-boton,
+html.a11y-contraste .accesibilidad-panel,
+html.a11y-contraste .accesibilidad-fondo {
+  filter: invert(1) hue-rotate(180deg);
+}
+
+/* ---------- Efectos aplicados al sitio ---------- */
+
+/* Alto contraste: invertir todo y volver a invertir imágenes y video
+   para que no salgan en negativo. */
+html.a11y-contraste {
+  filter: invert(1) hue-rotate(180deg);
+  background: #fff;
+}
+
+html.a11y-contraste img,
+html.a11y-contraste video,
+html.a11y-contraste picture,
+html.a11y-contraste iframe {
+  filter: invert(1) hue-rotate(180deg);
+}
+
+/* Resaltar enlaces */
+html.a11y-enlaces a {
+  background: #fff59d !important;
+  color: #000 !important;
+  text-decoration: underline !important;
+  text-decoration-thickness: 2px !important;
+  outline: 1px solid #f9a825 !important;
+}
+
+/* Espaciado de texto */
+html.a11y-espaciado body,
+html.a11y-espaciado p,
+html.a11y-espaciado span,
+html.a11y-espaciado li,
+html.a11y-espaciado a,
+html.a11y-espaciado h1,
+html.a11y-espaciado h2,
+html.a11y-espaciado h3,
+html.a11y-espaciado h4,
+html.a11y-espaciado h5,
+html.a11y-espaciado h6 {
+  letter-spacing: 0.06em !important;
+  word-spacing: 0.18em !important;
+}
+
+/* Interlineado amplio */
+html.a11y-interlineado body,
+html.a11y-interlineado p,
+html.a11y-interlineado li,
+html.a11y-interlineado span,
+html.a11y-interlineado div {
+  line-height: 1.9 !important;
+}
+
+/* Detener animaciones y transiciones */
+html.a11y-sin-animaciones *,
+html.a11y-sin-animaciones *::before,
+html.a11y-sin-animaciones *::after {
+  animation-play-state: paused !important;
+  animation-duration: 0.001ms !important;
+  transition-duration: 0.001ms !important;
+  scroll-behavior: auto !important;
+}
+
+/* Ocultar imágenes (deja el espacio para no romper el diseño) */
+html.a11y-sin-imagenes img,
+html.a11y-sin-imagenes picture,
+html.a11y-sin-imagenes video {
+  opacity: 0 !important;
+}
+
+/* Fuente apta para dislexia: tipografías del sistema con formas de
+   letra más distintas entre sí, en vez de intentar cargar una fuente
+   externa (así el widget no depende de que el navegador tenga
+   conexión a un servicio de fuentes). */
+html.a11y-dislexia,
+html.a11y-dislexia body,
+html.a11y-dislexia p,
+html.a11y-dislexia span,
+html.a11y-dislexia li,
+html.a11y-dislexia a,
+html.a11y-dislexia h1,
+html.a11y-dislexia h2,
+html.a11y-dislexia h3,
+html.a11y-dislexia h4,
+html.a11y-dislexia h5,
+html.a11y-dislexia h6,
+html.a11y-dislexia input,
+html.a11y-dislexia textarea,
+html.a11y-dislexia button {
+  font-family: Verdana, 'Trebuchet MS', Tahoma, sans-serif !important;
+  letter-spacing: 0.03em !important;
+}
+
+/* Cursor grande */
+html.a11y-cursor-grande,
+html.a11y-cursor-grande * {
+  cursor:
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 24 24'><path d='M3 2 L3 20 L8 16 L11 22 L14 20.5 L11 14.5 L18 14 Z' fill='black' stroke='white' stroke-width='1.2'/></svg>")
+    2 2,
+    auto !important;
+}

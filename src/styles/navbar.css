@@ -1,0 +1,55 @@
+/*
+ * Ajustes de la barra de navegación.
+ *
+ * El tema original supone que cada logo son DOS imágenes: la clara
+ * para fondo oscuro y la de color para fondo claro. El CSS esconde una
+ * u otra según la página:
+ *
+ *     .navbar-brand img      { display: none; }
+ *     .navbar-brand img + img{ display: block; }
+ *
+ * "Destino accesible" se agregó después y tiene una sola imagen, así
+ * que nunca es `img + img` y quedaba escondida en todas las páginas de
+ * fondo claro —listados, buscador, itinerario—. Se veía sólo en las de
+ * fondo oscuro, por casualidad.
+ */
+
+.rt_marca_simple img {
+  display: block;
+}
+
+/*
+ * Banderas de idioma.
+ *
+ * En el tema venían con `padding: 10px 20px`, así que la caja quedaba
+ * de 64 x 44 px: al ponerle borde redondo del 50 % salía un óvalo. Acá
+ * la caja es cuadrada y el redondeo da un círculo de verdad.
+ *
+ * El idioma activo se marca con un anillo en vez de con un color de
+ * fondo: el fondo no se veía nunca, porque la bandera lo tapa.
+ */
+
+.language-button {
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  margin: 0;
+  border-radius: 50%;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: transparent;
+  opacity: 0.55;
+  transition: opacity 0.2s, box-shadow 0.2s, transform 0.2s;
+}
+
+.language-button:hover {
+  opacity: 1;
+  transform: scale(1.08);
+}
+
+.language-button.active {
+  opacity: 1;
+  box-shadow: 0 0 0 2px #00868f;
+}
