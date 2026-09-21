@@ -1,0 +1,32 @@
+# ------------------------------------------------------------
+#  Frontend — despliegue independiente.
+#
+#  No necesita estar en la misma red de Docker que el backend: el
+#  sitio nunca le habla al backend por un nombre interno de
+#  contenedor, siempre usa NEXT_PUBLIC_API_URL, la misma dirección
+#  pública que ve el navegador de quien visita el sitio. Por eso este
+#  contenedor puede vivir en un compose totalmente aparte del backend
+#  sin problema.
+#
+#  NEXT_PUBLIC_API_URL y NEXT_PUBLIC_GOOGLE_MAPS_KEY se incrustan al
+#  COMPILAR la imagen, no al arrancarla (así funciona Next), por eso
+#  van como "args" y no como "environment". Van en un archivo ".env"
+#  en esta misma carpeta (no .env.local: ese es el que usa
+#  "npm run dev"; para compose hace falta este aparte, con las mismas
+#  dos variables).
+#
+#      cp .env.example .env
+#      docker compose up -d --build
+# ------------------------------------------------------------
+
+services:
+  frontend:
+    build:
+      context: .
+      args:
+        NEXT_PUBLIC_API_URL: "${NEXT_PUBLIC_API_URL:?falta en el .env: direccion publica del API, ej. https://quehacerenperez.una.ac.cr/api}"
+        NEXT_PUBLIC_GOOGLE_MAPS_KEY: "${NEXT_PUBLIC_GOOGLE_MAPS_KEY:-}"
+    container_name: rutas-frontend
+    restart: unless-stopped
+    ports:
+      - "3000:3000"

@@ -1,0 +1,336 @@
+/* Pantalla del itinerario. En el sitio anterior todo esto iba como
+   estilos en línea dentro del componente, repetidos botón por botón. */
+
+.rt_plan_fondo {
+  /*
+   * El margen de arriba no es decorativo: la barra del tema es
+   * `position: fixed`, así que flota por encima del contenido. Las
+   * demás páginas la absorben con su banner; esta no tiene banner, y
+   * sin este espacio la tarjeta se metía debajo de la barra.
+   */
+  padding: 130px 20px 60px;
+  background: #eef2f7;
+  min-height: 100vh;
+}
+
+@media (max-width: 768px) {
+  .rt_plan_fondo {
+    padding-top: 100px;
+  }
+}
+
+.rt_plan {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 30px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+}
+
+.rt_plan h1 {
+  font-size: 1.9rem;
+  font-weight: 600;
+  margin: 0;
+  color: #2f3542;
+}
+
+.rt_plan_cabecera {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+  padding-bottom: 20px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #e3e8ef;
+}
+
+.rt_plan_conteo {
+  margin: 4px 0 0;
+  color: #6b7684;
+  font-size: 0.95rem;
+}
+
+.rt_plan_controles {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.rt_plan_controles label {
+  font-size: 0.9rem;
+  color: #6b7684;
+  margin: 0;
+}
+
+.rt_plan_controles select {
+  padding: 8px 12px;
+  border: 1px solid #cfd6e0;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  background: #fff;
+  color: #2f3542;
+}
+
+.rt_plan_ayuda {
+  font-size: 0.9rem;
+  color: #6b7684;
+  margin-bottom: 26px;
+}
+
+/* --- Estado vacío --- */
+
+.rt_plan_vacio {
+  text-align: center;
+  padding: 50px 30px;
+}
+
+.rt_plan_vacio p {
+  color: #6b7684;
+  max-width: 520px;
+  margin: 14px auto 0;
+  line-height: 1.6;
+}
+
+.rt_plan_acciones_vacio {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 26px;
+}
+
+
+/* --- Cada lugar --- */
+
+.rt_plan_item {
+  border-bottom: 1px solid #e3e8ef;
+  padding-bottom: 30px;
+  margin-bottom: 30px;
+}
+
+.rt_plan_item h3 {
+  font-size: 1.5rem;
+  margin-bottom: 12px;
+}
+
+.rt_plan_item h3 a { color: #2f3542; }
+.rt_plan_item h3 a:hover { color: #00868f; }
+
+.rt_plan_descripcion {
+  white-space: pre-wrap;
+  line-height: 1.6;
+  color: #444;
+  margin-bottom: 20px;
+}
+
+.rt_plan_columnas {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 30px;
+  margin-bottom: 22px;
+}
+
+.rt_plan_columnas h4 {
+  font-size: 1.05rem;
+  border-bottom: 2px solid #00868f;
+  padding-bottom: 6px;
+  margin-bottom: 12px;
+  display: inline-block;
+}
+
+.rt_plan_columnas li { margin-bottom: 8px; }
+.rt_plan_icono { margin-right: 8px; }
+
+.rt_plan_fotos {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  padding-bottom: 12px;
+  margin-bottom: 16px;
+}
+
+.rt_plan_fotos img {
+  height: 110px;
+  border-radius: 8px;
+  object-fit: cover;
+  box-shadow: 0 3px 7px rgba(0, 0, 0, 0.12);
+  flex-shrink: 0;
+}
+
+.rt_plan_acciones {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-top: 30px;
+}
+
+/* --- Botones --- */
+
+.rt_plan_boton {
+  display: inline-block;
+  padding: 11px 22px;
+  border: none;
+  border-radius: 8px;
+  color: #fff;
+  font-size: 1rem;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color 0.3s;
+}
+
+.rt_plan_boton:hover { color: #fff; text-decoration: none; }
+
+/*
+ * Los tres atajos del estado vacío son opciones equivalentes, así que
+ * se ven iguales. Antes uno salía en verde y dos en gris, y eso daba a
+ * entender que el primero era el correcto.
+ *
+ * OJO con el orden: tiene que ir después de .rt_plan_boton, que fija
+ * `color: #fff`. Puesto antes, gana la regla general y el texto queda
+ * blanco sobre fondo blanco.
+ */
+.rt_plan_boton.rt_plan_atajo {
+  background: #fff;
+  color: #00868f;
+  border: 1px solid #00868f;
+}
+
+.rt_plan_boton.rt_plan_atajo:hover {
+  background: #00868f;
+  color: #fff;
+}
+
+.rt_plan_quitar { background: #c0392b; }
+.rt_plan_quitar:hover { background: #a2311f; }
+.rt_plan_limpiar { background: #6c757d; }
+.rt_plan_limpiar:hover { background: #565e64; }
+.rt_plan_confirmar { background: #00868f; }
+.rt_plan_confirmar:hover { background: #006b73; }
+.rt_plan_imprimir { background: #00868f; }
+.rt_plan_imprimir:hover { background: #006b73; }
+
+/* ------------------------------------------------------------
+   Documento imprimible
+
+   En pantalla no existe. Al imprimir se esconde el resto de la
+   página y queda sólo esto, así que "Guardar como PDF" del
+   navegador produce el itinerario y nada más.
+   ------------------------------------------------------------ */
+
+.rt_documento { display: none; }
+
+@media print {
+  @page {
+    size: A4;
+    margin: 15mm;
+  }
+
+  body * { visibility: hidden; }
+  .rt_documento, .rt_documento * { visibility: visible; }
+
+  .rt_documento {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    color: #000;
+    font-size: 11pt;
+    line-height: 1.45;
+  }
+
+  .rt_doc_encabezado {
+    border-bottom: 2px solid #00868f;
+    padding-bottom: 12px;
+    margin-bottom: 22px;
+  }
+
+  .rt_doc_logos {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    margin-bottom: 12px;
+  }
+
+  .rt_doc_logos img { height: 34px; width: auto; }
+
+  .rt_doc_encabezado h1 {
+    font-size: 19pt;
+    margin: 0 0 4px;
+    color: #00575d;
+  }
+
+  .rt_doc_encabezado p { margin: 0; font-size: 10pt; color: #555; }
+
+  .rt_doc_lista {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    counter-reset: lugar;
+  }
+
+  .rt_doc_item {
+    display: flex;
+    gap: 14px;
+    padding: 0 0 14px;
+    margin-bottom: 16px;
+    border-bottom: 1px solid #ddd;
+    /* Que un lugar no quede partido entre dos páginas. */
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  .rt_doc_foto {
+    width: 32mm;
+    height: 24mm;
+    object-fit: cover;
+    border-radius: 3px;
+    flex-shrink: 0;
+  }
+
+  .rt_doc_cuerpo { flex: 1; min-width: 0; }
+
+  .rt_doc_cuerpo h2 {
+    font-size: 13pt;
+    margin: 0;
+    counter-increment: lugar;
+  }
+
+  .rt_doc_cuerpo h2::before {
+    content: counter(lugar) '. ';
+    color: #00868f;
+  }
+
+  .rt_doc_tipo {
+    margin: 2px 0 6px;
+    font-size: 9pt;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    color: #00868f;
+  }
+
+  .rt_doc_descripcion { margin: 0 0 6px; text-align: justify; }
+  .rt_doc_dato { margin: 0 0 3px; font-size: 10pt; }
+  .rt_doc_coordenadas { font-family: monospace; }
+
+  /* Renglones para escribir a mano sobre el papel. */
+  .rt_doc_notas {
+    margin-top: 8px;
+    height: 12mm;
+    border-bottom: 1px dotted #bbb;
+    box-shadow: 0 6mm 0 -1px #fff, 0 6mm 0 #ddd;
+  }
+
+  .rt_doc_pie {
+    margin-top: 20px;
+    padding-top: 10px;
+    border-top: 1px solid #ddd;
+    font-size: 9pt;
+    color: #666;
+    text-align: center;
+  }
+}

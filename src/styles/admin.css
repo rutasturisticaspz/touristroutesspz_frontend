@@ -1,0 +1,361 @@
+/*
+ * Panel de administración.
+ *
+ * El admin anterior traía una hoja SCSS de un template comprado, más
+ * reactstrap, más react-bootstrap, más FontAwesome, más Lottie para
+ * los iconitos animados del menú. Acá es CSS propio sobre el Bootstrap
+ * que el proyecto ya carga.
+ */
+
+.rt_admin {
+  display: flex;
+  min-height: 100vh;
+  background: #f4f6fa;
+  color: #2f3542;
+}
+
+/* ---------------- Menú lateral ---------------- */
+
+.rt_admin_menu {
+  width: 240px;
+  flex-shrink: 0;
+  background: #1f2a37;
+  color: #cfd6e0;
+  display: flex;
+  flex-direction: column;
+}
+
+.rt_admin_marca {
+  padding: 20px 20px 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.rt_admin_marca strong {
+  display: block;
+  color: #fff;
+  font-size: 15px;
+  line-height: 1.3;
+}
+
+.rt_admin_marca span {
+  font-size: 12px;
+  color: #8b97a8;
+}
+
+.rt_admin_menu nav {
+  flex: 1;
+  padding: 12px 0;
+  overflow-y: auto;
+}
+
+.rt_admin_menu nav a {
+  display: block;
+  padding: 10px 20px;
+  color: #cfd6e0;
+  font-size: 14px;
+  text-decoration: none;
+  border-left: 3px solid transparent;
+}
+
+.rt_admin_menu nav a:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: #fff;
+}
+
+.rt_admin_menu nav a.activo {
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  border-left-color: #00868f;
+}
+
+.rt_admin_pie {
+  padding: 16px 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 13px;
+}
+
+.rt_admin_pie p {
+  margin: 0 0 8px;
+  color: #8b97a8;
+  word-break: break-all;
+}
+
+/* ---------------- Contenido ---------------- */
+
+.rt_admin_contenido {
+  flex: 1;
+  min-width: 0;
+  padding: 28px 32px 60px;
+}
+
+.rt_admin_titulo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+}
+
+.rt_admin_titulo h1 {
+  font-size: 22px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.rt_admin_tarjeta {
+  background: #fff;
+  border: 1px solid #e3e8ef;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.rt_admin_tarjeta h2 {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0 0 16px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #e3e8ef;
+}
+
+/* ---------------- Tabla ---------------- */
+
+.rt_admin_tabla {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  font-size: 14px;
+}
+
+.rt_admin_tabla th,
+.rt_admin_tabla td {
+  padding: 12px 14px;
+  text-align: left;
+  border-bottom: 1px solid #e3e8ef;
+  vertical-align: top;
+}
+
+.rt_admin_tabla th {
+  background: #eef2f7;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.rt_admin_tabla tbody tr:hover { background: #f8fafc; }
+.rt_admin_tabla td.acciones { white-space: nowrap; text-align: right; }
+
+.rt_admin_vacio {
+  padding: 30px;
+  text-align: center;
+  color: #6b7684;
+}
+
+/* ---------------- Controles ---------------- */
+
+.rt_admin_campo { margin-bottom: 16px; }
+
+.rt_admin_campo label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.rt_admin_campo input[type='text'],
+.rt_admin_campo input[type='email'],
+.rt_admin_campo input[type='password'],
+.rt_admin_campo input[type='date'],
+.rt_admin_campo select,
+.rt_admin_campo textarea,
+.rt_admin_busqueda input {
+  width: 100%;
+  padding: 9px 12px;
+  border: 1px solid #cfd6e0;
+  border-radius: 6px;
+  font-size: 14px;
+  background: #fff;
+  color: #2f3542;
+}
+
+.rt_admin_campo textarea { min-height: 110px; resize: vertical; }
+
+.rt_admin_campo input:focus,
+.rt_admin_campo select:focus,
+.rt_admin_campo textarea:focus {
+  outline: none;
+  border-color: #00868f;
+  box-shadow: 0 0 0 3px rgba(0, 134, 143, 0.12);
+}
+
+.rt_admin_fila {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 0 20px;
+}
+
+.rt_admin_busqueda {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex: 1;
+  min-width: 260px;
+}
+
+.rt_boton {
+  padding: 9px 18px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  background: #00868f;
+  color: #fff;
+  white-space: nowrap;
+}
+
+.rt_boton:hover:not(:disabled) { background: #006b73; }
+.rt_boton:disabled { opacity: .5; cursor: not-allowed; }
+
+.rt_boton_secundario { background: #fff; color: #2f3542; border-color: #cfd6e0; }
+.rt_boton_secundario:hover:not(:disabled) { background: #eef2f7; }
+
+.rt_boton_peligro { background: #fff; color: #c0392b; border-color: #e3b0aa; }
+.rt_boton_peligro:hover:not(:disabled) { background: #fdf2f1; }
+
+.rt_boton_chico { padding: 5px 12px; font-size: 13px; }
+
+/* ---------------- Avisos ---------------- */
+
+.rt_aviso {
+  padding: 10px 14px;
+  border-radius: 6px;
+  font-size: 14px;
+  margin-bottom: 16px;
+}
+
+.rt_aviso_error { background: #fdf2f1; color: #a5352a; border: 1px solid #e3b0aa; }
+.rt_aviso_ok { background: #eefaf3; color: #1c7a4a; border: 1px solid #a9dcc1; }
+
+/* ---------------- Paginación ---------------- */
+
+.rt_admin_paginacion {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-top: 18px;
+}
+
+.rt_admin_paginacion button {
+  min-width: 36px;
+  padding: 6px 10px;
+  border: 1px solid #cfd6e0;
+  background: #fff;
+  border-radius: 6px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.rt_admin_paginacion button.activo {
+  background: #00868f;
+  border-color: #00868f;
+  color: #fff;
+}
+
+.rt_admin_paginacion button:disabled { opacity: .4; cursor: not-allowed; }
+.rt_admin_conteo { margin-left: auto; font-size: 13px; color: #6b7684; }
+
+/* ---------------- Ventana modal ---------------- */
+
+.rt_modal_fondo {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 32, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  z-index: 1050;
+}
+
+.rt_modal {
+  background: #fff;
+  border-radius: 10px;
+  width: 100%;
+  max-width: 520px;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 24px;
+}
+
+.rt_modal h2 { font-size: 18px; font-weight: 600; margin: 0 0 18px; }
+
+.rt_modal_acciones {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+/* ---------------- Login ---------------- */
+
+.rt_login {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f4f6fa;
+  padding: 20px;
+}
+
+.rt_login_caja {
+  width: 100%;
+  max-width: 400px;
+  background: #fff;
+  border: 1px solid #e3e8ef;
+  border-radius: 10px;
+  padding: 32px;
+}
+
+.rt_login_caja img { height: 46px; margin-bottom: 18px; }
+.rt_login_caja h1 { font-size: 20px; font-weight: 600; margin: 0 0 4px; }
+.rt_login_caja p.ayuda { color: #6b7684; font-size: 14px; margin-bottom: 24px; }
+
+@media (max-width: 768px) {
+  .rt_admin { flex-direction: column; }
+  .rt_admin_menu { width: 100%; }
+  .rt_admin_menu nav { display: flex; overflow-x: auto; padding: 0; }
+  .rt_admin_menu nav a { border-left: none; border-bottom: 3px solid transparent; white-space: nowrap; }
+  .rt_admin_menu nav a.activo { border-left: none; border-bottom-color: #00868f; }
+  .rt_admin_contenido { padding: 20px 16px 40px; }
+}
+
+/* Entradas del menú que todavía no tienen pantalla. */
+.rt_admin_menu nav .pendiente {
+  display: block;
+  padding: 10px 20px;
+  font-size: 14px;
+  color: #5b6675;
+  border-left: 3px solid transparent;
+  cursor: default;
+}
+
+.rt_admin_menu nav .pendiente::after {
+  content: ' · pronto';
+  font-size: 11px;
+  color: #4a5462;
+}
+
+/* Estado de los mensajes. */
+.rt_estado_ok,
+.rt_estado_pendiente {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.rt_estado_ok { background: #eefaf3; color: #1c7a4a; }
+.rt_estado_pendiente { background: #fdf2f1; color: #a5352a; }

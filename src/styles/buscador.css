@@ -1,0 +1,40 @@
+/*
+ * Arreglo de la barra lateral del buscador.
+ *
+ * Las etiquetas de filtro (.post-tags a/span) traen `float: left` del
+ * tema original. Un contenedor lleno de elementos flotados mide cero
+ * de alto, así que los bloques siguientes —"Otros", "Subcategorías"—
+ * se le montaban encima.
+ *
+ * El sitio anterior lo tapaba poniendo a mano un
+ * `style={{marginBottom: '320px'}}` en cada bloque: un número inventado
+ * que dejaba un hueco enorme cuando había pocas etiquetas y seguía
+ * quedando corto cuando había muchas (la lista de subcategorías tiene
+ * más de treinta).
+ *
+ * Aquí el contenedor pasa a ser flex, que sí mide el alto de su
+ * contenido. El aspecto de cada etiqueta no cambia.
+ */
+
+.blog-sidebar .widget.widget_tag_cloud .post-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 0;
+}
+
+.blog-sidebar .widget.widget_tag_cloud .post-tags a,
+.blog-sidebar .widget.widget_tag_cloud .post-tags span {
+  float: none;
+  margin: 0;
+  cursor: pointer;
+}
+
+/* La lista de tipos de sitio: el nombre a la izquierda y el conteo a
+   la derecha, sin que se peguen. */
+.blog-sidebar .widget.widget_categorie ul li {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+}
