@@ -11,7 +11,15 @@ npm install
 npm run dev                  
 ```
 
-El backend tiene que estar corriendo en http://localhost:2999.
+El navegador le pide `/api` y `/uploads` al mismo sitio y Next los reenvía
+al backend (ver `rewrites` en `next.config.ts`). En Docker eso va por la red
+interna, a `http://backend:2999`. Fuera de Docker, con el backend corriendo
+en su máquina, ponga en `.env.local`:
+
+```
+NEXT_PUBLIC_API_URL=/api
+BACKEND_INTERNAL_URL=http://localhost:2999
+```
 
 ## Qué se mantiene igual
 
