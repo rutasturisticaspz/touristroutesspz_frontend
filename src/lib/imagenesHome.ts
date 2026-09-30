@@ -1,12 +1,5 @@
 import { urlImagen } from './api';
 
-// Las 15 fotos de la portada.
-// Antes eran URLs completas de Firebase Storage escritas a mano en
-// `helpers/dataImagenesHome.js`. No estaban en la base de datos, así
-// que no las tocó la migración de imágenes: había que rescatarlas
-// aparte. Están en el respaldo, dentro de `home-img/`, y ahora las
-// sirve el backend desde `uploads/home/`.
-// Se mantiene el orden original.
 const ARCHIVOS = [
   'Nauyacas.jpg',
   'Nauyacas2.jpg',
@@ -27,5 +20,5 @@ const ARCHIVOS = [
 
 export const imagenesHome = ARCHIVOS.map((archivo) => ({
   archivo,
-  url: urlImagen(`/uploads/home/${archivo}`),
+  url: urlImagen(`/uploads/${archivo}`),
 }));
