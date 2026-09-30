@@ -24,6 +24,19 @@ const nextConfig: NextConfig = {
   // en .next/standalone. Es lo que copia el Dockerfile: sin esto
   // habría que meter node_modules completo en la imagen.
   output: 'standalone',
+
+  // El navegador pide /api y /uploads al mismo dominio del sitio y Next
+  // los reenvía al backend por la red interna de Docker (servicio
+  // `backend` del compose). Así el backend no necesita puerto
+  // publicado y el código no tiene dominios ni localhost fijos.
+  // Ojo: con `output: standalone` esto se resuelve al compilar.
+  async rewrites() {
+    const backend = process.env.BACKEND_INTERNAL_URL ?? 'http://backend:2999';
+    return [
+      { source: '/api/:ruta*', destination: `${backend}/api/:ruta*` },
+      { source: '/uploads/:ruta*', destination: `${backend}/uploads/:ruta*` },
+    ];
+  },
 };
 
 export default nextConfig;
