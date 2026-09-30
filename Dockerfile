@@ -6,12 +6,10 @@
 #  arrancar. Por eso van como ARG y no sólo como variables de entorno
 #  del contenedor: si se pasan al arrancar, no llegan al navegador.
 #
-#  Y por lo mismo, NEXT_PUBLIC_API_URL es lo que usa el NAVEGADOR.
-#  Va relativa (/api): el navegador le pide al mismo dominio del sitio
-#  y Next la reenvía al backend por la red interna de Docker (ver
-#  `rewrites` en next.config.ts). Poner http://backend:2999 aquí
-#  compila un sitio que nadie puede usar: ese nombre sólo existe
-#  dentro de la red de contenedores.
+#  Y por lo mismo, NEXT_PUBLIC_API_URL tiene que ser la dirección que
+#  ve el NAVEGADOR de la persona, no la de la red interna de Docker.
+#  Poner http://backend:2999 aquí compila un sitio que nadie puede
+#  usar: ese nombre sólo existe dentro de la red de contenedores.
 # ------------------------------------------------------------
 
 # --- Etapa 1: dependencias ---
