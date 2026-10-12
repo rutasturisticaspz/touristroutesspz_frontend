@@ -1,20 +1,18 @@
 /*
- * Widget de accesibilidad.
+ * Accessibility widget.
  *
- * Los efectos se activan con clases en <html> (no en <body>) para que
- * alcancen absolutamente todo, incluyendo cosas montadas fuera del
- * árbol de React si algún día las hay. Todo lleva !important a
- * propósito: el sitio hereda CSS de Bootstrap 4 y de hojas de estilo
- * viejas con selectores muy específicos, y este widget tiene que
- * ganarles siempre.
+ * The effects are activated with classes on <html> (not on <body>)
+ * so they reach absolutely everything, including things mounted
+ * outside the React tree if there ever are any. Everything carries
+ * !important on purpose: the site inherits CSS from Bootstrap 4 and
+ * from old stylesheets with very specific selectors, and this widget
+ * has to always win against them.
  */
 
-/* ---------- Botón flotante ---------- */
+/* ---------- Floating button ---------- */
 
 .accesibilidad-boton {
   position: fixed;
-  left: 16px;
-  bottom: 16px;
   z-index: 2147483000;
   width: 52px;
   height: 52px;
@@ -26,7 +24,34 @@
   align-items: center;
   justify-content: center;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
-  cursor: pointer;
+  cursor: grab;
+  /* Without this the browser interprets dragging as scrolling on mobile. */
+  touch-action: none;
+}
+
+.accesibilidad-boton[data-arrastrando='true'] {
+  cursor: grabbing;
+  transition: none;
+}
+
+.accesibilidad-boton[data-esquina='superior-izquierda'] {
+  top: 16px;
+  left: 16px;
+}
+
+.accesibilidad-boton[data-esquina='superior-derecha'] {
+  top: 16px;
+  right: 16px;
+}
+
+.accesibilidad-boton[data-esquina='inferior-izquierda'] {
+  bottom: 16px;
+  left: 16px;
+}
+
+.accesibilidad-boton[data-esquina='inferior-derecha'] {
+  bottom: 16px;
+  right: 16px;
 }
 
 .accesibilidad-boton:hover,
@@ -61,6 +86,12 @@
   display: flex;
   flex-direction: column;
   font-family: -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+}
+
+.accesibilidad-panel[data-lado='derecha'] {
+  left: auto;
+  right: 0;
+  box-shadow: -2px 0 16px rgba(0, 0, 0, 0.3);
 }
 
 .accesibilidad-panel-encabezado {
@@ -189,6 +220,70 @@
   color: #fff;
 }
 
+.accesibilidad-fila-posicion {
+  margin-top: 12px;
+}
+
+.accesibilidad-esquinas {
+  display: grid;
+  grid-template-columns: repeat(2, 22px);
+  gap: 4px;
+}
+
+.accesibilidad-esquina {
+  position: relative;
+  width: 22px;
+  height: 22px;
+  border-radius: 5px;
+  border: 1px solid #b9c3cd;
+  background: #fff;
+  cursor: pointer;
+  padding: 0;
+}
+
+/* A dot in the corner that represents each button. */
+.accesibilidad-esquina::after {
+  content: '';
+  position: absolute;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #7a8794;
+}
+
+.accesibilidad-esquina[data-esquina='superior-izquierda']::after {
+  top: 3px;
+  left: 3px;
+}
+
+.accesibilidad-esquina[data-esquina='superior-derecha']::after {
+  top: 3px;
+  right: 3px;
+}
+
+.accesibilidad-esquina[data-esquina='inferior-izquierda']::after {
+  bottom: 3px;
+  left: 3px;
+}
+
+.accesibilidad-esquina[data-esquina='inferior-derecha']::after {
+  bottom: 3px;
+  right: 3px;
+}
+
+.accesibilidad-esquina[aria-pressed='true'] {
+  border-color: #1b56a3;
+}
+
+.accesibilidad-esquina[aria-pressed='true']::after {
+  background: #1b56a3;
+}
+
+.accesibilidad-esquina:hover,
+.accesibilidad-esquina:focus-visible {
+  border-color: #1b56a3;
+}
+
 .accesibilidad-restablecer {
   margin-top: 4px;
   width: 100%;
@@ -213,17 +308,17 @@
   border-top: 1px solid #e4e8ec;
 }
 
-/* El widget siempre debe verse normal, incluso en alto contraste. */
+/* The widget must always look normal, even in high contrast. */
 html.a11y-contraste .accesibilidad-boton,
 html.a11y-contraste .accesibilidad-panel,
 html.a11y-contraste .accesibilidad-fondo {
   filter: invert(1) hue-rotate(180deg);
 }
 
-/* ---------- Efectos aplicados al sitio ---------- */
+/* ---------- Effects applied to the site ---------- */
 
-/* Alto contraste: invertir todo y volver a invertir imágenes y video
-   para que no salgan en negativo. */
+/* High contrast: invert everything and invert images and video back
+   so they do not come out as negatives. */
 html.a11y-contraste {
   filter: invert(1) hue-rotate(180deg);
   background: #fff;
@@ -236,7 +331,7 @@ html.a11y-contraste iframe {
   filter: invert(1) hue-rotate(180deg);
 }
 
-/* Resaltar enlaces */
+/* Highlight links */
 html.a11y-enlaces a {
   background: #fff59d !important;
   color: #000 !important;
@@ -245,7 +340,7 @@ html.a11y-enlaces a {
   outline: 1px solid #f9a825 !important;
 }
 
-/* Espaciado de texto */
+/* Text spacing */
 html.a11y-espaciado body,
 html.a11y-espaciado p,
 html.a11y-espaciado span,
@@ -261,7 +356,7 @@ html.a11y-espaciado h6 {
   word-spacing: 0.18em !important;
 }
 
-/* Interlineado amplio */
+/* Wide line height */
 html.a11y-interlineado body,
 html.a11y-interlineado p,
 html.a11y-interlineado li,
@@ -270,7 +365,7 @@ html.a11y-interlineado div {
   line-height: 1.9 !important;
 }
 
-/* Detener animaciones y transiciones */
+/* Stop animations and transitions */
 html.a11y-sin-animaciones *,
 html.a11y-sin-animaciones *::before,
 html.a11y-sin-animaciones *::after {
@@ -280,17 +375,17 @@ html.a11y-sin-animaciones *::after {
   scroll-behavior: auto !important;
 }
 
-/* Ocultar imágenes (deja el espacio para no romper el diseño) */
+/* Hide images (leaves the space so the layout does not break) */
 html.a11y-sin-imagenes img,
 html.a11y-sin-imagenes picture,
 html.a11y-sin-imagenes video {
   opacity: 0 !important;
 }
 
-/* Fuente apta para dislexia: tipografías del sistema con formas de
-   letra más distintas entre sí, en vez de intentar cargar una fuente
-   externa (así el widget no depende de que el navegador tenga
-   conexión a un servicio de fuentes). */
+/* Dyslexia-friendly font: system typefaces with letter shapes that
+   are more distinct from each other, instead of trying to load an
+   external font (so the widget does not depend on the browser having
+   a connection to a font service). */
 html.a11y-dislexia,
 html.a11y-dislexia body,
 html.a11y-dislexia p,
@@ -310,7 +405,7 @@ html.a11y-dislexia button {
   letter-spacing: 0.03em !important;
 }
 
-/* Cursor grande */
+/* Large cursor */
 html.a11y-cursor-grande,
 html.a11y-cursor-grande * {
   cursor:

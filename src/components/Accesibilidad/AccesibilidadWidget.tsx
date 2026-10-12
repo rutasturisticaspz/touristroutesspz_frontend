@@ -1,20 +1,30 @@
 'use client';
 
-import { useEffect, useState, type ReactNode } from 'react';
+import { useEffect, useRef, useState, type PointerEvent, type ReactNode } from 'react';
 import '../../styles/accesibilidad.css';
 import { useIdioma } from '../../context/IdiomaContext';
 
-// Menú de accesibilidad.
-// Es un botón flotante, presente en todas las páginas (se monta una
-// sola vez en el layout raíz), que abre un panel para ajustar tamaño
-// de texto, contraste, espaciado, animaciones, imágenes, tipografía y
-// cursor. Los ajustes se guardan en localStorage y se vuelven a
-// aplicar en cada visita.
-// Los efectos en sí (las clases `a11y-*`) están en
-// `src/styles/accesibilidad.css`; este componente solo lleva el
-// estado y prende/apaga esas clases en <html>.
+// Accessibility menu.
+// It is a floating button, present on all pages (mounted only once in
+// the root layout), that opens a panel to adjust text size, contrast,
+// spacing, animations, images, typography and cursor. The settings
+// are saved in localStorage and reapplied on every visit.
+// The button can be dragged to any of the four corners, or the corner
+// can be chosen from the panel (for those who do not use a pointer).
+// The effects themselves (the `a11y-*` classes) are in
+// `src/styles/accesibilidad.css`; this component only holds the state
+// and turns those classes on/off on <html>.
 
 const CLAVE_ALMACENAMIENTO = 'accesibilidad-rt';
+const CLAVE_ESQUINA = 'accesibilidad-rt-esquina';
+const TAMANO_BOTON = 52;
+const MARGEN_BOTON = 16;
+// How far the pointer has to move for it to count as a drag and not
+// as a click with a shaky hand.
+const UMBRAL_ARRASTRE = 6;
+// Window in which the click the browser fires when a drag is released
+// is ignored.
+const MS_IGNORAR_CLIC = 300;
 const ESCALA_MIN = 100;
 const ESCALA_MAX = 160;
 const ESCALA_PASO = 10;
@@ -43,6 +53,40 @@ const ESTADO_INICIAL: EstadoAccesibilidad = {
   cursorGrande: false,
 };
 
+// The button lives in one of the four corners. The position is saved
+// separately from the settings: "Reset all" does not move it.
+const ESQUINAS = ['superior-izquierda', 'superior-derecha', 'inferior-izquierda', 'inferior-derecha'] as const;
+type Esquina = (typeof ESQUINAS)[number];
+const ESQUINA_INICIAL: Esquina = 'inferior-izquierda';
+
+type Traducir = (es: string, en: string) => string;
+
+const ROTULO_ESQUINA: Record<Esquina, (t: Traducir) => string> = {
+  'superior-izquierda': (t) => t('Arriba a la izquierda', 'Top left'),
+  'superior-derecha': (t) => t('Arriba a la derecha', 'Top right'),
+  'inferior-izquierda': (t) => t('Abajo a la izquierda', 'Bottom left'),
+  'inferior-derecha': (t) => t('Abajo a la derecha', 'Bottom right'),
+};
+
+function esEsquina(valor: unknown): valor is Esquina {
+  return (ESQUINAS as readonly unknown[]).includes(valor);
+}
+
+function leerEsquinaGuardada(): Esquina {
+  try {
+    const guardada = window.localStorage.getItem(CLAVE_ESQUINA);
+    return esEsquina(guardada) ? guardada : ESQUINA_INICIAL;
+  } catch {
+    return ESQUINA_INICIAL;
+  }
+}
+
+function esquinaMasCercana(x: number, y: number): Esquina {
+  const vertical = y < window.innerHeight / 2 ? 'superior' : 'inferior';
+  const horizontal = x < window.innerWidth / 2 ? 'izquierda' : 'derecha';
+  return `${vertical}-${horizontal}`;
+}
+
 type ClaveInterruptor = Exclude<keyof EstadoAccesibilidad, 'escalaTexto'>;
 
 function leerEstadoGuardado(): EstadoAccesibilidad {
@@ -61,12 +105,18 @@ export default function AccesibilidadWidget() {
   const [abierto, setAbierto] = useState(false);
   const [listo, setListo] = useState(false);
   const [estado, setEstado] = useState<EstadoAccesibilidad>(ESTADO_INICIAL);
+  const [esquina, setEsquina] = useState<Esquina>(ESQUINA_INICIAL);
+  // Button position while dragging; null when it is in a corner.
+  const [arrastre, setArrastre] = useState<{ x: number; y: number } | null>(null);
+  const gesto = useRef<{ inicioX: number; inicioY: number; movido: boolean } | null>(null);
+  const finDeUltimoArrastre = useRef(0);
 
-  // El estado guardado solo se puede leer en el navegador. Se carga
-  // en un efecto para que el primer render coincida con el que arma
-  // el servidor (si no, React se queja de un mismatch de hidratación).
+  // The saved state can only be read in the browser. It is loaded in an
+  // effect so the first render matches the one the server builds
+  // (otherwise, React complains about a hydration mismatch).
   useEffect(() => {
     setEstado(leerEstadoGuardado());
+    setEsquina(leerEsquinaGuardada());
     setListo(true);
   }, []);
 
@@ -85,9 +135,18 @@ export default function AccesibilidadWidget() {
     try {
       window.localStorage.setItem(CLAVE_ALMACENAMIENTO, JSON.stringify(estado));
     } catch {
-      // Sin almacenamiento los ajustes valen para esta visita nada más.
+      // Without storage the settings only apply for this visit.
     }
   }, [estado, listo]);
+
+  useEffect(() => {
+    if (!listo) return;
+    try {
+      window.localStorage.setItem(CLAVE_ESQUINA, esquina);
+    } catch {
+      // Without storage the position only applies for this visit.
+    }
+  }, [esquina, listo]);
 
   useEffect(() => {
     if (!abierto) return;
@@ -115,15 +174,64 @@ export default function AccesibilidadWidget() {
     setEstado(ESTADO_INICIAL);
   }
 
+  function alPresionarBoton(evento: PointerEvent<HTMLButtonElement>) {
+    gesto.current = { inicioX: evento.clientX, inicioY: evento.clientY, movido: false };
+    evento.currentTarget.setPointerCapture(evento.pointerId);
+  }
+
+  function alMoverBoton(evento: PointerEvent<HTMLButtonElement>) {
+    const actual = gesto.current;
+    if (!actual) return;
+    const distancia = Math.hypot(evento.clientX - actual.inicioX, evento.clientY - actual.inicioY);
+    if (!actual.movido && distancia < UMBRAL_ARRASTRE) return;
+    actual.movido = true;
+    setArrastre({ x: evento.clientX, y: evento.clientY });
+  }
+
+  function alSoltarBoton(evento: PointerEvent<HTMLButtonElement>) {
+    const actual = gesto.current;
+    gesto.current = null;
+    if (!actual?.movido) return;
+    finDeUltimoArrastre.current = performance.now();
+    setEsquina(esquinaMasCercana(evento.clientX, evento.clientY));
+    setArrastre(null);
+  }
+
+  function alCancelarGesto() {
+    gesto.current = null;
+    setArrastre(null);
+  }
+
+  // A drag ends in a click; that click must not open the panel.
+  function alHacerClicEnBoton() {
+    if (performance.now() - finDeUltimoArrastre.current < MS_IGNORAR_CLIC) return;
+    setAbierto(true);
+  }
+
+  const estiloArrastre = arrastre && {
+    left: Math.max(0, arrastre.x - TAMANO_BOTON / 2),
+    top: Math.max(0, arrastre.y - TAMANO_BOTON / 2),
+    right: 'auto',
+    bottom: 'auto',
+  };
+  const ladoDelPanel = esquina.endsWith('derecha') ? 'derecha' : 'izquierda';
+
   return (
     <>
       <button
         type="button"
         className="accesibilidad-boton"
+        data-esquina={esquina}
+        data-arrastrando={arrastre !== null}
+        style={estiloArrastre || undefined}
         aria-haspopup="dialog"
         aria-expanded={abierto}
         aria-label={t('Abrir menú de accesibilidad', 'Open accessibility menu')}
-        onClick={() => setAbierto(true)}
+        onClick={alHacerClicEnBoton}
+        onPointerDown={alPresionarBoton}
+        onPointerMove={alMoverBoton}
+        onPointerUp={alSoltarBoton}
+        onPointerCancel={alCancelarGesto}
       >
         <IconoAccesibilidad />
       </button>
@@ -133,6 +241,7 @@ export default function AccesibilidadWidget() {
           <div className="accesibilidad-fondo" onClick={() => setAbierto(false)} />
           <div
             className="accesibilidad-panel"
+            data-lado={ladoDelPanel}
             role="dialog"
             aria-modal="true"
             aria-label={t('Menú de accesibilidad', 'Accessibility menu')}
@@ -226,6 +335,30 @@ export default function AccesibilidadWidget() {
                 />
               </div>
 
+              <div className="accesibilidad-fila-texto accesibilidad-fila-posicion">
+                <span id="accesibilidad-posicion">
+                  {t('Posición del botón', 'Button position')}
+                </span>
+                <div
+                  className="accesibilidad-esquinas"
+                  role="group"
+                  aria-labelledby="accesibilidad-posicion"
+                >
+                  {ESQUINAS.map((opcion) => (
+                    <button
+                      key={opcion}
+                      type="button"
+                      className="accesibilidad-esquina"
+                      data-esquina={opcion}
+                      aria-pressed={esquina === opcion}
+                      aria-label={ROTULO_ESQUINA[opcion](t)}
+                      title={ROTULO_ESQUINA[opcion](t)}
+                      onClick={() => setEsquina(opcion)}
+                    />
+                  ))}
+                </div>
+              </div>
+
               <button type="button" className="accesibilidad-restablecer" onClick={restablecer}>
                 {t('Restablecer todo', 'Reset all')}
               </button>
@@ -260,8 +393,8 @@ function ItemAccesibilidad({ activo, etiqueta, icono, onClick }: PropsItem) {
   );
 }
 
-// Iconos propios, en SVG en línea, para no depender de una fuente de
-// iconos externa ni de conexión a internet.
+// Own icons, inline SVG, so as not to depend on an external icon font
+// or on an internet connection.
 
 function IconoAccesibilidad() {
   return (
