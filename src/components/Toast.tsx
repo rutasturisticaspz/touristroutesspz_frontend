@@ -3,12 +3,11 @@
 import { useEffect } from 'react';
 import '../styles/toast.css';
 
-// Notificacion flotante para el sitio publico (formularios, etc).
-// Antes la confirmacion de "mensaje enviado" era solo un texto que
-// aparecia debajo del boton -- facil de no ver, sobre todo si el
-// formulario es largo o en el celular hay que hacer scroll. Este
-// componente aparece siempre en la misma posicion, arriba de todo lo
-// demas, y se cierra solo.
+// Floating notification for the public site (forms, etc).
+// Before, the "message sent" confirmation was just text that appeared
+// below the button -- easy to miss, especially if the form is long or
+// on a phone you have to scroll. This component always appears in the
+// same position, on top of everything else, and closes by itself.
 
 interface Props {
   tipo: 'ok' | 'error';

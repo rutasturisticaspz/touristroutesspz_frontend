@@ -14,17 +14,17 @@ import {
 } from '../../lib/tiposAdmin';
 import type { Categoria, Pagina, Sitio } from '../../lib/tipos';
 
-// Ficha de edición, común a los siete tipos.
-// Reemplaza a los seis archivos *Editar.jsx del panel anterior, de
-// unas 600 líneas cada uno. Aquellos declaraban un `useState` por
-// campo —hasta 25 en el de atracciones, contando las descripciones de
-// accesibilidad en dos idiomas— y después comparaban uno por uno
-// contra el original para saber si habilitar el botón de guardar. Acá
-// los campos son un objeto y la comparación es contra ese objeto.
-// Se conserva la idea de guardar por bloques: información general,
-// ubicación, contactos y fotos se guardan por separado, como antes.
+// Edit page, common to the seven types.
+// Replaces the six *Editar.jsx files of the previous panel, of about
+// 600 lines each. Those declared one `useState` per field —up to 25
+// in the attractions one, counting the accessibility descriptions in
+// two languages— and then compared them one by one against the
+// original to know whether to enable the save button. Here the
+// fields are an object and the comparison is against that object.
+// The idea of saving by blocks is kept: general information, location,
+// contacts and photos are saved separately, as before.
 
-// Cadena para el <input type="date"> a partir de lo que manda el API.
+// String for the <input type="date"> from what the API sends.
 function aFecha(valor: unknown): string {
   if (typeof valor !== 'string' || valor === '') return '';
   return valor.slice(0, 10);
@@ -43,7 +43,7 @@ export default function FichaSitio({ tipo, id }: { tipo: TipoAdmin; id: number }
   const [error, setError] = useState<string | null>(null);
   const [listo, setListo] = useState(false);
 
-  // Toma del sitio los campos editables del bloque general.
+  // Takes the editable fields of the general block from the site.
   const desdeSitio = useCallback(
     (datos: Sitio): Record<string, unknown> => {
       const valores: Record<string, unknown> = {
@@ -93,14 +93,14 @@ export default function FichaSitio({ tipo, id }: { tipo: TipoAdmin; id: number }
     pedirAdmin<Pagina<Categoria>>('/categorias', { parametros: { take: 200 } })
       .then((resultado) => vigente && setCategorias(resultado.datos))
       .catch(() => {
-        // La ficha sirve igual sin la lista de categorías.
+        // The page works the same without the list of categories.
       });
     return () => {
       vigente = false;
     };
   }, [tipo.conCategorias]);
 
-  // ¿Hay algo distinto de lo que está guardado?
+  // Is anything different from what is saved?
   const hayCambios = useMemo(() => {
     if (!sitio) return false;
 
@@ -139,8 +139,8 @@ export default function FichaSitio({ tipo, id }: { tipo: TipoAdmin; id: number }
       for (const [clave, valor] of Object.entries(campos)) {
         const extra = tipo.extras.find((e) => e.nombre === clave);
         if (extra?.tipo === 'fecha') {
-          // Una fecha en blanco se manda como null, que es lo que la
-          // tabla admite; mandar "" haría fallar la validación.
+          // A blank date is sent as null, which is what the table accepts;
+          // sending "" would make validation fail.
           cuerpo[clave] = valor === '' ? null : valor;
           continue;
         }

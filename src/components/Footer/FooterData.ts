@@ -1,7 +1,7 @@
-// Contenido del pie de página.
-// Mismos textos y enlaces que el sitio actual. Se mantiene el par
-// texto/textoEN porque estos rótulos nunca estuvieron en los archivos
-// de traducción, sino escritos aquí.
+// Footer content.
+// Same texts and links as the current site. The text/textoEN pair is
+// kept because these labels were never in the translation files, but
+// written here.
 
 export interface ItemMenu {
   id: number;

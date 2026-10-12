@@ -2,34 +2,35 @@ import path from 'node:path';
 import type { NextConfig } from 'next';
 
 /**
- * El sitio anterior era una SPA de create-react-app servida como
- * estáticos. Aquí se mantiene el mismo comportamiento visual, pero
- * sobre Next, que es lo que se va a dockerizar y servir desde el
- * servidor de la Universidad junto con el backend.
+ * The previous site was a create-react-app SPA served as static
+ * files. Here the same visual behavior is kept, but on top of Next,
+ * which is what will be dockerized and served from the University's
+ * server together with the backend.
  */
 const nextConfig: NextConfig = {
   reactStrictMode: true,
 
-  // Las imágenes van en public/ y se sirven tal cual, sin el
-  // optimizador de Next: son las mismas que traía el proyecto viejo y
-  // en esta etapa la idea es que el sitio se vea idéntico, no
-  // cambiarle el pipeline de imágenes.
+  // Images go in public/ and are served as is, without Next's
+  // optimizer: they are the same ones the old project had and at this
+  // stage the idea is for the site to look identical, not to change its
+  // image pipeline.
   images: { unoptimized: true },
 
-  // Sin esto, Turbopack sube buscando un package-lock.json y termina
-  // tomando la carpeta personal del usuario como raíz del proyecto.
+  // Without this, Turbopack walks up looking for a package-lock.json and
+  // ends up taking the user's home folder as the project root.
   turbopack: { root: path.resolve(__dirname) },
 
-  // Empaqueta el servidor y sólo las dependencias que realmente usa,
-  // en .next/standalone. Es lo que copia el Dockerfile: sin esto
-  // habría que meter node_modules completo en la imagen.
+  // Bundles the server and only the dependencies it actually uses, in
+  // .next/standalone. It is what the Dockerfile copies: without this the
+  // whole node_modules would have to go into the image.
   output: 'standalone',
 
-  // El navegador pide /api y /uploads al mismo dominio del sitio y Next
-  // los reenvía al backend por la red interna de Docker (servicio
-  // `backend` del compose). Así el backend no necesita puerto
-  // publicado y el código no tiene dominios ni localhost fijos.
-  // Ojo: con `output: standalone` esto se resuelve al compilar.
+  // The browser requests /api and /uploads from the same domain as the
+  // site and Next forwards them to the backend over Docker's internal
+  // network (the compose `backend` service). This way the backend needs
+  // no published port and the code has no hardcoded domains or
+  // localhost.
+  // Note: with `output: standalone` this is resolved at build time.
   async rewrites() {
     const backend = process.env.BACKEND_INTERNAL_URL ?? 'http://backend:2999';
     return [

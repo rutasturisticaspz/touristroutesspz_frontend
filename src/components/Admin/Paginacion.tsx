@@ -1,10 +1,10 @@
 'use client';
 
-// Paginación.
-// La del admin anterior calculaba `(cantidad / 10) + 1` sin redondear
-// y armaba un `for` desde 1 hasta ese número: con 24 registros daba
-// 3.4, o sea páginas 1, 2 y 3 —correcto de casualidad—, pero con 20
-// daba 3 páginas cuando sólo hay 2, y la última salía vacía.
+// Pagination.
+// The previous admin's computed `(count / 10) + 1` without rounding
+// and built a `for` from 1 up to that number: with 24 records it gave
+// 3.4, that is pages 1, 2 and 3 —correct by chance—, but with 20 it
+// gave 3 pages when there are only 2, and the last one came out empty.
 export default function Paginacion({
   pagina,
   total,

@@ -7,24 +7,27 @@ import { crearXlsx, descargar, type Celda } from '../../../lib/excel';
 import { TIPOS_ADMIN, type TipoAdmin } from '../../../lib/tiposAdmin';
 import type { Pagina, Sitio } from '../../../lib/tipos';
 
-// /admin/exportar — reportes en Excel.
-// Reemplaza a exportExcel.jsx (200 líneas), que tenía tres funciones
-// casi iguales para armar las filas y seis botones escritos a mano.
-// Tres diferencias:
-//  - El anterior pedía los datos sin paginar (`getXByFilter('', '', '')`),
-//    y el backend viejo devolvía todo. El nuevo tiene tope por página,
-//    así que acá se pide por tandas hasta traer el total. Si mañana hay
-//    500 atracciones, el reporte las trae igual.
-//  - Se puede bajar todo junto en un solo archivo con una pestaña por
-//    tipo, que es lo que la U termina queriendo para un informe.
-//  - Las columnas se arman según lo que ese tipo realmente tiene: la
-//    de categorías sólo aparece en atracciones y hospedaje, y la de
-//    declaración turística no aparece en rentadoras, cuya tabla no la
-//    tiene. Antes salía la columna con "No" para todas.
+// /admin/exportar — Excel reports.
+// Replaces exportExcel.jsx (200 lines), which had three nearly
+// identical functions to build the rows and six hand-written buttons.
+// Three differences:
+//  - The previous one requested the data without pagination
+//    (`getXByFilter('', '', '')`), and the old backend returned
+//    everything. The new one has a per-page limit, so here it is
+//    requested in batches until the total is fetched. If tomorrow
+//    there are 500 attractions, the report fetches them all the same.
+//  - Everything can be downloaded together in a single file with one
+//    sheet per type, which is what the University ends up wanting for
+//    a report.
+//  - The columns are built according to what that type actually has:
+//    the categories one only appears in attractions and lodging, and
+//    the tourist declaration one does not appear in rental companies,
+//    whose table does not have it. Before, the column came out with
+//    "No" for all of them.
 
 const POR_TANDA = 200;
 
-// Trae todos los registros de un tipo, tanda por tanda.
+// Fetches all the records of a type, batch by batch.
 async function traerTodo(tipo: TipoAdmin): Promise<Sitio[]> {
   const todos: Sitio[] = [];
   let skip = 0;
@@ -43,7 +46,7 @@ async function traerTodo(tipo: TipoAdmin): Promise<Sitio[]> {
   return todos;
 }
 
-// Encabezados y filas de un tipo.
+// Headers and rows of a type.
 function armarHoja(tipo: TipoAdmin, filas: Sitio[]): Celda[][] {
   const conDeclaracion = tipo.accesibilidad.includes('declaracionTuristica');
 
@@ -63,7 +66,7 @@ function armarHoja(tipo: TipoAdmin, filas: Sitio[]): Celda[][] {
       salida.push(fila.declaracionTuristica ? 'Sí' : 'No');
     }
 
-    // Sólo los distintivos que ese tipo admite y que están activos.
+    // Only the badges that type supports and that are active.
     const distintivos = tipo.accesibilidad
       .filter((campo) => campo !== 'declaracionTuristica' && fila[campo] === true)
       .map((campo) => campo.replace(/^discapacidad/, 'Discapacidad ').replace(/^permiten/, 'Permite '));
@@ -92,7 +95,7 @@ function armarHoja(tipo: TipoAdmin, filas: Sitio[]): Celda[][] {
   return [encabezados, ...datos];
 }
 
-// aaaa-mm-dd, para el nombre del archivo.
+// yyyy-mm-dd, for the file name.
 function hoy(): string {
   const fecha = new Date();
   const dosDigitos = (n: number) => String(n).padStart(2, '0');

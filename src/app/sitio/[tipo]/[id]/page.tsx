@@ -4,10 +4,9 @@ import { notFound, useParams } from 'next/navigation';
 import DetalleSitio from '../../../../components/Sitios/DetalleSitio';
 import { buscarTipo } from '../../../../lib/tiposSitio';
 
-// /sitio/:tipo/:id — el detalle de cualquiera de los seis tipos.
-// Los segmentos de tipo son los mismos del sitio anterior (incluidos
-// los que van en camello) para que los enlaces ya publicados sigan
-// funcionando.
+// /sitio/:tipo/:id — the detail of any of the six types.
+// The type segments are the same as the previous site's (including
+// the camel case ones) so already published links keep working.
 export default function Pagina() {
   const parametros = useParams<{ tipo: string; id: string }>();
   const tipo = buscarTipo(parametros?.tipo);

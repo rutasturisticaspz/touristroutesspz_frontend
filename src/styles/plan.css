@@ -1,12 +1,12 @@
-/* Pantalla del itinerario. En el sitio anterior todo esto iba como
-   estilos en línea dentro del componente, repetidos botón por botón. */
+/* Itinerary screen. On the previous site all of this went as inline
+   styles inside the component, repeated button by button. */
 
 .rt_plan_fondo {
   /*
-   * El margen de arriba no es decorativo: la barra del tema es
-   * `position: fixed`, así que flota por encima del contenido. Las
-   * demás páginas la absorben con su banner; esta no tiene banner, y
-   * sin este espacio la tarjeta se metía debajo de la barra.
+   * The top margin is not decorative: the theme's bar is
+   * `position: fixed`, so it floats above the content. The other
+   * pages absorb it with their banner; this one has no banner, and
+   * without this space the card slid under the bar.
    */
   padding: 130px 20px 60px;
   background: #eef2f7;
@@ -80,7 +80,7 @@
   margin-bottom: 26px;
 }
 
-/* --- Estado vacío --- */
+/* --- Empty state --- */
 
 .rt_plan_vacio {
   text-align: center;
@@ -103,7 +103,7 @@
 }
 
 
-/* --- Cada lugar --- */
+/* --- Each place --- */
 
 .rt_plan_item {
   border-bottom: 1px solid #e3e8ef;
@@ -168,7 +168,7 @@
   margin-top: 30px;
 }
 
-/* --- Botones --- */
+/* --- Buttons --- */
 
 .rt_plan_boton {
   display: inline-block;
@@ -185,13 +185,13 @@
 .rt_plan_boton:hover { color: #fff; text-decoration: none; }
 
 /*
- * Los tres atajos del estado vacío son opciones equivalentes, así que
- * se ven iguales. Antes uno salía en verde y dos en gris, y eso daba a
- * entender que el primero era el correcto.
+ * The three empty-state shortcuts are equivalent options, so they
+ * look the same. Before, one came out green and two gray, and that
+ * implied the first was the right one.
  *
- * OJO con el orden: tiene que ir después de .rt_plan_boton, que fija
- * `color: #fff`. Puesto antes, gana la regla general y el texto queda
- * blanco sobre fondo blanco.
+ * NOTE on the order: it has to go after .rt_plan_boton, which sets
+ * `color: #fff`. Placed before, the general rule wins and the text
+ * ends up white on a white background.
  */
 .rt_plan_boton.rt_plan_atajo {
   background: #fff;
@@ -214,11 +214,11 @@
 .rt_plan_imprimir:hover { background: #006b73; }
 
 /* ------------------------------------------------------------
-   Documento imprimible
+   Printable document
 
-   En pantalla no existe. Al imprimir se esconde el resto de la
-   página y queda sólo esto, así que "Guardar como PDF" del
-   navegador produce el itinerario y nada más.
+   It does not exist on screen. When printing, the rest of the page
+   is hidden and only this remains, so the browser's "Save as PDF"
+   produces the itinerary and nothing else.
    ------------------------------------------------------------ */
 
 .rt_documento { display: none; }
@@ -279,7 +279,7 @@
     padding: 0 0 14px;
     margin-bottom: 16px;
     border-bottom: 1px solid #ddd;
-    /* Que un lugar no quede partido entre dos páginas. */
+    /* So a place does not get split between two pages. */
     page-break-inside: avoid;
     break-inside: avoid;
   }
@@ -317,7 +317,7 @@
   .rt_doc_dato { margin: 0 0 3px; font-size: 10pt; }
   .rt_doc_coordenadas { font-family: monospace; }
 
-  /* Renglones para escribir a mano sobre el papel. */
+  /* Lines to write by hand on the paper. */
   .rt_doc_notas {
     margin-top: 8px;
     height: 12mm;

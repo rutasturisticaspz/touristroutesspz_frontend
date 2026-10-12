@@ -18,22 +18,21 @@ import {
   type UsuarioSesion,
 } from '../lib/apiAdmin';
 
-// Sesión del panel.
-// Reemplaza al AuthContext anterior, que tenía tres problemas:
-//  1. Decodificaba el token en el navegador con react-jwt para sacar
-//     el id del usuario y pedir la renovación. Un token es texto que
-//     el navegador no puede verificar; el backend nuevo saca el id del
-//     token que él mismo firmó, así que aquí no hace falta decodificar
-//     nada.
-//  2. El estado arrancaba con `checking: true` pero nadie llamaba a
-//     verificaToken al montar: había que hacerlo a mano en cada
-//     página.
-//  3. Guardaba el token bajo la llave 'token', la misma que usa
-//     cualquier otra aplicación en localhost. Ahora es 'rt_token'.
+// Panel session.
+// Replaces the previous AuthContext, which had three problems:
+//  1. It decoded the token in the browser with react-jwt to get the
+//     user id and request the renewal. A token is text the browser
+//     cannot verify; the new backend gets the id from the token it
+//     signed itself, so nothing needs to be decoded here.
+//  2. The state started with `checking: true` but nobody called
+//     verificaToken on mount: it had to be done by hand on every
+//     page.
+//  3. It saved the token under the key 'token', the same one any
+//     other application on localhost uses. Now it is 'rt_token'.
 
 interface ValorSesion {
   usuario: UsuarioSesion | null;
-  // true mientras se comprueba si hay sesión guardada.
+  // true while checking whether there is a saved session.
   verificando: boolean;
   esAdmin: boolean;
   iniciarSesion: (email: string, password: string) => Promise<void>;
@@ -52,9 +51,9 @@ export function SesionProvider({ children }: { children: ReactNode }) {
   const [usuario, setUsuario] = useState<UsuarioSesion | null>(null);
   const [verificando, setVerificando] = useState(true);
 
-  // Al cargar el panel se intenta renovar el token guardado. Si el
-  // usuario fue desactivado o le cambiaron el rol, la renovación falla
-  // y la sesión se cierra: el token viejo no alcanza para seguir.
+  // When the panel loads, it tries to renew the saved token. If the user
+  // was deactivated or had their role changed, the renewal fails and
+  // the session is closed: the old token is not enough to continue.
   useEffect(() => {
     let vigente = true;
 

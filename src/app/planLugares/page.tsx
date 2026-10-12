@@ -6,10 +6,11 @@ import FooterRutas from '../../components/Footer/FooterRutas';
 import VistaPlan from '../../components/Plan/VistaPlan';
 import '../../styles/plan.css';
 
-// /planLugares — el itinerario que el visitante fue armando.
-// La barra va sin la clase `w_menu`, que pinta los enlaces de blanco.
-// Esa clase la usan las páginas que abren con una foto oscura de
-// fondo; acá el fondo es claro y los enlaces quedaban invisibles.
+// /planLugares — the itinerary the visitor has been building.
+// The bar goes without the `w_menu` class, which paints the links
+// white. That class is used by the pages that open with a dark photo
+// background; here the background is light and the links were
+// invisible.
 export default function Pagina() {
   useEffect(() => {
     window.scrollTo(0, 0);

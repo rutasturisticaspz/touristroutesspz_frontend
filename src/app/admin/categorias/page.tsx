@@ -8,14 +8,14 @@ import Paginacion from '../../../components/Admin/Paginacion';
 import { pedirAdmin } from '../../../lib/apiAdmin';
 import type { Categoria, Pagina } from '../../../lib/tipos';
 
-// /admin/categorias — las categorías que se asignan a atracciones y
-// hospedaje.
-// Reemplaza a Categorias.jsx + CategoriasTableRow.jsx (425 líneas).
-// Cambio de fondo: el formulario pide los cuatro campos —nombre y
-// descripción en los dos idiomas—, que es lo que el backend exige.
-// El panel anterior dejaba crear una categoría con el nombre en
-// español nada más, y después el buscador del sitio público mostraba
-// la categoría en blanco cuando el visitante estaba en inglés.
+// /admin/categorias — the categories assigned to attractions and
+// lodging.
+// Replaces Categorias.jsx + CategoriasTableRow.jsx (425 lines).
+// Fundamental change: the form asks for all four fields —name and
+// description in both languages—, which is what the backend requires.
+// The previous panel allowed creating a category with only the Spanish
+// name, and afterwards the public site's search box showed the
+// category blank when the visitor was in English.
 
 const POR_PAGINA = 10;
 
@@ -44,7 +44,7 @@ export default function Pagina_() {
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // null = cerrado; un objeto = editando; VACIO = creando.
+  // null = closed; an object = editing; VACIO = creating.
   const [editando, setEditando] = useState<Categoria | 'nueva' | null>(null);
   const [formulario, setFormulario] = useState<Formulario>(VACIO);
   const [guardando, setGuardando] = useState(false);

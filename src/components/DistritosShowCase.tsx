@@ -6,7 +6,7 @@ import Sectitle from './Title/Sectitle';
 import Carrusel from './Carrusel';
 import { opcionesSlider } from '../lib/helpers';
 
-// Los doce distritos del cantón, con su ilustración.
+// The twelve districts of the canton, with their illustration.
 const DISTRITOS = [
   { url: '/distritos/sanisidro', img: 'Distrito-01.png', nombre: 'San Isidro de El General' },
   { url: '/distritos/general', img: 'Distrito-04.png', nombre: 'El General' },

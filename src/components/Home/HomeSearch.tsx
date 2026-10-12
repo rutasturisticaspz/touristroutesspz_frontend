@@ -5,8 +5,8 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { validarTexto } from '../../lib/helpers';
 
-// Buscador de la portada.
-// Manda a la misma ruta de búsqueda que el sitio anterior:
+// Home page search box.
+// It sends to the same search route as the previous site:
 //   /buscar/:tipo/:filtro/:categorias/:pagina/:accesibilidad/:otros
 
 const TIPOS = [

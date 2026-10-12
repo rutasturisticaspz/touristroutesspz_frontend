@@ -7,17 +7,19 @@ import Confirmacion from './Confirmacion';
 import type { TipoAdmin } from '../../lib/tiposAdmin';
 import type { Imagen, Sitio } from '../../lib/tipos';
 
-// Galería de fotos del sitio.
-// Reemplaza a los siete archivos Galeria*.jsx del panel anterior
-// —309 líneas cada uno— y, sobre todo, cambia a dónde van las fotos:
-// antes se subían a Firebase Storage con la cuenta personal de quien
-// hizo el sistema, y la base guardaba una URL con un token adentro.
-// Ahora el archivo queda en el disco del servidor y la base guarda una
-// ruta relativa, que es lo que pedía la U.
-// "Quitar" da de baja el registro pero no borra el archivo del disco,
-// igual que antes: si alguien se equivoca, la foto se puede recuperar.
+// Site photo gallery.
+// Replaces the seven Galeria*.jsx files of the previous panel
+// —309 lines each— and, above all, changes where the photos go:
+// before, they were uploaded to Firebase Storage with the personal
+// account of whoever built the system, and the database stored a URL
+// with a token inside. Now the file stays on the server's disk and
+// the database stores a relative path, which is what the University
+// asked for.
+// "Remove" deactivates the record but does not delete the file from
+// disk, same as before: if someone makes a mistake, the photo can be
+// recovered.
 
-// Lo que acepta el backend.
+// What the backend accepts.
 const TAMANO_MAXIMO = 8 * 1024 * 1024;
 
 export default function Galeria({
@@ -43,8 +45,8 @@ export default function Galeria({
     setSubiendo(true);
     setError(null);
 
-    // El backend acepta un archivo por llamada; si el usuario elige
-    // varios se suben uno tras otro.
+    // The backend accepts one file per call; if the user chooses several
+    // they are uploaded one after another.
     try {
       for (const archivo of Array.from(archivos)) {
         if (!archivo.type.startsWith('image/')) {

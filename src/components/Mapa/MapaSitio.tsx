@@ -6,11 +6,11 @@ import { GOOGLE_MAPS_KEY } from '../../lib/config';
 import { aPunto } from '../../lib/coordenadas';
 import type { Ubicacion } from '../../lib/tipos';
 
-// Mapa de un sitio.
-// Sólo aparece si la fila tiene coordenadas legibles y si hay llave de
-// Google Maps configurada. Sin llave no revienta: simplemente no
-// dibuja el mapa, porque la llave es institucional y puede no estar
-// puesta en un ambiente de prueba.
+// Map of a site.
+// It only appears if the row has readable coordinates and a Google
+// Maps key is configured. Without a key it does not blow up: it simply
+// does not draw the map, because the key is institutional and may not
+// be set in a test environment.
 export default function MapaSitio({
   ubicacion,
   nombre,
@@ -29,7 +29,7 @@ export default function MapaSitio({
   if (!punto) return null;
 
   if (!GOOGLE_MAPS_KEY) {
-    // Sin llave, al menos se ofrece el enlace a Google Maps.
+    // Without a key, at least the Google Maps link is offered.
     return (
       <p className="f_400 mt_05">
         <a

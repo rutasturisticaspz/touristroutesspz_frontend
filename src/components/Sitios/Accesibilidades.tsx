@@ -5,23 +5,23 @@ import { useTranslation } from 'react-i18next';
 import { useIdioma } from '../../context/IdiomaContext';
 import type { Sitio } from '../../lib/tipos';
 
-// Bloque de accesibilidad de la página de detalle.
-// Cada distintivo activo muestra su descripción al pasar el mouse. El
-// sitio anterior repetía el mismo bloque de veinte líneas siete veces,
-// una por distintivo, con siete estados de React y la librería
-// react-tiny-popover —que ya no se mantiene y no funciona con React
-// 19—. Aquí los distintivos son una tabla y el globo es CSS propio.
+// Accessibility block of the detail page.
+// Each active badge shows its description on mouse hover. The
+// previous site repeated the same twenty-line block seven times, one
+// per badge, with seven React states and the react-tiny-popover
+// library —which is no longer maintained and does not work with React
+// 19—. Here the badges are a table and the bubble is our own CSS.
 
 interface Distintivo {
-  // Columna booleana en la base de datos.
+  // Boolean column in the database.
   campo: string;
-  // Archivo en public/img
+  // File in public/img
   imagen: string;
-  // Clave de traducción del rótulo.
+  // Translation key of the label.
   etiqueta: string;
-  // Clave de traducción del título del globo.
+  // Translation key of the bubble title.
   titulo: string;
-  // false para los tipos que no tienen esa columna (rentadoras).
+  // false for the types that do not have that column (rental companies).
   soloConMascotas?: boolean;
 }
 
@@ -83,7 +83,7 @@ export default function Accesibilidades({
   const { esEspanol } = useIdioma();
   const [abierto, setAbierto] = useState<string | null>(null);
 
-  // La tabla de rentadoras no tiene mascotas, niños ni declaración.
+  // The rental companies table has no pets, children or declaration.
   const esRentadora = tipoClave === 'rentacars';
 
   const activos = DISTINTIVOS.filter((d) => {

@@ -22,7 +22,7 @@ import {
 import type { Categoria, Pagina, Sitio } from '../../lib/tipos';
 import '../../styles/buscador.css';
 
-// Cuántos resultados por página, igual que antes.
+// How many results per page, same as before.
 const POR_PAGINA = 8;
 
 export interface EstadoBusqueda {
@@ -34,12 +34,12 @@ export interface EstadoBusqueda {
   otros: string[];
 }
 
-// Buscador con filtros.
-// El original mandaba a cada tipo de sitio su propia función
-// `getXWithAllFilters` —seis, con distinta cantidad de parámetros— y
-// armaba las URLs concatenando cadenas en cinco lugares distintos.
-// Aquí la URL se arma en un solo sitio y el backend recibe siempre los
-// mismos parámetros.
+// Search with filters.
+// The original sent each site type its own `getXWithAllFilters`
+// function —six, with different numbers of parameters— and built the
+// URLs by concatenating strings in five different places. Here the URL
+// is built in a single place and the backend always receives the same
+// parameters.
 export default function PaginaBusqueda({ estado }: { estado: EstadoBusqueda }) {
   const { t } = useTranslation('global');
   const { esEspanol } = useIdioma();
@@ -59,8 +59,8 @@ export default function PaginaBusqueda({ estado }: { estado: EstadoBusqueda }) {
     window.scrollTo(0, 0);
   }, [tipo.clave, filtro, pagina]);
 
-  // Los campos de accesibilidad que la tabla de este tipo realmente
-  // tiene; mandar uno que no existe haría fallar la consulta.
+  // The accessibility fields the table of this type actually has;
+  // sending one that does not exist would make the query fail.
   const campos = useMemo(
     () => camposDeRotulos([...accesibilidad, ...otros]),
     [accesibilidad, otros],
@@ -109,7 +109,7 @@ export default function PaginaBusqueda({ estado }: { estado: EstadoBusqueda }) {
     };
   }, [tipo.conCategorias]);
 
-  // Arma la URL del buscador cambiando sólo lo que se le pase.
+  // Builds the search URL changing only what is passed.
   const url = (cambios: Partial<EstadoBusqueda & { tipoClave: string }> = {}) => {
     const clave = cambios.tipoClave ?? tipo.clave;
     const f = cambios.filtro ?? filtro;
@@ -125,7 +125,7 @@ export default function PaginaBusqueda({ estado }: { estado: EstadoBusqueda }) {
   const nombreCategoria = (c: Categoria) =>
     (esEspanol ? c.nombre : c.nombreIngles || c.nombre) || c.nombre;
 
-  // Los números de página que se muestran: 1 … n-1 [n] n+1 … última
+  // The page numbers that are shown: 1 … n-1 [n] n+1 … last
   const paginas = (): number[] => {
     const cerca = [pagina - 1, pagina, pagina + 1].filter((n) => n >= 1 && n <= ultima);
     const todas = new Set([1, ...cerca, ultima]);

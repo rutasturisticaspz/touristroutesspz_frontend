@@ -7,17 +7,17 @@ import { DISTRITOS } from '../../lib/distritos';
 import type { TipoAdmin } from '../../lib/tiposAdmin';
 import type { Sitio, Ubicacion } from '../../lib/tipos';
 
-// Ubicación del sitio.
-// Reemplaza a los siete archivos Ubicaciones*.jsx del panel anterior
-// (unas 250 líneas cada uno, idénticos).
-// Dos cosas que cambian:
-//  - Provincia y cantón vienen fijos y el distrito es una lista. Antes
-//    eran tres campos de texto libre, y por eso en la base conviven
-//    "Pérez Zeledón", "Perez Zeledon" y "PEREZ ZELEDON", que rompen los
-//    filtros por distrito del sitio público.
-//  - Las coordenadas se comprueban al escribirlas: si no caen dentro de
-//    Costa Rica, avisa. Así se detecta la longitud sin el signo menos,
-//    que es el error que tienen varias filas hoy.
+// Site location.
+// Replaces the seven Ubicaciones*.jsx files of the previous panel
+// (about 250 lines each, identical).
+// Two things change:
+//  - Province and canton come fixed and the district is a list.
+//    Before, they were three free-text fields, and that is why the
+//    database has "Pérez Zeledón", "Perez Zeledon" and "PEREZ ZELEDON"
+//    side by side, which break the public site's district filters.
+//  - Coordinates are checked as they are typed: if they do not fall
+//    inside Costa Rica, it warns. This catches the longitude without
+//    the minus sign, which is the error several rows have today.
 
 const PROVINCIA = 'San José';
 const CANTON = 'Pérez Zeledón';
@@ -99,7 +99,7 @@ export default function EditorUbicacion({
       if (sitio.ubicacion?.id) {
         await pedirAdmin(`/ubicaciones/${sitio.ubicacion.id}`, { metodo: 'PUT', cuerpo: datos });
       } else {
-        // Primero se crea la ubicación y después se enlaza al sitio.
+        // The location is created first and then linked to the site.
         const creada = await pedirAdmin<Ubicacion>('/ubicaciones', {
           metodo: 'POST',
           cuerpo: datos,
@@ -158,8 +158,8 @@ export default function EditorUbicacion({
                   {distrito.nombre}
                 </option>
               ))}
-              {/* Si la fila trae un distrito escrito de otra forma, se
-                  conserva como opción para no perderlo sin querer. */}
+              {/* If the row has a district written another way, it is kept as an
+                  option so it is not lost by accident. */}
               {campos.distrito &&
                 !DISTRITOS.some((d) => d.nombre === campos.distrito) && (
                   <option value={campos.distrito}>{campos.distrito} (como está en la base)</option>

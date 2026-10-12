@@ -5,17 +5,18 @@ import { pedirAdmin } from '../../lib/apiAdmin';
 import type { TipoAdmin } from '../../lib/tiposAdmin';
 import type { Contacto, Sitio } from '../../lib/tipos';
 
-// Contactos del sitio.
-// Reemplaza a los siete archivos Contactos*.jsx del panel anterior.
-// Los tipos son los cinco que el sitio público sabe dibujar: si acá se
-// escribiera cualquier otra cosa, la ficha mostraría un ícono genérico
-// y el enlace no funcionaría. Por eso es una lista y no texto libre.
+// Site contacts.
+// Replaces the seven Contactos*.jsx files of the previous panel.
+// The types are the five the public site knows how to draw: if
+// anything else were typed here, the page would show a generic icon
+// and the link would not work. That is why it is a list and not free
+// text.
 
 const TIPOS_CONTACTO = ['Teléfono', 'Email', 'Página web', 'Facebook', 'Instagram'] as const;
 
 type TipoContacto = (typeof TIPOS_CONTACTO)[number];
 
-// Comprobación mínima por tipo, para no guardar basura.
+// Minimal check per type, so garbage is not saved.
 function revisar(tipo: TipoContacto, valor: string): string | null {
   const limpio = valor.trim();
   if (limpio === '') return 'Escribí el valor del contacto.';
@@ -64,8 +65,8 @@ export default function EditorContactos({
     setTrabajando(true);
     setError(null);
     try {
-      // El contacto se crea suelto y después se enlaza al sitio; la
-      // tabla intermedia se define con la lista completa de ids.
+      // The contact is created loose and then linked to the site; the join
+      // table is defined with the full list of ids.
       const creado = await pedirAdmin<Contacto>('/contactos', {
         metodo: 'POST',
         cuerpo: { tipo: tipoNuevo, valor: valor.trim() },

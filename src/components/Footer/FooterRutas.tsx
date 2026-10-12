@@ -6,7 +6,7 @@ import Reveal from '../Reveal';
 import { useIdioma } from '../../context/IdiomaContext';
 import { CONTACTO, SECCIONES, copywrite, copywriteEN } from './FooterData';
 
-// Pie de página. Mismo marcado y mismas clases que el sitio actual.
+// Footer. Same markup and same classes as the current site.
 export default function FooterRutas({ fClass = '' }: { fClass?: string }) {
   const { t } = useTranslation('global');
   const { esEspanol } = useIdioma();

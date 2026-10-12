@@ -1,16 +1,16 @@
-// Los filtros de accesibilidad del buscador.
-// En las URLs publicadas del sitio anterior estos filtros viajan con
-// su rótulo en español ("Discapacidad visual", "Permite mascotas").
-// Se conservan tal cual para no romper enlaces compartidos, pero aquí
-// se traducen al nombre de columna que espera el backend, en vez de
-// mandarle el rótulo y confiar en que lo entienda.
+// The search page's accessibility filters.
+// In the published URLs of the previous site these filters travel with
+// their Spanish label ("Discapacidad visual", "Permite mascotas").
+// They are kept as is so shared links do not break, but here they are
+// translated to the column name the backend expects, instead of
+// sending it the label and trusting that it understands it.
 
 export interface FiltroAccesibilidad {
-  // Rótulo tal como aparece en la URL.
+  // Label as it appears in the URL.
   rotulo: string;
-  // Columna booleana en la base de datos.
+  // Boolean column in the database.
   campo: string;
-  // Rótulo en inglés, para mostrar.
+  // English label, for display.
   ingles: string;
 }
 
@@ -32,12 +32,12 @@ const POR_ROTULO = new Map(
   [...ACCESIBILIDADES, ...OTROS].map((f) => [f.rotulo, f.campo] as const),
 );
 
-// Nombres de columna a partir de los rótulos que vienen en la URL.
+// Column names from the labels that come in the URL.
 export function camposDeRotulos(rotulos: string[]): string[] {
   return rotulos.map((r) => POR_ROTULO.get(r)).filter((c): c is string => Boolean(c));
 }
 
-// "Todos" o vacío significan "sin filtro".
+// "Todos" or empty mean "no filter".
 export function leerLista(segmento: string | undefined): string[] {
   if (!segmento || segmento === 'Todos') return [];
   return decodeURIComponent(segmento)
@@ -46,12 +46,12 @@ export function leerLista(segmento: string | undefined): string[] {
     .filter(Boolean);
 }
 
-// Vuelve a armar el segmento de la URL a partir de una lista.
+// Rebuilds the URL segment from a list.
 export function escribirLista(valores: string[]): string {
   return valores.length === 0 ? 'Todos' : encodeURIComponent(valores.join(','));
 }
 
-// Agrega o quita un valor de la lista.
+// Adds or removes a value from the list.
 export function alternar(valores: string[], valor: string): string[] {
   return valores.includes(valor) ? valores.filter((v) => v !== valor) : [...valores, valor];
 }

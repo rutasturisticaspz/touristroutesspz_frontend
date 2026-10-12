@@ -2,11 +2,11 @@
 
 import { useEffect, useState, type ReactNode } from 'react';
 
-// Barra que se fija al hacer scroll.
-// Reemplaza a react-stickynode, que no tiene versión compatible con
-// React 19. Aplica la misma clase `navbar_fixed` que ya usan los
-// estilos heredados, así que el resultado visual es el mismo sin
-// agregar una dependencia más.
+// Bar that sticks on scroll.
+// Replaces react-stickynode, which has no version compatible with
+// React 19. It applies the same `navbar_fixed` class that the
+// inherited styles already use, so the visual result is the same
+// without adding one more dependency.
 export default function Sticky({
   children,
   claseActiva = 'navbar_fixed',

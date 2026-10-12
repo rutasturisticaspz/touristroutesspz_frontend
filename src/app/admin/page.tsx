@@ -4,15 +4,15 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useSesion } from '../../context/SesionContext';
 
-// /admin — inicio de sesión del panel.
-// Cambios respecto al signin anterior:
-//  - No usa sweetalert2 para avisar del error; el mensaje sale debajo
-//    del formulario, que es donde el usuario está mirando.
-//  - El error que se muestra es el que manda el backend, que responde
-//    lo mismo para "usuario que no existe" y "clave incorrecta". Antes
-//    sólo se mostraba si el status era 500, así que un 401 —el caso
-//    normal— no decía absolutamente nada.
-//  - No hay botón de Google: dependía de Firebase Auth.
+// /admin — panel sign-in.
+// Changes from the previous signin:
+//  - It does not use sweetalert2 to report the error; the message
+//    appears below the form, which is where the user is looking.
+//  - The error shown is the one the backend sends, which responds the
+//    same for "user that does not exist" and "wrong password". Before,
+//    it was only shown if the status was 500, so a 401 —the normal
+//    case— said absolutely nothing.
+//  - There is no Google button: it depended on Firebase Auth.
 
 function saludo(): string {
   const hora = new Date().getHours();
@@ -29,8 +29,8 @@ export default function Pagina() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [enviando, setEnviando] = useState(false);
-  // El saludo depende de la hora, que en el servidor y en el navegador
-  // pueden no coincidir. Se calcula después de montar.
+  // The greeting depends on the time, which on the server and in the
+  // browser may not match. It is computed after mounting.
   const [texto, setTexto] = useState('Bienvenido');
 
   useEffect(() => setTexto(saludo()), []);
