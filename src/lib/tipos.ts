@@ -1,8 +1,9 @@
-// Tipos de lo que devuelve el backend.
-// El sitio anterior era JavaScript sin tipos: cada componente adivinaba
-// la forma de la respuesta, y por eso hay tantos `?.` y `|| []`
-// regados. Al declararlo una vez, el editor avisa cuando un campo no
-// existe en vez de que salga undefined en pantalla.
+// Types of what the backend returns.
+// The previous site was untyped JavaScript: every component guessed
+// the shape of the response, and that is why there are so many `?.`
+// and `|| []` scattered around. By declaring it once, the editor warns
+// when a field does not exist instead of undefined showing up on
+// screen.
 
 export interface Ubicacion {
   id: number;
@@ -10,7 +11,8 @@ export interface Ubicacion {
   canton: string | null;
   distrito: string | null;
   detalle: string | null;
-  // Ojo: en la base vienen como texto, a veces en grados/minutos/segundos.
+  // Note: in the database they come as text, sometimes in
+  // degrees/minutes/seconds.
   latitud: string | null;
   longitud: string | null;
 }
@@ -19,7 +21,7 @@ export interface Imagen {
   id: number;
   nombre: string;
   descripcion: string | null;
-  // Ruta relativa servida por el backend, p. ej. /uploads/21-163476.jpg
+  // Relative path served by the backend, e.g. /uploads/21-163476.jpg
   url: string;
   nameUrl: string;
 }
@@ -38,7 +40,7 @@ export interface Contacto {
   tipo: string;
 }
 
-// Campos comunes a los siete tipos de sitio.
+// Fields common to the seven site types.
 export interface Sitio {
   id: number;
   nombre: string;
@@ -72,13 +74,23 @@ export interface Evento extends Sitio {
   mostrarFechaFin: string | null;
 }
 
-// Todas las listas del backend responden con esta forma.
+// A downloadable map: name and link of the file on Google Drive.
+export interface Mapa {
+  id: string;
+  nombre: string;
+  enlace: string;
+  // Drive preview; null if the link is not for a file.
+  miniatura: string | null;
+  createdAt: string;
+}
+
+// All the backend's lists respond with this shape.
 export interface Pagina<T> {
   total: number;
   datos: T[];
 }
 
-// Los tipos de sitio, tal como van en la URL del API.
+// The site types, as they appear in the API URL.
 export const TIPOS_SITIO = [
   'atracciones',
   'hoteles',
