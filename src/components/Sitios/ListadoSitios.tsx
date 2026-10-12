@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import CustomNavbar from '../CustomNavbar';
 import FooterRutas from '../Footer/FooterRutas';
@@ -10,18 +10,23 @@ import TarjetaSitio from './TarjetaSitio';
 import Sectitle from '../Title/Sectitle';
 import Reveal from '../Reveal';
 import AtraccionesActionThree from '../Atracciones/AtraccionesActionThree';
+import { MAX_FOTOS_COLLAGE, type FotoCollage } from '../Banner/CollageInteractivo';
 import { api } from '../../lib/api';
+import { primeraImagen } from '../../lib/helpers';
+import { DIAS_COMO_NUEVO, esNuevo } from '../../lib/nuevos';
 import { useIdioma } from '../../context/IdiomaContext';
 import type { ConfigTipo } from '../../lib/tiposSitio';
 import type { Sitio } from '../../lib/tipos';
 
-// Página de listado, común a los seis tipos de sitio.
-// En el proyecto anterior esto eran seis páginas —Atracciones.js,
-// Hospedaje.js, Restaurantes.js…— con la misma estructura y distinto
-// texto, cada una con sus propios componentes SectionOne, SectionTwo y
-// CardSlider. Aquí es una sola, y el tipo entra como parámetro.
-// Muestra sólo sitios CON imágenes, igual que antes: una tarjeta sin
-// foto se ve rota.
+// List page, common to the six site types.
+// In the previous project these were six pages —Atracciones.js,
+// Hospedaje.js, Restaurantes.js…— with the same structure and
+// different text, each with its own SectionOne, SectionTwo and
+// CardSlider components. Here it is a single one, and the type comes
+// in as a parameter.
+// It shows only sites WITH images, same as before: a card without a
+// photo looks broken. The recently created ones go first and carry a
+// "New" ribbon.
 export default function ListadoSitios({ tipo }: { tipo: ConfigTipo }) {
   const { t } = useTranslation('global');
   const { esEspanol } = useIdioma();
@@ -34,7 +39,7 @@ export default function ListadoSitios({ tipo }: { tipo: ConfigTipo }) {
     let vigente = true;
 
     api
-      .conImagenes(tipo.api, { take: 24 })
+      .conImagenes(tipo.api, { take: 24, nuevos: DIAS_COMO_NUEVO })
       .then((pagina) => {
         if (!vigente) return;
         setSitios(pagina.datos);
@@ -52,10 +57,24 @@ export default function ListadoSitios({ tipo }: { tipo: ConfigTipo }) {
     };
   }, [tipo.api]);
 
+  // The collage uses the first photos of the list, so what is new shows up
+  // there too.
+  const fotos = useMemo<FotoCollage[]>(
+    () =>
+      sitios.slice(0, MAX_FOTOS_COLLAGE).map((sitio) => ({
+        id: sitio.id,
+        url: primeraImagen(sitio),
+        nombre: sitio.nombre,
+        href: `/sitio/${tipo.clave}/${sitio.id}`,
+        nuevo: esNuevo(sitio.createdAt),
+      })),
+    [sitios, tipo.clave],
+  );
+
   return (
     <div className="body_wrapper">
       <CustomNavbar cClass="custom_container p0" />
-      <BannerSitio tipo={tipo} />
+      <BannerSitio tipo={tipo} fotos={fotos} />
       <BuscadorSitio tipo={tipo} />
 
       <section className="atracciones_section_cards_one_area sec_pad">

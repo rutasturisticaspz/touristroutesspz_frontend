@@ -2,12 +2,22 @@
 
 import { useTranslation } from 'react-i18next';
 import Reveal from '../Reveal';
+import CollageInteractivo, { type FotoCollage } from './CollageInteractivo';
 import type { ConfigTipo } from '../../lib/tiposSitio';
 
-// Banner de las páginas de listado.
-// Los seis banners del sitio anterior eran el mismo archivo copiado con
-// distinto título e imagen. Aquí es uno solo, parametrizado.
-export default function BannerSitio({ tipo }: { tipo: ConfigTipo }) {
+// Banner of the list pages.
+// The six banners of the previous site were the same file copied with
+// a different title and image. Here it is a single parameterized one,
+// with an interactive photo collage instead of a flat image.
+export default function BannerSitio({
+  tipo,
+  fotos = [],
+}: {
+  tipo: ConfigTipo;
+  // Photos of the section for the collage; the flat image is used when
+  // there are too few.
+  fotos?: FotoCollage[];
+}) {
   const { t } = useTranslation('global');
   const [linea1, linea2] = tipo.descripcion;
 
@@ -52,7 +62,7 @@ export default function BannerSitio({ tipo }: { tipo: ConfigTipo }) {
           </div>
           <div className="saas_home_img">
             <Reveal effect="fadeInUp" duration={1400}>
-              <img src={tipo.imagen} alt="" />
+              <CollageInteractivo fotos={fotos} imagenDeRespaldo={tipo.imagen} />
             </Reveal>
           </div>
         </div>

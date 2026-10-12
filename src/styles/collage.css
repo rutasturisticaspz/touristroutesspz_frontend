@@ -1,0 +1,164 @@
+/* Interactive photo collage of the list page banners. */
+
+.rt_collage {
+  --mx: 0;
+  --my: 0;
+  position: relative;
+  width: 82%;
+  max-width: 980px;
+  aspect-ratio: 2 / 1;
+  margin: 10px auto -140px;
+  text-align: left;
+}
+
+.seo_home_area .saas_home_img img.rt_collage_respaldo {
+  width: 60%;
+  margin-bottom: -140px;
+}
+
+.rt_collage_foto {
+  position: absolute;
+  left: var(--izq);
+  top: var(--arr);
+  width: var(--ancho);
+  height: var(--alto);
+  display: block;
+  overflow: hidden;
+  border: 4px solid #fff;
+  border-radius: 14px;
+  background: #e6edf0;
+  box-shadow: 0 18px 34px rgba(0, 11, 40, 0.18);
+  /* Resting tilt plus the shift that follows the mouse. */
+  transform: translate(calc(var(--mx) * var(--prof) * 16px), calc(var(--my) * var(--prof) * 12px))
+    rotate(var(--giro));
+  transition:
+    transform 0.35s cubic-bezier(0.22, 0.8, 0.3, 1),
+    box-shadow 0.35s ease,
+    filter 0.35s ease;
+  animation: rt_collage_entrar 0.6s ease-out both;
+  animation-delay: var(--retraso);
+}
+
+/* The banner theme styles every image inside `.seo_home_area
+   .saas_home_img` (60% width, negative bottom margin), so this selector
+   has to be at least as specific to win. */
+.seo_home_area .saas_home_img .rt_collage_foto img {
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  margin: 0;
+  object-fit: cover;
+  display: block;
+  box-shadow: none;
+  border-radius: 0;
+  transition: transform 0.6s ease;
+}
+
+.rt_collage_nombre {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 26px 12px 10px;
+  background: linear-gradient(transparent, rgba(0, 11, 40, 0.78));
+  color: #fff;
+  font: 600 13px/1.3 'Poppins', sans-serif;
+  transform: translateY(100%);
+  transition: transform 0.3s ease;
+}
+
+/* The tile under the pointer comes forward and straightens up... */
+.rt_collage_foto:hover,
+.rt_collage_foto:focus-visible {
+  z-index: 10;
+  transform: translate(calc(var(--mx) * var(--prof) * 16px), calc(var(--my) * var(--prof) * 12px))
+    scale(1.16) rotate(0deg);
+  box-shadow: 0 28px 50px rgba(0, 11, 40, 0.34);
+}
+
+.seo_home_area .saas_home_img .rt_collage_foto:hover img,
+.seo_home_area .saas_home_img .rt_collage_foto:focus-visible img {
+  transform: scale(1.08);
+}
+
+.rt_collage_foto:hover .rt_collage_nombre,
+.rt_collage_foto:focus-visible .rt_collage_nombre {
+  transform: translateY(0);
+}
+
+/* ...and the others step back. */
+.rt_collage:hover .rt_collage_foto:not(:hover) {
+  filter: brightness(0.82) saturate(0.85);
+}
+
+@keyframes rt_collage_entrar {
+  from {
+    opacity: 0;
+    transform: translateY(24px) scale(0.92) rotate(var(--giro));
+  }
+}
+
+/* Small screens: no mouse, so a plain two-column grid. */
+@media (max-width: 767.98px) {
+  .rt_collage {
+    width: 100%;
+    aspect-ratio: auto;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-bottom: -60px;
+  }
+
+  .rt_collage_foto {
+    position: relative;
+    left: auto;
+    top: auto;
+    width: auto;
+    height: 140px;
+    transform: none;
+  }
+
+  .rt_collage_foto:nth-child(n + 7) {
+    display: none;
+  }
+
+  .rt_collage_nombre {
+    transform: translateY(0);
+    font-size: 12px;
+  }
+
+  .rt_collage_foto:hover,
+  .rt_collage_foto:focus-visible {
+    transform: none;
+  }
+
+  .seo_home_area .saas_home_img img.rt_collage_respaldo {
+    width: 100%;
+  }
+}
+
+/* No motion when the visitor asked for it, in the system or in the
+   accessibility widget. */
+@media (prefers-reduced-motion: reduce) {
+  .rt_collage_foto,
+  .seo_home_area .saas_home_img .rt_collage_foto img,
+  .rt_collage_nombre {
+    animation: none;
+    transition: none;
+  }
+
+  .rt_collage_foto {
+    transform: rotate(var(--giro));
+  }
+}
+
+html.a11y-sin-animaciones .rt_collage_foto,
+html.a11y-sin-animaciones .seo_home_area .saas_home_img .rt_collage_foto img,
+html.a11y-sin-animaciones .rt_collage_nombre {
+  animation: none;
+  transition: none;
+}
+
+html.a11y-sin-animaciones .rt_collage_foto {
+  transform: rotate(var(--giro));
+}

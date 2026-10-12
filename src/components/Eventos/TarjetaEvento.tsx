@@ -4,12 +4,14 @@ import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 import { primeraImagen, rangoFechas } from '../../lib/helpers';
 import { useIdioma } from '../../context/IdiomaContext';
+import EtiquetaNuevo from '../Nuevo/EtiquetaNuevo';
+import { esNuevo } from '../../lib/nuevos';
 import type { Evento } from '../../lib/tipos';
 
-// Tarjeta grande de evento, para la página /eventos.
-// La del sitio anterior enlazaba la foto a /eventos/evento/:id y el
-// título a /evento/:id. La primera no correspondía a ninguna ruta, así
-// que hacer clic en la foto llevaba a la página de error.
+// Large event card, for the /eventos page.
+// The previous site's linked the photo to /eventos/evento/:id and the
+// title to /evento/:id. The first did not correspond to any route, so
+// clicking the photo led to the error page.
 export default function TarjetaEvento({ evento }: { evento: Evento }) {
   const { t } = useTranslation('global');
   const { esEspanol } = useIdioma();
@@ -20,9 +22,12 @@ export default function TarjetaEvento({ evento }: { evento: Evento }) {
     (esEspanol ? evento.descripcion : evento.descripcionIngles) || evento.descripcion;
   const fechas = rangoFechas(evento.fechaInicio, evento.fechaFin);
 
+  const nuevo = esNuevo(evento.createdAt);
+
   return (
     <div className="col-sm-6">
-      <div className="h_blog_item">
+      <div className={`h_blog_item${nuevo ? ' rt_tarjeta_con_etiqueta' : ''}`}>
+        {nuevo && <EtiquetaNuevo />}
         <Link href={destino}>
           <img src={primeraImagen(evento)} alt={nombre} />
         </Link>

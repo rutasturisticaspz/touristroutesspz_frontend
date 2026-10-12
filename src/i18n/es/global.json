@@ -11,8 +11,11 @@
         "rental_cars": "Rentadoras de vehículos",
         "perez_zeledon": "Pérez Zeledón",
         "maps": "Mapas",
+        "barometer": "Barómetro",
+        "new_count_one": "{{count}} nuevo",
+        "new_count_many": "{{count}} nuevos",
+        "new_count_other": "{{count}} nuevos",
         "contact": "Contacto",
-        "downloadable_resources": "Recursos descargables",
         "search": "Buscar",
         "see_more": "Ver más",
         "categories": "Categorías",
@@ -22,6 +25,9 @@
         "near_there": "cerca de ahí",
         "others": "Otros",
         "addPlan": "Agregar al itinerario",
+        "added_to_plan": "Añadido con éxito",
+        "new_item": "Nuevo",
+        "removed_from_plan": "Eliminado con éxito",
         "Plan": "Ver itinerario",
         "deletePlan": "Eliminar del itinerario",
         "clearPlan": "Limpiar todo el itinerario",
@@ -218,7 +224,9 @@
     "maps":{
         "maps_title": "Mapas",
         "maps_description": "Arma tus propias rutas turíticas y conoce todas las maravillas de nuestro cantón con ayuda de nuestros mapas",
-        "see_map": "VER MAPA"
+        "see_map": "VER MAPA",
+        "error": "No se pudieron cargar los mapas. Intenta de nuevo más tarde.",
+        "empty": "Pronto habrá mapas disponibles."
     },
     "accessibility":{
         "accessibilities" : "Accesibilidad",
@@ -242,6 +250,8 @@
         "section_card_title": "¡Disfruta de estos eventos!",
         "see_event": "Ver evento",
         "come": "Déjate llevar por la emoción de los eventos en Pérez Zeledón y crea recuerdos únicos en cada ocasión. ¡Vení a Pérez!",
-        "see_all": "Ver todos los eventos"
+        "see_all": "Ver todos los eventos",
+        "none_upcoming": "Pronto anunciaremos nuevos eventos. ¡Vuelve a visitarnos!",
+        "load_error": "No se pudieron cargar los eventos. Intenta de nuevo más tarde."
     }
 }

@@ -10,23 +10,37 @@ import { primeraImagen, rangoFechas } from '../../lib/helpers';
 import { useIdioma } from '../../context/IdiomaContext';
 import type { Evento } from '../../lib/tipos';
 
-// Los próximos eventos en la portada.
-// El componente anterior hacía `a.imagenes[0].url` sin comprobar nada:
-// un evento sin fotos tumbaba la portada entera. Aquí se usa el
-// marcador de posición, igual que en el resto del sitio.
+const EVENTOS_EN_PORTADA = 4;
+
+// The upcoming events on the home page: only those that have not
+// passed yet, from the nearest to the farthest.
+// The previous component did `a.imagenes[0].url` without checking
+// anything: an event without photos took down the whole home page.
+// Here the placeholder is used, as in the rest of the site.
 export default function HomeEventos() {
   const { t } = useTranslation('global');
   const { esEspanol } = useIdioma();
   const [eventos, setEventos] = useState<Evento[]>([]);
+  const [estado, setEstado] = useState<'cargando' | 'listo' | 'error'>('cargando');
 
   useEffect(() => {
     let vigente = true;
     api
-      .listar('eventos', { take: 5, ordenarPor: 'fechaInicio', direccion: 'desc' })
-      .then((pagina) => {
-        if (vigente) setEventos(pagina.datos as Evento[]);
+      .listar('eventos', {
+        proximos: true,
+        take: EVENTOS_EN_PORTADA,
+        ordenarPor: 'fechaInicio',
+        direccion: 'asc',
       })
-      .catch((error) => console.error('No se pudieron leer los eventos:', error));
+      .then((pagina) => {
+        if (!vigente) return;
+        setEventos(pagina.datos as Evento[]);
+        setEstado('listo');
+      })
+      .catch((error) => {
+        console.error('No se pudieron leer los eventos:', error);
+        if (vigente) setEstado('error');
+      });
     return () => {
       vigente = false;
     };
@@ -49,6 +63,10 @@ export default function HomeEventos() {
             </div>
           </div>
         </div>
+        {estado === 'listo' && eventos.length === 0 && (
+          <p className="text-center mt_30">{t('events.none_upcoming')}</p>
+        )}
+        {estado === 'error' && <p className="text-center mt_30">{t('events.load_error')}</p>}
         <div className="row justify-content-center mt_30">
           {eventos.map((evento) => (
             <div className="col-lg-3 col-sm-6" key={evento.id}>
@@ -59,6 +77,7 @@ export default function HomeEventos() {
                 distrito={evento.ubicacion?.distrito}
                 fecha={rangoFechas(evento.fechaInicio, evento.fechaFin)}
                 contactos={evento.contactos}
+                creadoEn={evento.createdAt}
               />
             </div>
           ))}

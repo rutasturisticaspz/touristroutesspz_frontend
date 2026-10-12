@@ -6,10 +6,12 @@ import { primeraImagen } from '../../lib/helpers';
 import { slugDistrito } from '../../lib/distritos';
 import { itemDePlan, usePlan } from '../../context/PlanContext';
 import { useIdioma } from '../../context/IdiomaContext';
+import EtiquetaNuevo from '../Nuevo/EtiquetaNuevo';
+import { esNuevo } from '../../lib/nuevos';
 import type { ConfigTipo } from '../../lib/tiposSitio';
 import type { Sitio } from '../../lib/tipos';
 
-// Una fila de resultados del buscador.
+// A row of search results.
 export default function TarjetaResultado({ sitio, tipo }: { sitio: Sitio; tipo: ConfigTipo }) {
   const { t } = useTranslation('global');
   const { esEspanol } = useIdioma();
@@ -22,9 +24,14 @@ export default function TarjetaResultado({ sitio, tipo }: { sitio: Sitio; tipo: 
   const texto = (esEspanol ? sitio.descripcion : sitio.descripcionIngles) || sitio.descripcion || '';
   const resumen = texto.length > 85 ? `${texto.slice(0, 80)}...` : texto;
 
+  const nuevo = esNuevo(sitio.createdAt);
+
   return (
     <div className="col-lg-6">
-      <div className="blog_list_item blog_list_item_two">
+      <div
+        className={`blog_list_item blog_list_item_two${nuevo ? ' rt_tarjeta_con_etiqueta' : ''}`}
+      >
+        {nuevo && <EtiquetaNuevo />}
         <Link href={destino}>
           <img className="img-fluid" src={primeraImagen(sitio)} alt={sitio.nombre} />
         </Link>
