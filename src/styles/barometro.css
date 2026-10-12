@@ -1,0 +1,272 @@
+/* Sustainable Tourism Barometer (/barometro). */
+
+.rt_baro {
+  --baro-verde: #086a4b;
+  --baro-verde-claro: #129269;
+  --baro-tinta: #18332b;
+  --baro-gris: #62766f;
+  --baro-linea: #dbe6e0;
+  --baro-ambar: #e9a23b;
+  --baro-rojo: #dc5f5f;
+  padding-top: 30px;
+  color: var(--baro-tinta);
+}
+
+.rt_baro_tarjeta {
+  background: #fff;
+  border: 1px solid var(--baro-linea);
+  border-radius: 14px;
+  padding: 22px;
+  box-shadow: 0 3px 13px rgba(20, 60, 45, 0.05);
+  margin-bottom: 20px;
+}
+
+.rt_baro_tarjeta h2 {
+  font-size: 1.24rem;
+  margin: 0 0 13px;
+}
+
+.rt_baro_tarjeta h3 {
+  font-size: 1.05rem;
+  margin: 26px 0 10px;
+  color: var(--baro-verde);
+}
+
+.rt_baro_campos {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.rt_baro_campo label {
+  display: block;
+  font-weight: 650;
+  font-size: 0.92rem;
+  margin-bottom: 5px;
+}
+
+.rt_baro_campo input {
+  width: 100%;
+  border: 1px solid #bfcfc6;
+  border-radius: 8px;
+  padding: 10px;
+  background: #fff;
+  color: var(--baro-tinta);
+  font: inherit;
+}
+
+.rt_baro_nota {
+  color: var(--baro-gris);
+  font-size: 0.91rem;
+  margin: 14px 0 0;
+}
+
+.rt_baro_indicador {
+  border: 0;
+  border-top: 1px solid var(--baro-linea);
+  margin: 0;
+  padding: 14px 0;
+  min-width: 0;
+}
+
+.rt_baro_indicador legend {
+  font-weight: 600;
+  font-size: 1rem;
+  margin: 0 0 9px;
+  padding: 0;
+  width: 100%;
+}
+
+.rt_baro_opciones {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.rt_baro_opcion {
+  border: 1px solid #cbd9d2;
+  border-radius: 999px;
+  padding: 6px 10px;
+  cursor: pointer;
+  background: #fff;
+  user-select: none;
+  margin: 0;
+}
+
+.rt_baro_opcion input {
+  margin-right: 5px;
+  accent-color: var(--baro-verde);
+}
+
+.rt_baro_opcion:has(input:checked) {
+  background: #e8f1ec;
+  border-color: var(--baro-verde);
+}
+
+/* ---------- Results ---------- */
+
+.rt_baro_tablero {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 20px;
+  align-items: center;
+}
+
+.rt_baro_puntaje {
+  text-align: center;
+  padding: 12px;
+}
+
+.rt_baro_anillo {
+  --color: var(--baro-verde-claro);
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  margin: 8px auto 13px;
+  display: grid;
+  place-items: center;
+  background: conic-gradient(var(--color) var(--grados, 0deg), #e2ebe6 0deg);
+  position: relative;
+}
+
+.rt_baro_anillo[data-tono='medio'] {
+  --color: var(--baro-ambar);
+}
+
+.rt_baro_anillo[data-tono='bajo'] {
+  --color: var(--baro-rojo);
+}
+
+.rt_baro_anillo::before {
+  content: '';
+  position: absolute;
+  width: 137px;
+  height: 137px;
+  border-radius: 50%;
+  background: #fff;
+}
+
+.rt_baro_anillo > div {
+  z-index: 1;
+}
+
+.rt_baro_porcentaje {
+  font-size: 2.15rem;
+  font-weight: 800;
+}
+
+.rt_baro_nivel {
+  font-weight: 750;
+  font-size: 1.1rem;
+}
+
+.rt_baro_resumen {
+  color: var(--baro-gris);
+  max-width: 420px;
+  margin: 8px auto;
+}
+
+.rt_baro_radar {
+  width: 100%;
+  max-width: 440px;
+  margin: 0 auto;
+  display: block;
+  overflow: visible;
+}
+
+.rt_baro_radar_anillo,
+.rt_baro_radar_eje {
+  fill: none;
+  stroke: #d5e1da;
+  stroke-width: 1;
+}
+
+.rt_baro_radar_etiqueta {
+  font-size: 10px;
+  fill: var(--baro-tinta);
+}
+
+.rt_baro_radar_area {
+  fill: rgba(18, 146, 105, 0.18);
+  stroke: #0b805a;
+  stroke-width: 2;
+}
+
+.rt_baro_radar_punto {
+  fill: #0b805a;
+}
+
+.rt_baro_tabla {
+  overflow: auto;
+}
+
+.rt_baro_tabla table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.92rem;
+}
+
+.rt_baro_tabla th,
+.rt_baro_tabla td {
+  padding: 9px;
+  border-bottom: 1px solid var(--baro-linea);
+  text-align: left;
+}
+
+.rt_baro_tabla th {
+  background: #edf5f0;
+  color: #17553f;
+}
+
+.rt_baro_etiqueta {
+  display: inline-block;
+  border-radius: 999px;
+  padding: 3px 8px;
+  font-weight: 700;
+  font-size: 0.82rem;
+  background: #edf5f0;
+  color: #17553f;
+}
+
+.rt_baro_acciones {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 20px;
+}
+
+.rt_baro_boton {
+  font: inherit;
+  font-weight: 700;
+  border: 0;
+  border-radius: 8px;
+  padding: 11px 15px;
+  cursor: pointer;
+  background: var(--baro-verde);
+  color: #fff;
+}
+
+.rt_baro_boton_secundario {
+  background: #e8f1ec;
+  color: #13573f;
+}
+
+.rt_baro_aviso {
+  margin-top: 20px;
+  background: #fff8e9;
+  border-left: 4px solid var(--baro-ambar);
+  padding: 12px 14px;
+  border-radius: 6px;
+}
+
+@media (max-width: 760px) {
+  .rt_baro_campos,
+  .rt_baro_tablero {
+    grid-template-columns: 1fr;
+  }
+}
+
+.rt_baro_boton:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
