@@ -8,6 +8,7 @@ import FooterRutas from '../../components/Footer/FooterRutas';
 import BannerDetalle from '../../components/Banner/BannerDetalle';
 import { api } from '../../lib/api';
 import { validarTexto } from '../../lib/helpers';
+import { CONTACTOS } from '../../lib/contactos';
 
 // /contacto — the public form.
 // Changes from the previous one:
@@ -17,14 +18,6 @@ import { validarTexto } from '../../lib/helpers';
 //    accepted and the error came afterwards.
 //  - The contact details in the corner are the page's; they are here
 //    so the University can change them in a single place.
-
-const CONTACTOS = {
-  telefono: '(+506) 88388535',
-  telefonoLlamada: 'tel:+50688388535',
-  correo: 'erick.madrigal.villanueva@una.ac.cr',
-  facebook: 'https://www.facebook.com/rutasturisticaspz',
-  facebookRotulo: 'rutasturisticaspz',
-};
 
 type Estado = 'listo' | 'enviando' | 'enviado' | 'error';
 

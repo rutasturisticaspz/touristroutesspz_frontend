@@ -74,7 +74,8 @@
         "all_rights_reserved": "Todos los derechos reservados",
         "developed_with_the": "Desarrollado con el ",
         "by": " por: ",
-        "academic": "Académico"
+        "academic": "Académico",
+        "privacy_policy": "Política de privacidad"
     },
     "browser":{
         "browser": "Buscador",
@@ -253,5 +254,23 @@
         "see_all": "Ver todos los eventos",
         "none_upcoming": "Pronto anunciaremos nuevos eventos. ¡Vuelve a visitarnos!",
         "load_error": "No se pudieron cargar los eventos. Intenta de nuevo más tarde."
+    },
+    "privacy": {
+        "privacy_title": "Política de privacidad",
+        "privacy_description": "Cómo tratamos los datos que usted nos comparte a través de quehacerenperez.com",
+        "site_title": "Quiénes somos",
+        "site_text": "quehacerenperez.com es un proyecto de la Universidad Nacional (UNA) que difunde las atracciones, el hospedaje, los restaurantes y los operadores turísticos de Pérez Zeledón.",
+        "data_title": "Qué datos recogemos",
+        "data_text": "Solo los datos que usted escribe en el formulario de contacto: su nombre, su correo electrónico, el asunto y el mensaje.",
+        "use_title": "Para qué los usamos",
+        "use_text": "Únicamente para leer y responder el mensaje que usted nos envía.",
+        "email_title": "Respuestas por correo",
+        "email_text": "Las respuestas se envían desde una cuenta de Gmail del proyecto mediante la API de Gmail, con el permiso de solo envío (gmail.send). La aplicación no lee, no lista y no elimina los correos de nadie.",
+        "sharing_title": "Con quién compartimos los datos",
+        "sharing_text": "No vendemos ni compartimos sus datos con terceros, salvo lo estrictamente necesario para enviarle la respuesta.",
+        "rights_title": "Acceso y eliminación de sus datos",
+        "rights_text": "Para solicitar el acceso a sus datos o su eliminación, escríbanos o llámenos:",
+        "updated_label": "Última actualización",
+        "updated_value": "13 de octubre de 2026"
     }
 }
