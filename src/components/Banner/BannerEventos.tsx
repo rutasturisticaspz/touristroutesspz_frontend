@@ -2,9 +2,11 @@
 
 import { useTranslation } from 'react-i18next';
 import Reveal from '../Reveal';
+import CollageInteractivo, { type FotoCollage } from './CollageInteractivo';
 
-// Banner de la página de eventos.
-export default function BannerEventos() {
+// Banner of the events page, with an interactive photo collage of the
+// events (the flat image is used when there are too few photos).
+export default function BannerEventos({ fotos = [] }: { fotos?: FotoCollage[] }) {
   const { t } = useTranslation('global');
 
   return (
@@ -42,7 +44,7 @@ export default function BannerEventos() {
           </div>
           <div className="saas_home_img">
             <Reveal effect="fadeInUp" duration={1400}>
-              <img src="/img/eventos/banner.png" alt="" />
+              <CollageInteractivo fotos={fotos} imagenDeRespaldo="/img/eventos/banner.png" />
             </Reveal>
           </div>
         </div>

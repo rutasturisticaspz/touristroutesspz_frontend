@@ -4,8 +4,8 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import '../../styles/banner-inicio.css';
 
-// Banner de la portada: cuatro fotos que se van alternando.
-// Mismas imágenes y mismos tiempos que el sitio actual.
+// Home page banner: four photos that alternate.
+// Same images and same timings as the current site.
 const IMAGENES = [
   '/img/home/Chirripo1.jpg',
   '/img/home/Paisaje.jpg',

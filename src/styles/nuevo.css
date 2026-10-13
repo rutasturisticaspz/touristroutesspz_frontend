@@ -1,0 +1,27 @@
+/* "New" ribbon on cards: a diagonal band in the top-left corner. It is
+   clipped by the card, so the card must be `position: relative` with
+   `overflow: hidden`; the ones that are not already add the
+   `rt_tarjeta_con_etiqueta` class. */
+
+.rt_tarjeta_con_etiqueta {
+  position: relative;
+  overflow: hidden;
+}
+
+.rt_etiqueta_nuevo {
+  position: absolute;
+  top: 20px;
+  left: -46px;
+  width: 170px;
+  z-index: 3;
+  transform: rotate(-45deg);
+  text-align: center;
+  background: linear-gradient(90deg, #22b999, #0f95a8);
+  color: #fff;
+  font: 600 12px/26px 'Poppins', sans-serif;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  box-shadow: 0 3px 8px rgba(15, 149, 168, 0.35);
+  /* The card underneath stays clickable. */
+  pointer-events: none;
+}

@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import Sectitle from '../Title/Sectitle';
 import { FICHAS_DISTRITO } from '../../lib/datosDistritos';
 
-// La cuadrícula de los doce distritos.
+// The grid of the twelve districts.
 export default function TarjetasDistrito({ id }: { id?: string }) {
   const { t } = useTranslation('global');
 

@@ -1,9 +1,9 @@
 import type { Contacto, Sitio } from './tipos';
 import { urlImagen } from './api';
 
-// Utilidades compartidas, portadas de src/helpers/helpers.js.
+// Shared utilities, ported from src/helpers/helpers.js.
 
-// Ícono de themify según el tipo de contacto.
+// Themify icon according to the contact type.
 export function iconoContacto(tipo: string): string {
   switch (tipo) {
     case 'Página web':
@@ -21,12 +21,12 @@ export function iconoContacto(tipo: string): string {
   }
 }
 
-// Convierte un teléfono a un enlace tel: usable.
+// Converts a phone number to a usable tel: link.
 export function hrefLlamada(telefono: string): string {
   return `tel:+506${telefono.replace(/[^0-9]/g, '')}`;
 }
 
-// Destino del enlace según el tipo de contacto.
+// Link destination according to the contact type.
 export function hrefContacto(contacto: Contacto): string {
   switch (contacto.tipo) {
     case 'Email':
@@ -38,24 +38,24 @@ export function hrefContacto(contacto: Contacto): string {
   }
 }
 
-// Primer teléfono de la lista, con el rótulo, o cadena vacía.
+// First phone in the list, with its label, or an empty string.
 export function primerTelefono(contactos: Contacto[] | undefined): string {
   const encontrado = contactos?.find((c) => c.tipo === 'Teléfono');
   return encontrado ? `Tel: ${encontrado.valor}` : '';
 }
 
-// Primera imagen del sitio, o el marcador de posición.
+// The site's first image, or the placeholder.
 export function primeraImagen(sitio: Pick<Sitio, 'imagenes'> | undefined): string {
   const url = sitio?.imagenes?.[0]?.url;
   return url ? urlImagen(url) : '/img/sinimagen.png';
 }
 
-// Bloquea teclas que no pasen la expresión regular.
+// Blocks keys that do not match the regular expression.
 export function validarTexto(evento: { key: string; preventDefault: () => void }, regex: RegExp) {
   if (regex.test(evento.key)) evento.preventDefault();
 }
 
-// Configuración de react-slick, igual que la del sitio anterior.
+// react-slick configuration, same as the previous site's.
 export function opcionesSlider(
   aMostrar: number,
   en1024: number,
@@ -79,7 +79,7 @@ export function opcionesSlider(
   };
 }
 
-// Fecha o rango de fechas de un evento, en formato dd/mm/aaaa.
+// Date or date range of an event, in dd/mm/yyyy format.
 export function rangoFechas(inicio: string | null, fin: string | null): string {
   const formatear = (valor: string | null) => {
     if (!valor) return '';

@@ -8,24 +8,24 @@ import Paginacion from '../../../components/Admin/Paginacion';
 import { pedirAdmin } from '../../../lib/apiAdmin';
 import type { Pagina } from '../../../lib/tipos';
 
-// /admin/mensajes — lo que llega del formulario de contacto.
-// Reemplaza a Mensajes.jsx (274 líneas).
-// Sobre el estado: los mensajes nuevos entran como 'PENDIENTE'. Los
-// que ya estaban en la base traen el texto viejo, 'Sin responder'.
-// Acá se considera atendido únicamente lo marcado como tal, así que
-// los viejos siguen apareciendo como pendientes sin necesidad de
-// tocar la base.
-// Arreglo de camino: la fecha se armaba con `getMonth()` sin sumarle
-// uno, así que todo el panel mostraba el mes anterior al real —un
-// mensaje de marzo aparecía como de febrero, y los de enero como del
-// mes 0.
+// /admin/mensajes — what comes in from the contact form.
+// Replaces Mensajes.jsx (274 lines).
+// About the state: new messages come in as 'PENDIENTE'. Those that
+// were already in the database carry the old text, 'Sin responder'.
+// Here only what is marked as handled is considered handled, so the
+// old ones keep showing up as pending without needing to touch the
+// database.
+// Fix along the way: the date was built with `getMonth()` without
+// adding one, so the whole panel showed the month before the real
+// one —a March message appeared as February, and January ones as
+// month 0.
 //
-// "Responder por correo" ya no es un mailto: (que abría el cliente de
-// correo de quien estuviera en el panel, con la cuenta que tuviera
-// activa en ese momento). Ahora el backend manda el correo de verdad
-// por SMTP (ver backend/src/lib/mailer.ts), así que siempre sale de
-// la misma cuenta institucional, y el mensaje queda marcado como
-// atendido automáticamente al enviarse.
+// "Reply by email" is no longer a mailto: (which opened the email
+// client of whoever was in the panel, with whatever account they had
+// active at that moment). Now the backend actually sends the email
+// through SMTP (see backend/src/lib/mailer.ts), so it always goes out
+// from the same institutional account, and the message is
+// automatically marked as handled when it is sent.
 
 const POR_PAGINA = 10;
 const ATENDIDO = 'ATENDIDO';
@@ -44,7 +44,7 @@ function estaAtendido(mensaje: Mensaje): boolean {
   return mensaje.estado === ATENDIDO;
 }
 
-// dd/mm/aaaa hh:mm, con el mes que corresponde.
+// dd/mm/yyyy hh:mm, with the correct month.
 function conFecha(valor: string): string {
   const fecha = new Date(valor);
   if (Number.isNaN(fecha.getTime())) return '';
@@ -78,7 +78,7 @@ export default function Pagina_() {
   const [aBorrar, setABorrar] = useState<Mensaje | null>(null);
   const [borrando, setBorrando] = useState(false);
 
-  // Respuesta por correo, dentro del mismo modal de "Ver".
+  // Reply by email, inside the same "View" modal.
   const [respondiendo, setRespondiendo] = useState(false);
   const [cuerpoRespuesta, setCuerpoRespuesta] = useState('');
   const [enviandoRespuesta, setEnviandoRespuesta] = useState(false);

@@ -11,8 +11,11 @@
         "rental_cars": "Rental cars",
         "perez_zeledon": "Pérez Zeledón",
         "maps": "Maps",
+        "barometer": "Barometer",
+        "new_count_one": "{{count}} new",
+        "new_count_many": "{{count}} new",
+        "new_count_other": "{{count}} new",
         "contact": "Contact",
-        "downloadable_resources": "Downloadable resources",
         "search": "Search",
         "see_more": "See more",
         "categories": "Categories",
@@ -22,6 +25,9 @@
         "near_there": "near there",
         "others": "Others",
         "addPlan": "Add to itinerary",
+        "added_to_plan": "Added successfully",
+        "new_item": "New",
+        "removed_from_plan": "Removed successfully",
         "Plan": "View Itinerary",
         "planificationTittle" :"Places to visit",
         "deletePlan": "Remove from itinerary",
@@ -217,7 +223,9 @@
     "maps":{
         "maps_title": "Maps",
         "maps_description": "Build your own tourist routes and discover all the wonders of our canton with the help of our maps",
-        "see_map": "SEE MAP"
+        "see_map": "SEE MAP",
+        "error": "The maps could not be loaded. Please try again later.",
+        "empty": "Maps will be available soon."
     },
     "accessibility":{
         "accessibilities": "Accessibilities",
@@ -241,7 +249,9 @@
         "section_card_title": "Enjoy these events!",
         "see_event": "See event",
         "come": "Get carried away by the excitement of events in Pérez Zeledón and create unique memories at every occasion. ¡Vení a Pérez!",
-        "see_all": "See all events"
+        "see_all": "See all events",
+        "none_upcoming": "New events will be announced soon. Come back to visit us!",
+        "load_error": "Events could not be loaded. Please try again later."
     },
     "privacy": {
         "privacy_title": "Privacy policy",

@@ -2,9 +2,9 @@
 
 import Reveal from '../Reveal';
 
-// Bloque de texto con foto: geología, geografía, flora y fauna.
-// Reemplaza a PerezZeledonInfoItem y a Biodiversidad, que eran el
-// mismo componente con la foto puesta o quitada.
+// Text block with a photo: geology, geography, flora and fauna.
+// Replaces PerezZeledonInfoItem and Biodiversidad, which were the
+// same component with the photo added or removed.
 export default function BloqueInformativo({
   id,
   imagen,

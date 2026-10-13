@@ -1,13 +1,14 @@
 import { API_URL } from './config';
 import { ErrorApi } from './api';
 
-// Cliente del API para el panel.
-// El admin anterior tenía un archivo de servicios por entidad —trece
-// archivos— y cada función repetía la misma cabecera Authorization,
-// el mismo axios y el mismo manejo (o falta de manejo) de errores.
-// Además arrastraba Apollo/GraphQL apuntando a un endpoint
-// /graphql que el backend nunca expuso.
-// Aquí hay una sola función y la sesión se resuelve en un lugar.
+// API client for the panel.
+// The previous admin had a services file per entity —thirteen files—
+// and each function repeated the same Authorization header, the same
+// axios and the same handling (or lack of handling) of errors.
+// It also dragged along Apollo/GraphQL pointing at a /graphql endpoint
+// that the backend never exposed.
+// Here there is a single function and the session is resolved in one
+// place.
 
 const CLAVE_TOKEN = 'rt_token';
 
@@ -23,7 +24,7 @@ export function guardarToken(token: string): void {
   try {
     window.localStorage.setItem(CLAVE_TOKEN, token);
   } catch {
-    // Sin almacenamiento la sesión dura lo que dure la pestaña.
+    // Without storage the session lasts as long as the tab does.
   }
 }
 
@@ -31,7 +32,7 @@ export function borrarToken(): void {
   try {
     window.localStorage.removeItem(CLAVE_TOKEN);
   } catch {
-    // Nada que hacer.
+    // Nothing to do.
   }
 }
 
@@ -41,7 +42,7 @@ interface Opciones {
   metodo?: Metodo;
   cuerpo?: unknown;
   parametros?: Record<string, string | number | boolean | undefined | null>;
-  // Para subir archivos: se manda tal cual, sin Content-Type.
+  // For uploading files: it is sent as is, without Content-Type.
   formulario?: FormData;
 }
 
@@ -56,8 +57,8 @@ function armarQuery(parametros: Opciones['parametros']): string {
   return texto ? `?${texto}` : '';
 }
 
-// Llamada autenticada. Lanza ErrorApi con el mensaje que mande el
-// backend, que es lo que la pantalla muestra al usuario.
+// Authenticated call. Throws ErrorApi with the message the backend
+// sends, which is what the screen shows to the user.
 export async function pedirAdmin<T>(ruta: string, opciones: Opciones = {}): Promise<T> {
   const { metodo = 'GET', cuerpo, parametros, formulario } = opciones;
   const token = leerToken();
@@ -84,20 +85,20 @@ export async function pedirAdmin<T>(ruta: string, opciones: Opciones = {}): Prom
         if (detalles.length > 0) mensaje = `${mensaje}: ${detalles.join(', ')}`;
       }
     } catch {
-      // La respuesta no era JSON.
+      // The response was not JSON.
     }
     throw new ErrorApi(respuesta.status, mensaje);
   }
 
-  // DELETE puede responder sin cuerpo.
+  // DELETE may respond without a body.
   const texto = await respuesta.text();
   return (texto ? JSON.parse(texto) : null) as T;
 }
 
-// Roles, con el valor tal como lo guarda la base.
+// Roles, with the value as the database stores it.
 export const ROLES = {
   ADMIN: 'ADMIN',
-  // Ojo: en la base dice MODERATOR, en inglés.
+  // Note: in the database it says MODERATOR, in English.
   MODERADOR: 'MODERATOR',
   PARTICULAR: 'PARTICULAR',
 } as const;
@@ -123,6 +124,7 @@ export const apiAdmin = {
       cuerpo: { email, password },
     }),
 
-  // Renueva el token leyendo el usuario de la base, no del token.
+  // Renews the token by reading the user from the database, not from
+  // the token.
   renovarToken: () => pedirAdmin<RespuestaSesion>('/usuarios/renovar-token', { metodo: 'POST' }),
 };

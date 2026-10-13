@@ -5,13 +5,13 @@ import { useIdioma } from '../../context/IdiomaContext';
 import type { ItemPlan } from '../../context/PlanContext';
 import { enlaceContacto, rotuloContacto } from './VistaPlan';
 
-// Tabla final del itinerario, lista para imprimir.
-// El original abría una ventana nueva y le escribía el HTML y el CSS a
-// mano —unas 150 líneas de plantilla— para luego llamar a print(). Eso
-// lo bloquea cualquier navegador con el bloqueador de ventanas
-// emergentes activado, que es casi cualquiera. Aquí se imprime la
-// página misma con una hoja de estilos de impresión: el resultado es
-// el mismo y no depende de abrir ventanas.
+// Final itinerary table, ready to print.
+// The original opened a new window and wrote the HTML and CSS into it
+// by hand —about 150 lines of template— to then call print(). Any
+// browser with the pop-up blocker active, which is almost any,
+// blocks that. Here the page itself is printed with a print
+// stylesheet: the result is the same and it does not depend on
+// opening windows.
 
 const ICONOS: Record<string, string> = {
   'Teléfono': '📞',

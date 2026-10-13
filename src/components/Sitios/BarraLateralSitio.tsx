@@ -11,13 +11,13 @@ import { TIPOS, type ConfigTipo } from '../../lib/tiposSitio';
 import type { Sitio } from '../../lib/tipos';
 import '../../styles/buscador.css';
 
-// Barra lateral de la página de detalle: buscador, sitios similares y
-// el conteo por tipo.
-// El original repetía cuatro veces la misma llamada
-// "sitios con la misma categoría", una por tipo, y armaba a mano la
-// lista de conteos leyendo `counts?.atracciones[0].count` —una forma
-// que el backend nuevo ya no devuelve—. Aquí el conteo viene como un
-// objeto plano y los similares los calcula el backend.
+// Sidebar of the detail page: search box, similar sites and the count
+// by type.
+// The original repeated the same "sites with the same category" call
+// four times, one per type, and built the list of counts by hand
+// reading `counts?.atracciones[0].count` —a shape the new backend no
+// longer returns—. Here the count comes as a flat object and the
+// similar ones are computed by the backend.
 export default function BarraLateralSitio({
   tipo,
   sitioId,

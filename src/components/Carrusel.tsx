@@ -3,11 +3,11 @@
 import dynamic from 'next/dynamic';
 import type { ReactNode } from 'react';
 
-// Envoltura de react-slick.
-// Se carga sólo en el navegador (`ssr: false`). react-slick mide el
-// ancho del contenedor al montarse, cosa que en el servidor no existe;
-// sin esto Next arma un HTML que no coincide con lo que pinta el
-// navegador y avisa de discrepancia de hidratación.
+// react-slick wrapper.
+// It is loaded only in the browser (`ssr: false`). react-slick
+// measures the container width when mounting, which does not exist on
+// the server; without this Next builds HTML that does not match what
+// the browser paints and warns of a hydration mismatch.
 const Slider = dynamic(() => import('react-slick'), { ssr: false });
 
 export default function Carrusel({

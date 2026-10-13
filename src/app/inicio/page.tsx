@@ -1,4 +1,4 @@
-// El sitio anterior respondía la portada tanto en / como en /inicio, y
-// el enlace del menú apunta a /inicio. Se mantiene para no romper
-// enlaces ya publicados.
+// The previous site answered the home page both at / and at /inicio,
+// and the menu link points to /inicio. It is kept so as not to break
+// links already published.
 export { default } from '../page';

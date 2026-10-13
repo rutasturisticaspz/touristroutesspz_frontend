@@ -4,15 +4,14 @@ import { urlImagen } from '../../lib/api';
 import { aPunto } from '../../lib/coordenadas';
 import type { ItemPlan } from '../../context/PlanContext';
 
-// El itinerario como documento imprimible.
-// En pantalla no se ve: existe sólo para que el navegador lo imprima.
-// Al darle Imprimir, cualquier navegador ofrece "Guardar como PDF", y
-// eso es lo que baja el visitante.
-// El sitio anterior hacía esto abriendo una ventana nueva y
-// escribiéndole el HTML y el CSS a mano —unas 150 líneas de plantilla
-// dentro de una cadena—. Cualquier bloqueador de ventanas emergentes
-// lo dejaba sin hacer nada, que es el estado en que está hoy para la
-// mayoría de los visitantes.
+// The itinerary as a printable document.
+// It is not visible on screen: it exists only for the browser to print
+// it. When Print is chosen, any browser offers "Save as PDF", and that
+// is what the visitor downloads.
+// The previous site did this by opening a new window and writing the
+// HTML and CSS into it by hand —about 150 lines of template inside a
+// string—. Any pop-up blocker left it doing nothing, which is the
+// state it is in today for most visitors.
 
 const ICONOS: Record<string, string> = {
   'Teléfono': 'Tel.',
@@ -22,7 +21,7 @@ const ICONOS: Record<string, string> = {
   'Página web': 'Web',
 };
 
-// Cómo se llama cada tipo en el documento.
+// What each type is called in the document.
 const NOMBRE_TIPO: Record<string, { es: string; en: string }> = {
   atracciones: { es: 'Atracción', en: 'Attraction' },
   restaurantes: { es: 'Restaurante', en: 'Restaurant' },
@@ -125,7 +124,7 @@ export default function DocumentoPlan({
                   </p>
                 )}
 
-                {/* Espacio para que quien lleve el papel escriba. */}
+                {/* Space for whoever carries the paper to write. */}
                 <div className="rt_doc_notas" />
               </div>
             </li>

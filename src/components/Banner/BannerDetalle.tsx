@@ -1,9 +1,9 @@
 'use client';
 
-// Banner de las páginas de detalle y del buscador: la foto de fondo
-// con el nombre encima. Uno solo en vez de los tres del sitio
-// anterior (SitioIndividualBanner, EventoIndividualBanner y el que
-// usaba el buscador), que eran el mismo archivo con distinto título.
+// Banner of the detail and search pages: the background photo with
+// the name on top. A single one instead of the three of the previous
+// site (SitioIndividualBanner, EventoIndividualBanner and the one the
+// search page used), which were the same file with a different title.
 export default function BannerDetalle({
   imagen,
   titulo,

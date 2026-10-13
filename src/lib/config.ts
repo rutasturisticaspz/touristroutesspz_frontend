@@ -1,11 +1,10 @@
-// Configuración del sitio público.
-// El proyecto anterior tenía esto:
+// Public site configuration.
+// The previous project had this:
 //   export const API_URL =
 //     process.env.REACT_APP_API_URL || 'https://api.quehacerenperez.com/api'
-// Ese respaldo significaba que cualquier copia del código, en la
-// máquina de cualquier persona, hablaba con producción sin que nadie
-// lo notara. Aquí no hay respaldo: si falta la variable, el sitio lo
-// dice.
+// That fallback meant that any copy of the code, on anyone's machine,
+// talked to production without anybody noticing. Here there is no
+// fallback: if the variable is missing, the site says so.
 
 function requerido(nombre: string, valor: string | undefined): string {
   if (!valor || valor.trim() === '') {
@@ -19,8 +18,8 @@ function requerido(nombre: string, valor: string | undefined): string {
 
 export const API_URL = requerido('NEXT_PUBLIC_API_URL', process.env.NEXT_PUBLIC_API_URL);
 
-// Llave de Google Maps: va a ser una llave institucional. Puede venir
-// vacía: los mapas muestran un aviso en vez de reventar la página.
+// Google Maps key: it will be an institutional key. It may come empty:
+// the maps show a notice instead of blowing up the page.
 export const GOOGLE_MAPS_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_KEY ?? '';
 
 export const IDIOMA_POR_DEFECTO = 'es';

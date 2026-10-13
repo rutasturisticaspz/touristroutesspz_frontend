@@ -8,17 +8,19 @@ import { usePlan, type ItemPlan } from '../../context/PlanContext';
 import { useIdioma } from '../../context/IdiomaContext';
 import DocumentoPlan from './DocumentoPlan';
 
-// El itinerario que el visitante fue armando.
-// Cambios respecto al original:
-//  - Ya no imprime el contenido del plan en la consola en cada render.
-//  - El texto fijo no pasa por `t()` con la frase completa como clave
-//    —eso devolvía la frase tal cual porque esas claves no existen—.
-//  - Imprimir ya no abre una ventana emergente. La página trae un
-//    documento oculto que sólo aparece al imprimir, así que
-//    "Guardar como PDF" del navegador produce el itinerario completo.
-//  - Se quitó el paso intermedio de "Confirmar": era una pantalla más
-//    para llegar al mismo botón. El orden alfabético, que era lo único
-//    que aportaba, ahora está acá.
+// The itinerary the visitor has been building.
+// Changes from the original:
+//  - It no longer prints the plan's content to the console on every
+//    render.
+//  - The fixed text does not go through `t()` with the full sentence
+//    as the key —that returned the sentence as is because those keys
+//    do not exist—.
+//  - Printing no longer opens a pop-up window. The page carries a
+//    hidden document that only appears when printing, so the browser's
+//    "Save as PDF" produces the complete itinerary.
+//  - The intermediate "Confirm" step was removed: it was one more
+//    screen to reach the same button. The alphabetical order, which
+//    was the only thing it contributed, is now here.
 
 const ICONOS: Record<string, string> = {
   'Teléfono': '📞',
@@ -52,8 +54,9 @@ export default function VistaPlan() {
     );
   }, [planItems, orden]);
 
-  // Hasta que se lee localStorage no se sabe si hay itinerario; pintar
-  // "está vacío" antes de saberlo hacía parpadear la página.
+  // Until localStorage is read it is not known whether there is an
+  // itinerary; painting "it is empty" before knowing made the page
+  // flicker.
   if (!listo) return null;
 
   const descripcion = (item: ItemPlan) => {
@@ -219,7 +222,7 @@ export default function VistaPlan() {
         </div>
       </div>
 
-      {/* Sólo aparece al imprimir. */}
+      {/* Only appears when printing. */}
       <DocumentoPlan items={ordenados} esEspanol={esEspanol} />
     </>
   );

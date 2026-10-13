@@ -1,24 +1,24 @@
-// Generador de archivos .xlsx, sin dependencias.
-// El panel anterior usaba SheetJS (`xlsx`) sólo para esta pantalla.
-// Esa versión de npm arrastra avisos de seguridad abiertos y el
-// proyecto dejó de publicarse ahí, así que traerla de vuelta habría
-// sido heredar el mismo problema que estamos limpiando.
-// Resulta que un .xlsx es un ZIP con unos pocos archivos XML adentro.
-// Acá se arma a mano: el ZIP se escribe sin comprimir (método
-// "stored", que el formato permite) y las celdas van como texto en
-// línea, así que no hace falta la tabla de cadenas compartidas.
-// Excel, LibreOffice y Numbers lo abren igual.
-// Alcance a propósito: valores de texto y número, la fila de
-// encabezado en negrita y ancho de columna automático. Nada de
-// fórmulas, colores ni gráficos, que es exactamente lo que hacía el
-// export anterior.
+// .xlsx file generator, with no dependencies.
+// The previous panel used SheetJS (`xlsx`) only for this screen. That
+// npm version carries open security advisories and the project stopped
+// being published there, so bringing it back would have meant
+// inheriting the same problem we are cleaning up.
+// It turns out an .xlsx is a ZIP with a few XML files inside. Here it
+// is built by hand: the ZIP is written uncompressed ("stored" method,
+// which the format allows) and the cells go as inline text, so the
+// shared strings table is not needed. Excel, LibreOffice and Numbers
+// open it the same.
+// Scope on purpose: text and number values, a bold header row and
+// automatic column width. No formulas, colors or charts, which is
+// exactly what the previous export did.
 
 export type Celda = string | number | null | undefined;
 
 export interface Hoja {
-  // Nombre de la pestaña. Excel no admite : \ / ? * [ ] ni más de 31 caracteres.
+  // Sheet tab name. Excel does not allow : \ / ? * [ ] or more than 31
+  // characters.
   nombre: string;
-  // Primera fila: encabezados. El resto, datos.
+  // First row: headers. The rest, data.
   filas: Celda[][];
 }
 
@@ -26,12 +26,12 @@ export interface Hoja {
 //  XML
 // ------------------------------------------------------------
 
-// Caracteres de control que XML 1.0 no admite dentro de un texto.
-// Si alguno se cuela —y en la base hay descripciones pegadas desde
-// Word que traen alguno—, Excel dice que el archivo está dañado.
+// Control characters that XML 1.0 does not allow inside text.
+// If one slips in —and in the database there are descriptions pasted
+// from Word that carry some—, Excel says the file is damaged.
 const CONTROL = new RegExp('[\\u0000-\\u0008\\u000B\\u000C\\u000E-\\u001F]', 'g');
 
-// Escapa lo que XML no admite y quita los caracteres de control.
+// Escapes what XML does not allow and removes control characters.
 function escapar(texto: string): string {
   return texto
     .replace(CONTROL, '')
@@ -53,7 +53,7 @@ function columna(indice: number): string {
   return nombre;
 }
 
-// Nombre de pestaña que Excel acepta.
+// Sheet tab name that Excel accepts.
 function nombreDeHoja(nombre: string, indice: number): string {
   const limpio = nombre.replace(/[:\\/?*[\]]/g, ' ').trim().slice(0, 31);
   return limpio || `Hoja${indice + 1}`;
@@ -76,7 +76,7 @@ function celdaXml(valor: Celda, referencia: string, encabezado: boolean): string
 }
 
 function hojaXml(hoja: Hoja): string {
-  // Ancho de columna aproximado, según el contenido más largo.
+  // Approximate column width, based on the longest content.
   const anchos: number[] = [];
   for (const fila of hoja.filas) {
     fila.forEach((valor, indice) => {
@@ -117,7 +117,7 @@ function hojaXml(hoja: Hoja): string {
 //  ZIP
 // ------------------------------------------------------------
 
-// Tabla de CRC-32, la que exige el formato ZIP.
+// CRC-32 table, the one the ZIP format requires.
 const TABLA_CRC = (() => {
   const tabla = new Uint32Array(256);
   for (let i = 0; i < 256; i++) {
@@ -143,7 +143,7 @@ interface Entrada {
   datos: Uint8Array;
 }
 
-// Fecha y hora en el formato MS-DOS que guarda el ZIP.
+// Date and time in the MS-DOS format that ZIP stores.
 function fechaDos(fecha: Date): { fecha: number; hora: number } {
   return {
     fecha:
@@ -155,7 +155,7 @@ function fechaDos(fecha: Date): { fecha: number; hora: number } {
   };
 }
 
-// ZIP sin compresión. Suficiente: estos archivos son pequeños.
+// Uncompressed ZIP. Enough: these files are small.
 function armarZip(entradas: Entrada[], momento: Date): Uint8Array {
   const codificador = new TextEncoder();
   const { fecha, hora } = fechaDos(momento);
@@ -171,10 +171,10 @@ function armarZip(entradas: Entrada[], momento: Date): Uint8Array {
 
     const cabecera = new Uint8Array(30 + nombre.length);
     const vista = new DataView(cabecera.buffer);
-    vista.setUint32(0, 0x04034b50, true); // firma
-    vista.setUint16(4, 20, true); // versión necesaria para extraer
-    vista.setUint16(6, 0x0800, true); // nombres en UTF-8
-    vista.setUint16(8, 0, true); // método: sin comprimir
+    vista.setUint32(0, 0x04034b50, true); // signature
+    vista.setUint16(4, 20, true); // version needed to extract
+    vista.setUint16(6, 0x0800, true); // UTF-8 file names
+    vista.setUint16(8, 0, true); // method: stored (uncompressed)
     vista.setUint16(10, hora, true);
     vista.setUint16(12, fecha, true);
     vista.setUint32(14, suma, true);
@@ -189,7 +189,7 @@ function armarZip(entradas: Entrada[], momento: Date): Uint8Array {
     const central = new Uint8Array(46 + nombre.length);
     const vistaCentral = new DataView(central.buffer);
     vistaCentral.setUint32(0, 0x02014b50, true);
-    vistaCentral.setUint16(4, 20, true); // versión de quien lo creó
+    vistaCentral.setUint16(4, 20, true); // version made by
     vistaCentral.setUint16(6, 20, true);
     vistaCentral.setUint16(8, 0x0800, true);
     vistaCentral.setUint16(10, 0, true);
@@ -228,7 +228,7 @@ function armarZip(entradas: Entrada[], momento: Date): Uint8Array {
 }
 
 // ------------------------------------------------------------
-//  Libro
+//  Workbook
 // ------------------------------------------------------------
 
 export function crearXlsx(hojas: Hoja[], momento = new Date()): Blob {
@@ -280,8 +280,8 @@ export function crearXlsx(hojas: Hoja[], momento = new Date()): Blob {
     `<Relationship Id="rId${hojas.length + 1}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/>` +
     `</Relationships>`;
 
-  // Dos estilos: el 0 es el normal y el 1 pone la fila de encabezado
-  // en negrita. Es lo único que hace falta.
+  // Two styles: 0 is the normal one and 1 makes the header row bold.
+  // It is the only thing needed.
   const estilos =
     `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>` +
     `<styleSheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">` +
@@ -291,8 +291,8 @@ export function crearXlsx(hojas: Hoja[], momento = new Date()): Blob {
     `<borders count="1"><border/></borders>` +
     `<cellStyleXfs count="1"><xf/></cellStyleXfs>` +
     `<cellXfs count="2"><xf xfId="0"/><xf xfId="0" fontId="1" applyFont="1"/></cellXfs>` +
-    // Sin este bloque, algunos lectores avisan de que falta el estilo
-    // normal. Excel lo abre igual, pero es parte del formato.
+    // Without this block, some readers warn that the normal style is
+    // missing. Excel opens it anyway, but it is part of the format.
     `<cellStyles count="1"><cellStyle name="Normal" xfId="0" builtinId="0"/></cellStyles>` +
     `</styleSheet>`;
 
@@ -314,7 +314,7 @@ export function crearXlsx(hojas: Hoja[], momento = new Date()): Blob {
   });
 }
 
-// Arranca la descarga en el navegador.
+// Starts the download in the browser.
 export function descargar(blob: Blob, nombreArchivo: string): void {
   const url = URL.createObjectURL(blob);
   const enlace = document.createElement('a');
@@ -323,6 +323,6 @@ export function descargar(blob: Blob, nombreArchivo: string): void {
   document.body.appendChild(enlace);
   enlace.click();
   document.body.removeChild(enlace);
-  // Se libera después, para darle tiempo al navegador a leer el blob.
+  // It is released afterwards, to give the browser time to read the blob.
   setTimeout(() => URL.revokeObjectURL(url), 1000);
 }

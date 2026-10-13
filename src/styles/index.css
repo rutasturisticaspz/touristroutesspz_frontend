@@ -1,1 +1,14 @@
 
+
+/* Whole-card link: a transparent link stretched over the card. The
+   contact icons go above it so they keep working on their own. */
+.ex_team_item .rt_tarjeta_enlace {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+.ex_team_item .hover_content .n_hover_content ul a {
+  position: relative;
+  z-index: 2;
+}

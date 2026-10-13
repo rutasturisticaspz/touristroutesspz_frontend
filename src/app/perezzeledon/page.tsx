@@ -11,7 +11,7 @@ import HitoHistorico from '../../components/PerezZeledon/HitoHistorico';
 import BloqueInformativo from '../../components/PerezZeledon/BloqueInformativo';
 import AtraccionesActionThree from '../../components/Atracciones/AtraccionesActionThree';
 
-// Los cinco hitos de la línea de tiempo, con su foto y su ícono.
+// The five milestones of the timeline, with their photo and icon.
 const HITOS = [
   {
     imagen: '1.jpg',
@@ -45,7 +45,7 @@ const HITOS = [
   },
 ];
 
-// Los anclas del menú de la página.
+// The anchors of the page menu.
 const SECCIONES = [
   { ancla: 'pz_distritos', etiqueta: 'perez_zeledon.districts' },
   { ancla: 'pz_historia', etiqueta: 'perez_zeledon.history' },

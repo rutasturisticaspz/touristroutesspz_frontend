@@ -1,11 +1,11 @@
-// Los tipos que administra el panel, en una sola tabla.
-// En el admin anterior cada tipo tenía su carpeta de componentes
-// (Atracciones.jsx, AtraccionesEditar.jsx, AtraccionesTableRow.jsx) más
-// su Galeria, su Ubicaciones y sus Contactos: seis copias de los mismos
-// seis archivos, unas 9 000 líneas repetidas. Lo único que cambia entre
-// ellas es lo que está declarado acá abajo.
+// The types the panel manages, in a single table.
+// In the previous admin each type had its own components folder
+// (Atracciones.jsx, AtraccionesEditar.jsx, AtraccionesTableRow.jsx)
+// plus its Galeria, its Ubicaciones and its Contactos: six copies of
+// the same six files, some 9,000 repeated lines. The only thing that
+// changes between them is what is declared down here.
 
-// Campos de accesibilidad, según lo que tiene cada tabla en el DDL.
+// Accessibility fields, according to what each table has in the DDL.
 const DISCAPACIDAD = [
   'discapacidadVisual',
   'discapacidadAuditiva',
@@ -14,7 +14,7 @@ const DISCAPACIDAD = [
   'discapacidadSicosocial',
 ] as const;
 
-// atracciones, hoteles, restaurantes: todo.
+// attractions, hotels, restaurants: everything.
 const ACCESIBILIDAD_COMPLETA = [
   'declaracionTuristica',
   'permitenMascotas',
@@ -22,13 +22,13 @@ const ACCESIBILIDAD_COMPLETA = [
   ...DISCAPACIDAD,
 ] as const;
 
-// oficinas, operadores: sin mascotas ni niños.
+// offices, operators: no pets or children.
 const ACCESIBILIDAD_SIN_MASCOTAS = ['declaracionTuristica', ...DISCAPACIDAD] as const;
 
-// rentadoras: la tabla no tiene declaracionTuristica.
+// rental companies: the table has no declaracionTuristica.
 const ACCESIBILIDAD_SOLO_DISCAPACIDAD = [...DISCAPACIDAD] as const;
 
-// Rótulo de cada distintivo, para el formulario.
+// Label of each badge, for the form.
 export const ROTULOS_ACCESIBILIDAD: Record<string, string> = {
   declaracionTuristica: 'Declaración turística',
   permitenMascotas: 'Permite mascotas',
@@ -40,39 +40,39 @@ export const ROTULOS_ACCESIBILIDAD: Record<string, string> = {
   discapacidadSicosocial: 'Discapacidad sicosocial',
 };
 
-// declaracionTuristica es la única sin par de descripciones.
+// declaracionTuristica is the only one without a pair of descriptions.
 export const SIN_DESCRIPCION = new Set(['declaracionTuristica']);
 
-// Un campo de texto extra, propio de un tipo.
+// An extra text field, specific to a type.
 export interface CampoExtra {
   nombre: string;
   rotulo: string;
-  // true si el backend lo exige al crear.
+  // true if the backend requires it on creation.
   obligatorio?: boolean;
   tipo?: 'texto' | 'fecha';
 }
 
 export interface TipoAdmin {
-  // Segmento en /admin/:clave
+  // Segment in /admin/:clave
   clave: string;
-  // Ruta del backend.
+  // Backend route.
   api: string;
-  // Cómo se llama en los títulos y mensajes.
+  // What it is called in titles and messages.
   rotulo: string;
-  // Singular, para "Agregar …" y los avisos de borrado.
+  // Singular, for "Add …" and the deletion notices.
   singular: string;
-  // true si la tabla tiene categorías.
+  // true if the table has categories.
   conCategorias: boolean;
-  // true si la tabla tiene contactos.
+  // true if the table has contacts.
   conContactos: boolean;
-  // Columnas booleanas de accesibilidad que admite.
+  // Boolean accessibility columns it supports.
   accesibilidad: readonly string[];
-  // Campos de texto propios además de nombre/descripciones.
+  // Own text fields in addition to name/descriptions.
   extras: CampoExtra[];
-  // Tipo de imagen, tal como lo nombra /imagenes/:tipo.
+  // Image type, as /imagenes/:tipo names it.
   tipoImagen: string;
-  // Segmento del sitio público (/sitio/:clave/:id), para el botón
-  // "Ver en el sitio". null en eventos, que tienen su propia ruta.
+  // Public site segment (/sitio/:clave/:id), for the "View on the site"
+  // button. null for events, which have their own route.
   claveSitio: string | null;
 }
 
@@ -121,7 +121,7 @@ export const TIPOS_ADMIN: Record<string, TipoAdmin> = {
     conCategorias: false,
     conContactos: true,
     accesibilidad: ACCESIBILIDAD_SIN_MASCOTAS,
-    // El backend lo exige al crear, igual que la tabla.
+    // The backend requires it on creation, same as the table.
     extras: [{ nombre: 'nombreEncargado', rotulo: 'Nombre del encargado', obligatorio: true }],
     tipoImagen: 'oficinas-turisticas',
     claveSitio: 'oficinasTuristicas',
@@ -175,13 +175,13 @@ export function buscarTipoAdmin(clave: string | undefined): TipoAdmin | null {
   return TIPOS_ADMIN[clave] ?? null;
 }
 
-// El menú lateral del panel.
+// The panel's side menu.
 export interface EntradaMenu {
   ruta: string;
   rotulo: string;
-  // true si sólo la ve un ADMIN.
+  // true if only an ADMIN sees it.
   soloAdmin?: boolean;
-  // true mientras la sección no esté construida: se muestra apagada.
+  // true while the section is not built yet: it is shown greyed out.
   pendiente?: boolean;
 }
 
@@ -194,6 +194,7 @@ export const MENU: EntradaMenu[] = [
   { ruta: '/admin/rentadoras', rotulo: 'Rentadoras de vehículos' },
   { ruta: '/admin/eventos', rotulo: 'Eventos' },
   { ruta: '/admin/categorias', rotulo: 'Categorías' },
+  { ruta: '/admin/mapas', rotulo: 'Mapas' },
   { ruta: '/admin/mensajes', rotulo: 'Mensajes' },
   { ruta: '/admin/exportar', rotulo: 'Exportar a Excel' },
   { ruta: '/admin/usuarios', rotulo: 'Usuarios y permisos', soloAdmin: true },

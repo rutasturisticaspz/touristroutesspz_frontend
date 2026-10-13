@@ -19024,7 +19024,7 @@ a .h_head:hover {
 
 .atracciones-search_box_info {
   width: 100%;
-  max-width: 1200px;   /* Muy extendido */
+  max-width: 1200px;   /* Very widespread */
   margin: 0 auto;
   padding: 0 20px;
   text-align: center;
@@ -19032,7 +19032,7 @@ a .h_head:hover {
 
 .atracciones-search_box_info h3 {
   font-size: 36px;
-  font-weight: 300;    /* Delgadita */
+  font-weight: 300;    /* Thin */
   color: #2c2c51;
   margin-bottom: 20px;
   line-height: 1.2;
@@ -19054,14 +19054,14 @@ a .h_head:hover {
 }
 
 .atracciones-search_box_info h3:hover {
-  color: #ff4d6d; /* Cambia color texto */
+  color: #ff4d6d; /* Changes text color */
 }
 
 .atracciones-search_box_info h3:hover::after {
-  width: 100%; /* Subrayado full ancho en hover */
+  width: 100%; /* Full-width underline on hover */
 }
 
-/* Responsive para móviles */
+/* Responsive for mobile */
 @media (max-width: 576px) {
   .atracciones-search_box_info h3 {
     font-size: 28px;

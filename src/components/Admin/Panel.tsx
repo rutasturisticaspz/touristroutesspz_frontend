@@ -6,14 +6,14 @@ import { useEffect, type ReactNode } from 'react';
 import { useSesion } from '../../context/SesionContext';
 import { MENU } from '../../lib/tiposAdmin';
 
-// Marco del panel: menú lateral y guardia de sesión.
-// En el admin anterior cada página comprobaba la sesión por su cuenta
-// —cuando se acordaba—, así que varias se pintaban enteras antes de
-// darse cuenta de que no había usuario. Acá la comprobación está en un
-// solo lugar y nada del panel se dibuja sin sesión.
-// Ojo: esto es comodidad para el usuario, no seguridad. Lo que impide
-// de verdad tocar los datos es que el backend exige el token en cada
-// escritura.
+// Panel frame: side menu and session guard.
+// In the previous admin each page checked the session on its own
+// —when it remembered—, so several painted themselves entirely before
+// realizing there was no user. Here the check is in a single place
+// and nothing in the panel is drawn without a session.
+// Note: this is a convenience for the user, not security. What truly
+// prevents touching the data is that the backend requires the token on
+// every write.
 export default function Panel({
   titulo,
   acciones,
@@ -21,7 +21,7 @@ export default function Panel({
   soloAdmin = false,
 }: {
   titulo: string;
-  // Botones que van a la derecha del título.
+  // Buttons that go to the right of the title.
   acciones?: ReactNode;
   children: ReactNode;
   soloAdmin?: boolean;
@@ -59,8 +59,8 @@ export default function Panel({
         <nav>
           {entradas.map((entrada) =>
             entrada.pendiente ? (
-              // Sección todavía no construida: se muestra apagada en vez
-              // de enlazar a una página que daría 404.
+              // Section not built yet: it is shown greyed out instead of linking to
+              // a page that would give a 404.
               <span key={entrada.ruta} className="pendiente" title="Todavía no está lista">
                 {entrada.rotulo}
               </span>
