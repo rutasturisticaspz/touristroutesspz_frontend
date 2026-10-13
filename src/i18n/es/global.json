@@ -220,7 +220,14 @@
         "send_message": "Enviar mensaje",
         "very_good": "¡Muy bien!",
         "very_good_message": "Tu mensaje ha sido enviado con éxito. Pronto nos estaremos comunicando contigo",
-        "bad_message": "Algo salió mal al enviar el mensaje, por favor intenta más tarde"
+        "bad_message": "Algo salió mal al enviar el mensaje, por favor intenta más tarde",
+        "required_fields_warning": "Faltan campos por llenar. Revise los campos marcados en rojo.",
+        "name_required": "Escriba su nombre.",
+        "email_required": "Escriba su correo electrónico.",
+        "email_invalid": "Ese correo no parece válido.",
+        "reason_required": "Elija el motivo del mensaje.",
+        "subject_required": "Escriba el asunto.",
+        "message_required": "Escriba su mensaje."
     }, 
     "maps":{
         "maps_title": "Mapas",
