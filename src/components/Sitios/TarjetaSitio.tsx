@@ -2,15 +2,18 @@
 
 import Link from 'next/link';
 import { hrefContacto, iconoContacto, primeraImagen } from '../../lib/helpers';
+import EtiquetaNuevo from '../Nuevo/EtiquetaNuevo';
+import { esNuevo } from '../../lib/nuevos';
 import type { Sitio } from '../../lib/tipos';
 
-// Tarjeta de un sitio, con los contactos al pasar el mouse.
-// Reemplaza a AtraccionesCardItemOne / CardItemTwo y sus equivalentes
-// en las otras cinco carpetas: eran el mismo componente repetido.
-// Arreglo de camino: la tarjeta anterior enlazaba a
-// `/sitio/atraccion/:id` en el título de arriba y a
-// `/sitio/atracciones/:id` en el de abajo. El primero, en singular, no
-// corresponde a ningún tipo, así que daba una página vacía.
+// Card of a site, with the contacts on mouse hover. The whole card is a
+// link to the detail page; the contact icons stay clickable on top.
+// Replaces AtraccionesCardItemOne / CardItemTwo and their equivalents
+// in the other five folders: they were the same component repeated.
+// Fix along the way: the previous card linked to
+// `/sitio/atraccion/:id` in the top title and to
+// `/sitio/atracciones/:id` in the bottom one. The first, in the
+// singular, does not correspond to any type, so it gave an empty page.
 export default function TarjetaSitio({
   sitio,
   tipoClave,
@@ -20,9 +23,12 @@ export default function TarjetaSitio({
 }) {
   const destino = `/sitio/${tipoClave}/${sitio.id}`;
   const contactos = sitio.contactos ?? [];
+  const nuevo = esNuevo(sitio.createdAt);
 
   return (
     <div className="ex_team_item">
+      {nuevo && <EtiquetaNuevo />}
+      <Link href={destino} className="rt_tarjeta_enlace" tabIndex={-1} aria-hidden="true" />
       <img src={primeraImagen(sitio)} alt={sitio.nombre} />
       <div className="team_content">
         <Link href={destino}>

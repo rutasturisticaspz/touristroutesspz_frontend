@@ -1,9 +1,9 @@
 'use client';
 
-// Video de YouTube incrustado.
-// El sitio anterior usaba react-player para esto; era una dependencia
-// de casi un megabyte para mostrar un iframe. Aquí se arma la URL de
-// incrustación a partir del enlace corto que guarda la ficha.
+// Embedded YouTube video.
+// The previous site used react-player for this; it was a dependency of
+// almost a megabyte to show an iframe. Here the embed URL is built
+// from the short link the page stores.
 function idDeYoutube(url: string): string | null {
   const corto = url.match(/youtu\.be\/([\w-]+)/);
   if (corto) return corto[1];

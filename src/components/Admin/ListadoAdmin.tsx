@@ -11,19 +11,20 @@ import { pedirAdmin } from '../../lib/apiAdmin';
 import type { TipoAdmin } from '../../lib/tiposAdmin';
 import type { Pagina, Sitio } from '../../lib/tipos';
 
-// Listado del panel, común a los siete tipos.
-// Reemplaza a Atracciones.jsx, Hoteles.jsx, Restaurantes.jsx,
-// Oficinas.jsx, Operadores.jsx, Rentadoras.jsx y Eventos.jsx: siete
-// archivos de unas 230 líneas, idénticos salvo el nombre del servicio
-// y los rótulos.
-// Diferencias de comportamiento, todas a propósito:
-//  - La búsqueda espera 400 ms antes de consultar. Antes se disparaba
-//    sólo al presionar Enter porque cada tecla habría sido una consulta.
-//  - Al crear se piden las dos descripciones. El backend exige
-//    `descripcion` y `descripcionIngles`; el modal anterior mandaba
-//    sólo el nombre y una descripción, así que el alta fallaba y el
-//    aviso decía "intenta luego" sin explicar por qué.
-//  - Si la última página queda vacía tras borrar, retrocede sola.
+// Panel list, common to the seven types.
+// Replaces Atracciones.jsx, Hoteles.jsx, Restaurantes.jsx,
+// Oficinas.jsx, Operadores.jsx, Rentadoras.jsx and Eventos.jsx: seven
+// files of about 230 lines, identical except for the service name
+// and the labels.
+// Behavior differences, all on purpose:
+//  - The search waits 400 ms before querying. Before, it only fired
+//    on pressing Enter because each keystroke would have been a query.
+//  - When creating, both descriptions are requested. The backend
+//    requires `descripcion` and `descripcionIngles`; the previous
+//    modal sent only the name and one description, so the creation
+//    failed and the notice said "try later" without explaining why.
+//  - If the last page is left empty after deleting, it goes back on
+//    its own.
 
 const POR_PAGINA = 10;
 
@@ -51,7 +52,7 @@ export default function ListadoAdmin({ tipo }: { tipo: TipoAdmin }) {
   const [aBorrar, setABorrar] = useState<Sitio | null>(null);
   const [borrando, setBorrando] = useState(false);
 
-  // La búsqueda no consulta en cada tecla.
+  // The search does not query on every keystroke.
   useEffect(() => {
     const temporizador = setTimeout(() => {
       setFiltro(texto.trim());
@@ -74,7 +75,8 @@ export default function ListadoAdmin({ tipo }: { tipo: TipoAdmin }) {
       setFilas(resultado.datos);
       setTotal(resultado.total);
 
-      // Si se borró el último de la página, no dejar la vista vacía.
+      // If the last item of the page was deleted, do not leave the view
+      // empty.
       if (resultado.datos.length === 0 && pagina > 1) setPagina(pagina - 1);
     } catch (problema) {
       setError(problema instanceof Error ? problema.message : 'No se pudo cargar la lista');
@@ -89,7 +91,7 @@ export default function ListadoAdmin({ tipo }: { tipo: TipoAdmin }) {
     void cargar();
   }, [cargar]);
 
-  // Campos que pide el modal de alta: los que el backend exige.
+  // Fields the creation modal asks for: the ones the backend requires.
   const camposAlta = [
     { nombre: 'nombre', rotulo: `Nombre`, tipo: 'texto' as const },
     ...tipo.extras.filter((extra) => extra.obligatorio).map((extra) => ({
@@ -116,7 +118,8 @@ export default function ListadoAdmin({ tipo }: { tipo: TipoAdmin }) {
       const creado = await pedirAdmin<Sitio>(tipo.api, { metodo: 'POST', cuerpo });
       setCreando(false);
       setNuevo({});
-      // Se entra directo a la ficha: ahí van fotos, ubicación y contactos.
+      // It goes straight to the detail page: that is where photos, location
+      // and contacts go.
       router.push(`/admin/${tipo.clave}/${creado.id}`);
     } catch (problema) {
       setErrorCrear(problema instanceof Error ? problema.message : 'No se pudo crear');

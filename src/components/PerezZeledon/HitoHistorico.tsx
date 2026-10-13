@@ -2,7 +2,7 @@
 
 import Reveal from '../Reveal';
 
-// Un hito de la línea de tiempo de la historia del cantón.
+// A milestone of the canton's history timeline.
 export default function HitoHistorico({
   claseFila,
   claseTexto,

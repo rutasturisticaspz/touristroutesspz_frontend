@@ -9,20 +9,23 @@ import {
   useState,
   type ReactNode,
 } from 'react';
+import { useTranslation } from 'react-i18next';
+import Toast from '../components/Toast';
 
-// El "plan de lugares": la lista que el visitante va armando mientras
-// navega. Vive sólo en el navegador, no toca la base de datos.
-// Igual que antes, pero con dos arreglos:
-//  - El original leía localStorage en el inicializador del useState.
-//    En Next eso corre también en el servidor, donde localStorage no
-//    existe. Aquí se lee en un efecto, después de montar.
-//  - Por lo mismo, no se escribe el localStorage en el primer render,
-//    que era lo que borraba el plan guardado apenas cargaba la página.
+// The "places plan": the list the visitor builds while browsing. It
+// lives only in the browser and does not touch the database.
+// Same as before, but with two fixes:
+//  - The original read localStorage in the useState initializer. In
+//    Next that also runs on the server, where localStorage does not
+//    exist. Here it is read in an effect, after mounting.
+//  - For the same reason, localStorage is not written on the first
+//    render, which was what wiped the saved plan as soon as the page
+//    loaded.
 
 export interface ItemPlan {
   id: number;
   nombre: string;
-  // Segmento del tipo, para poder volver a la ficha del sitio.
+  // Type segment, to be able to go back to the site's detail page.
   tipo: string;
   imagen?: string | null;
   descripcion?: string;
@@ -38,10 +41,10 @@ export interface ItemPlan {
   imagenes?: Array<{ id: number; url: string; nombre: string }>;
 }
 
-// Lo que se guarda de un sitio al agregarlo al itinerario.
-// Se guarda una copia recortada, no el objeto entero: el itinerario
-// vive en localStorage, que tiene unos pocos megabytes, y el sitio
-// completo trae campos que la pantalla del plan no usa.
+// What is saved of a site when it is added to the itinerary.
+// A trimmed copy is saved, not the whole object: the itinerary lives
+// in localStorage, which has only a few megabytes, and the full site
+// carries fields the plan screen does not use.
 export function itemDePlan(
   sitio: {
     id: number;
@@ -84,7 +87,8 @@ interface ValorPlan {
   addToPlan: (sitio: ItemPlan) => void;
   removeFromPlan: (sitioId: number) => void;
   clearPlan: () => void;
-  // false hasta que se leyó localStorage, para no parpadear el contador.
+  // false until localStorage has been read, so the counter does not
+  // flicker.
   listo: boolean;
 }
 
@@ -100,16 +104,24 @@ export function usePlan(): ValorPlan {
   return contexto;
 }
 
+const MS_AVISO = 3000;
+
+type ClaveAviso = 'global.added_to_plan' | 'global.removed_from_plan';
+
 export function PlanProvider({ children }: { children: ReactNode }) {
+  const { t } = useTranslation('global');
   const [planItems, setPlanItems] = useState<ItemPlan[]>([]);
   const [listo, setListo] = useState(false);
+  // Notice shown after changing the plan. `numero` is the Toast key, so
+  // a second change while it is showing restarts its timer.
+  const [aviso, setAviso] = useState<{ numero: number; clave: ClaveAviso } | null>(null);
 
   useEffect(() => {
     try {
       const guardado = window.localStorage.getItem(CLAVE);
       if (guardado) setPlanItems(JSON.parse(guardado) as ItemPlan[]);
     } catch {
-      // Modo privado o almacenamiento bloqueado: se arranca vacío.
+      // Private mode or blocked storage: it starts empty.
     }
     setListo(true);
   }, []);
@@ -119,17 +131,37 @@ export function PlanProvider({ children }: { children: ReactNode }) {
     try {
       window.localStorage.setItem(CLAVE, JSON.stringify(planItems));
     } catch {
-      // Sin almacenamiento el plan igual funciona, sólo no sobrevive al refresco.
+      // Without storage the plan still works, it just does not survive a
+      // refresh.
     }
   }, [planItems, listo]);
 
-  const addToPlan = useCallback((sitio: ItemPlan) => {
-    setPlanItems((prev) => (prev.some((i) => i.id === sitio.id) ? prev : [...prev, sitio]));
+  const mostrarAviso = useCallback((clave: ClaveAviso) => {
+    setAviso((previo) => ({ numero: (previo?.numero ?? 0) + 1, clave }));
   }, []);
 
-  const removeFromPlan = useCallback((sitioId: number) => {
-    setPlanItems((prev) => prev.filter((i) => i.id !== sitioId));
-  }, []);
+  // The notice only shows when the place was actually added: one that was
+  // already in the plan is ignored, as before.
+  const addToPlan = useCallback(
+    (sitio: ItemPlan) => {
+      if (planItems.some((i) => i.id === sitio.id)) return;
+      setPlanItems([...planItems, sitio]);
+      mostrarAviso('global.added_to_plan');
+    },
+    [planItems, mostrarAviso],
+  );
+
+  const cerrarAviso = useCallback(() => setAviso(null), []);
+
+  // Only announced when something was really removed.
+  const removeFromPlan = useCallback(
+    (sitioId: number) => {
+      if (!planItems.some((i) => i.id === sitioId)) return;
+      setPlanItems(planItems.filter((i) => i.id !== sitioId));
+      mostrarAviso('global.removed_from_plan');
+    },
+    [planItems, mostrarAviso],
+  );
 
   const clearPlan = useCallback(() => setPlanItems([]), []);
 
@@ -138,5 +170,14 @@ export function PlanProvider({ children }: { children: ReactNode }) {
     [planItems, addToPlan, removeFromPlan, clearPlan, listo],
   );
 
-  return <PlanContext.Provider value={valor}>{children}</PlanContext.Provider>;
+  return (
+    <PlanContext.Provider value={valor}>
+      {children}
+      {aviso !== null && (
+        <Toast key={aviso.numero} tipo="ok" alCerrar={cerrarAviso} duracionMs={MS_AVISO}>
+          {t(aviso.clave)}
+        </Toast>
+      )}
+    </PlanContext.Provider>
+  );
 }

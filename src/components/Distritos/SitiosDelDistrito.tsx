@@ -8,20 +8,20 @@ import { primeraImagen, primerTelefono } from '../../lib/helpers';
 import { TIPOS, type ConfigTipo } from '../../lib/tiposSitio';
 import type { Sitio } from '../../lib/tipos';
 
-// Los sitios de un tipo que hay en un distrito.
-// El original repetía este bloque cuatro veces —atracciones,
-// restaurantes, hospedaje y operadores— con el mismo marcado y sólo
-// cambiando el nombre del servicio y el título. Aquí es un componente
-// con el tipo como parámetro.
+// The sites of one type that are in a district.
+// The original repeated this block four times —attractions,
+// restaurants, lodging and operators— with the same markup and only
+// changing the service name and the title. Here it is a component with
+// the type as a parameter.
 export default function SitiosDelDistrito({
   tipo,
   distrito,
   titulo,
 }: {
   tipo: ConfigTipo;
-  // Nombre del distrito, sin acentos, como está en la base.
+  // District name, without accents, as it is in the database.
   distrito: string;
-  // Clave de traducción del encabezado.
+  // Translation key of the heading.
   titulo: string;
 }) {
   const { t } = useTranslation('global');
@@ -84,7 +84,7 @@ export default function SitiosDelDistrito({
   );
 }
 
-// Los cuatro tipos que la ficha de distrito muestra, con su título.
+// The four types the district page shows, with their title.
 export const TIPOS_EN_DISTRITO = [
   { tipo: TIPOS.atracciones, titulo: 'districts.attractions_in_the_district' },
   { tipo: TIPOS.restaurantes, titulo: 'districts.restaurants_in_the_district' },

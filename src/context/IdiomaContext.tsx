@@ -4,13 +4,13 @@ import { createContext, useCallback, useContext, useEffect, useState, type React
 import { useTranslation } from 'react-i18next';
 import { IDIOMAS, leerIdiomaGuardado, type Idioma } from '../i18n';
 
-// Idioma actual del sitio.
-// En el proyecto viejo cada componente hacía
-// `localStorage.getItem('language')` por su cuenta —hay más de treinta
-// lugares— y comparaba contra la cadena 'es'. Eso significaba que al
-// cambiar de idioma, los componentes que ya estaban montados no se
-// enteraban hasta recargar. Aquí el idioma es estado compartido y todo
-// se vuelve a pintar de una vez.
+// Current language of the site.
+// In the old project every component did
+// `localStorage.getItem('language')` on its own —there are more than
+// thirty places— and compared against the string 'es'. That meant
+// that when the language was changed, components that were already
+// mounted did not find out until a reload. Here the language is shared
+// state and everything is repainted at once.
 
 interface ValorIdioma {
   idioma: Idioma;
@@ -44,7 +44,7 @@ export function IdiomaProvider({ children }: { children: ReactNode }) {
       try {
         window.localStorage.setItem('language', nuevo);
       } catch {
-        // Sin almacenamiento el cambio vale para esta visita nada más.
+        // Without storage the change only lasts for this visit.
       }
     },
     [i18n],

@@ -2,7 +2,7 @@
 
 import Reveal from '../Reveal';
 
-// Título de sección. Mismas clases que el sitio anterior.
+// Section title. Same classes as the previous site.
 export default function Sectitle({
   Title,
   TitleP = '',

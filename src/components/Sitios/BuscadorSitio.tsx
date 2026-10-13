@@ -9,9 +9,9 @@ import { useIdioma } from '../../context/IdiomaContext';
 import type { Categoria, Pagina } from '../../lib/tipos';
 import type { ConfigTipo } from '../../lib/tiposSitio';
 
-// Buscador de las páginas de listado.
-// Cuando el tipo tiene categorías propias (atracciones, hospedaje)
-// aparece además el desplegable de categorías.
+// Search box of the list pages.
+// When the type has its own categories (attractions, lodging) the
+// categories dropdown also appears.
 export default function BuscadorSitio({ tipo }: { tipo: ConfigTipo }) {
   const { t } = useTranslation('global');
   const { esEspanol } = useIdioma();

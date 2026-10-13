@@ -1,16 +1,17 @@
-// Conversión de coordenadas.
-// En la base de datos latitud y longitud son texto libre, y conviven
-// dos formatos: decimal ("9.3612") y grados/minutos/segundos
-// ("9°25'25.6\"N"). El sitio anterior nunca las usó para pintar un
-// mapa, así que nadie las normalizó. Aquí se aceptan ambos.
+// Coordinate conversion.
+// In the database latitude and longitude are free text, and two
+// formats coexist: decimal ("9.3612") and degrees/minutes/seconds
+// ("9°25'25.6\"N"). The previous site never used them to draw a map,
+// so nobody normalized them. Here both are accepted.
 
-// Grados decimales a partir del texto guardado, o null si no se entiende.
+// Decimal degrees from the saved text, or null if it is not understood.
 export function aDecimal(valor: string | null | undefined): number | null {
   if (!valor) return null;
   const texto = valor.trim();
   if (texto === '') return null;
 
-  // Formato decimal, con punto o coma y posible letra de rumbo.
+  // Decimal format, with a dot or a comma and a possible hemisphere
+  // letter.
   const decimal = texto.match(/^(-?\d+(?:[.,]\d+)?)\s*([NSEWOnsewo])?$/);
   if (decimal) {
     const numero = Number(decimal[1].replace(',', '.'));
@@ -18,7 +19,7 @@ export function aDecimal(valor: string | null | undefined): number | null {
     return aplicarRumbo(numero, decimal[2]);
   }
 
-  // Formato grados/minutos/segundos: 9°25'25.6"N
+  // Degrees/minutes/seconds format: 9°25'25.6"N
   const gms = texto.match(
     /^(-?\d+(?:[.,]\d+)?)\s*°\s*(?:(\d+(?:[.,]\d+)?)\s*['′]\s*)?(?:(\d+(?:[.,]\d+)?)\s*["″]?\s*)?([NSEWOnsewo])?$/,
   );
@@ -34,7 +35,7 @@ export function aDecimal(valor: string | null | undefined): number | null {
   return aplicarRumbo(signo * absoluto, gms[4]);
 }
 
-// S y W (u O, de Oeste) son negativos.
+// S and W (or O, for Oeste) are negative.
 function aplicarRumbo(numero: number, rumbo?: string): number {
   if (!rumbo) return numero;
   const letra = rumbo.toUpperCase();
@@ -42,10 +43,10 @@ function aplicarRumbo(numero: number, rumbo?: string): number {
   return negativo ? -Math.abs(numero) : Math.abs(numero);
 }
 
-// Punto listo para el mapa, o null si falta o no se entiende alguna de
-// las dos coordenadas. Se descartan las que caen fuera de Costa Rica:
-// en la base hay filas con la longitud sin el signo negativo, que
-// ubicarían el sitio en la India.
+// Point ready for the map, or null if either coordinate is missing or
+// not understood. Those that fall outside Costa Rica are discarded:
+// in the database there are rows with the longitude missing its
+// negative sign, which would place the site in India.
 export function aPunto(
   latitud: string | null | undefined,
   longitud: string | null | undefined,
@@ -54,9 +55,9 @@ export function aPunto(
   let lng = aDecimal(longitud);
   if (lat === null || lng === null) return null;
 
-  // Costa Rica está entre 8 y 11.3 de latitud y entre -86 y -82.5 de
-  // longitud. Si la longitud vino positiva dentro de ese rango, es que
-  // le falta el signo.
+  // Costa Rica lies between 8 and 11.3 latitude and between -86 and
+  // -82.5 longitude. If the longitude came positive within that range,
+  // it is missing the sign.
   if (lng > 82 && lng < 86) lng = -lng;
 
   if (lat < 7 || lat > 12) return null;

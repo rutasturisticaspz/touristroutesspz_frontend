@@ -2,11 +2,11 @@
 
 import { useEffect, type ReactNode } from 'react';
 
-// Ventana modal.
-// Reemplaza a los Modal de react-bootstrap y a los recuadros de
-// sweetalert2, que entre los dos sumaban dos librerías para lo mismo.
-// Cierra con Escape y con clic afuera, cosa que los de sweetalert2 no
-// hacían en las confirmaciones de borrado.
+// Modal window.
+// Replaces react-bootstrap's Modal and sweetalert2's boxes, which
+// together amounted to two libraries for the same thing.
+// It closes with Escape and with a click outside, which sweetalert2's
+// did not do in the deletion confirmations.
 export default function Modal({
   titulo,
   abierto,

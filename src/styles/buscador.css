@@ -1,19 +1,19 @@
 /*
- * Arreglo de la barra lateral del buscador.
+ * Fix for the search page sidebar.
  *
- * Las etiquetas de filtro (.post-tags a/span) traen `float: left` del
- * tema original. Un contenedor lleno de elementos flotados mide cero
- * de alto, así que los bloques siguientes —"Otros", "Subcategorías"—
- * se le montaban encima.
+ * The filter labels (.post-tags a/span) carry `float: left` from the
+ * original theme. A container full of floated elements measures zero
+ * height, so the following blocks —"Otros", "Subcategorías"— were
+ * stacking on top of it.
  *
- * El sitio anterior lo tapaba poniendo a mano un
- * `style={{marginBottom: '320px'}}` en cada bloque: un número inventado
- * que dejaba un hueco enorme cuando había pocas etiquetas y seguía
- * quedando corto cuando había muchas (la lista de subcategorías tiene
- * más de treinta).
+ * The previous site covered it up by hand-setting a
+ * `style={{marginBottom: '320px'}}` on each block: an invented number
+ * that left a huge gap when there were few labels and still fell
+ * short when there were many (the subcategories list has more than
+ * thirty).
  *
- * Aquí el contenedor pasa a ser flex, que sí mide el alto de su
- * contenido. El aspecto de cada etiqueta no cambia.
+ * Here the container becomes flex, which does measure the height of
+ * its content. The look of each label does not change.
  */
 
 .blog-sidebar .widget.widget_tag_cloud .post-tags {
@@ -30,8 +30,8 @@
   cursor: pointer;
 }
 
-/* La lista de tipos de sitio: el nombre a la izquierda y el conteo a
-   la derecha, sin que se peguen. */
+/* The list of site types: the name on the left and the count on the
+   right, without them touching. */
 .blog-sidebar .widget.widget_categorie ul li {
   display: flex;
   align-items: baseline;

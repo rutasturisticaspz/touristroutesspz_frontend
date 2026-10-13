@@ -17,14 +17,14 @@ import { useIdioma } from '../../context/IdiomaContext';
 import type { ConfigTipo } from '../../lib/tiposSitio';
 import type { Contacto, Sitio } from '../../lib/tipos';
 
-// Página de detalle de un sitio, común a los seis tipos.
-// Antes SitioIndividual.js repetía seis veces el mismo bloque de
-// carga —uno por tipo, cada uno con su servicio y su nombre de campo
-// en la respuesta— y luego SitioIndividualContainer volvía a traducir
-// el tipo a mano tres veces más. Aquí el tipo llega resuelto desde la
-// tabla de tipos y la carga es una sola.
+// Detail page of a site, common to the six types.
+// Before, SitioIndividual.js repeated the same loading block six
+// times —one per type, each with its own service and its field name
+// in the response— and then SitioIndividualContainer translated the
+// type by hand three more times. Here the type arrives already
+// resolved from the types table and the loading is done once.
 
-// Los enlaces de Facebook/Instagram/web muestran el tipo; el resto, el valor.
+// Facebook/Instagram/web links show the type; the rest, the value.
 function rotuloContacto(contacto: Contacto): string {
   const conRotulo = ['Facebook', 'Instagram', 'Página web'];
   return conRotulo.includes(contacto.tipo) ? contacto.tipo : contacto.valor;
@@ -53,7 +53,7 @@ export default function DetalleSitio({ tipo, id }: { tipo: ConfigTipo; id: numbe
         setSitio(datos);
         setCargando(false);
 
-        // Otros del mismo tipo en el mismo distrito.
+        // Others of the same type in the same district.
         const distrito = datos.ubicacion?.distrito;
         if (!distrito) return;
         return api

@@ -9,19 +9,25 @@ import { pedirAdmin, ROLES, type Rol } from '../../../lib/apiAdmin';
 import { useSesion } from '../../../context/SesionContext';
 import type { Pagina } from '../../../lib/tipos';
 
-// /admin/usuarios — quién entra al panel y con qué permisos.
-// Reemplaza a Permisos.jsx + PermisosTableRow.jsx (330 líneas).
-// Sobre la contraseña: el sistema anterior generaba una y la mandaba
-// por correo desde una cuenta de Gmail cuya contraseña de aplicación
-// estaba escrita dentro del código, en el repositorio. Eso no se
-// portó. Ahora el backend genera la contraseña y la devuelve una sola
-// vez, acá en pantalla: quien crea la cuenta se la pasa a la persona
-// por el medio que quiera, y ella la cambia al entrar.
-// La lista incluye las cuentas inactivas a propósito: son las que hay
-// que revisar. En la base hay varias cuentas con rol de administrador
-// que llevan años sin usarse.
+// /admin/usuarios — who gets into the panel and with what permissions.
+// Replaces Permisos.jsx + PermisosTableRow.jsx (330 lines).
+// About the password: the previous system generated one and emailed it
+// from a Gmail account whose app password was written inside the code,
+// in the repository. That was not ported. Now the backend generates
+// the password and returns it only once, here on screen: whoever
+// creates the account hands it to the person by whatever means they
+// like, and the person changes it on entering.
+// The list includes inactive accounts on purpose: they are the ones to
+// review. In the database there are several accounts with an
+// administrator role that have gone unused for years.
 
 const POR_PAGINA = 10;
+
+interface ContrasenaTemporal {
+  email: string;
+  password: string;
+  origen: 'creada' | 'restablecida';
+}
 
 interface Usuario {
   id: number;
@@ -56,11 +62,12 @@ export default function Pagina_() {
   const [rol, setRol] = useState<Rol>(ROLES.MODERADOR);
   const [guardando, setGuardando] = useState(false);
   const [errorCrear, setErrorCrear] = useState<string | null>(null);
-  // La contraseña generada se muestra una sola vez.
-  const [temporal, setTemporal] = useState<{ email: string; password: string } | null>(null);
+  // The generated password is shown only once.
+  const [temporal, setTemporal] = useState<ContrasenaTemporal | null>(null);
 
   const [aCambiar, setACambiar] = useState<Usuario | null>(null);
   const [aEliminar, setAEliminar] = useState<Usuario | null>(null);
+  const [aRestablecer, setARestablecer] = useState<Usuario | null>(null);
 
   useEffect(() => {
     const temporizador = setTimeout(() => {
@@ -120,6 +127,7 @@ export default function Pagina_() {
       setTemporal({
         email: respuesta.usuario.email ?? correo.trim(),
         password: respuesta.passwordTemporal,
+        origen: 'creada',
       });
       await cargar();
     } catch (problema) {
@@ -138,6 +146,30 @@ export default function Pagina_() {
       await cargar();
     } catch (problema) {
       setError(problema instanceof Error ? problema.message : 'No se pudo cambiar el estado');
+    } finally {
+      setTrabajando(false);
+    }
+  };
+
+  const restablecerContrasena = async (usuario: Usuario) => {
+    setTrabajando(true);
+    setError(null);
+    try {
+      const respuesta = await pedirAdmin<{ passwordTemporal: string }>(
+        `/usuarios/${usuario.id}/restablecer-contrasena`,
+        { metodo: 'POST' },
+      );
+      setARestablecer(null);
+      setTemporal({
+        email: usuario.email ?? '',
+        password: respuesta.passwordTemporal,
+        origen: 'restablecida',
+      });
+    } catch (problema) {
+      setARestablecer(null);
+      setError(
+        problema instanceof Error ? problema.message : 'No se pudo restablecer la contraseña',
+      );
     } finally {
       setTrabajando(false);
     }
@@ -265,6 +297,14 @@ export default function Pagina_() {
                       </span>
                     </td>
                     <td className="acciones">
+                      <button
+                        type="button"
+                        className="rt_boton rt_boton_secundario rt_boton_chico"
+                        onClick={() => setARestablecer(usuario)}
+                        disabled={trabajando}
+                      >
+                        Restablecer contraseña
+                      </button>{' '}
                       {activo ? (
                         <button
                           type="button"
@@ -377,7 +417,7 @@ export default function Pagina_() {
       </Modal>
 
       <Modal
-        titulo="Usuario creado"
+        titulo={temporal?.origen === 'restablecida' ? 'Contraseña restablecida' : 'Usuario creado'}
         abierto={temporal !== null}
         alCerrar={() => setTemporal(null)}
         acciones={
@@ -390,7 +430,7 @@ export default function Pagina_() {
           <>
             <p>
               Pasale estos datos a la persona por un medio seguro. La contraseña no se vuelve a
-              mostrar; si se pierde, hay que crear otra cuenta o restablecerla desde la base.
+              mostrar; si se pierde, se puede restablecer otra vez desde esta pantalla.
             </p>
             <div className="rt_admin_campo">
               <label>Correo</label>
@@ -422,6 +462,20 @@ export default function Pagina_() {
         trabajando={trabajando}
         alConfirmar={() => aCambiar && cambiarEstado(aCambiar, false)}
         alCerrar={() => setACambiar(null)}
+      />
+
+      <Confirmacion
+        abierto={aRestablecer !== null}
+        titulo="¿Restablecer la contraseña?"
+        detalle={
+          aRestablecer
+            ? `${aRestablecer.nombre || aRestablecer.email}. Se genera una contraseña nueva y la actual deja de funcionar. Si la persona tiene una sesión abierta, esa sesión sigue activa hasta que expire.`
+            : undefined
+        }
+        textoConfirmar="Restablecer"
+        trabajando={trabajando}
+        alConfirmar={() => aRestablecer && restablecerContrasena(aRestablecer)}
+        alCerrar={() => setARestablecer(null)}
       />
 
       <Confirmacion

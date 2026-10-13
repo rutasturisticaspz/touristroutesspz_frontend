@@ -4,7 +4,7 @@ import { notFound, useParams } from 'next/navigation';
 import FichaSitio from '../../../../components/Admin/FichaSitio';
 import { buscarTipoAdmin } from '../../../../lib/tiposAdmin';
 
-// /admin/:tipo/:id — la ficha de edición.
+// /admin/:tipo/:id — the edit page.
 export default function Pagina() {
   const parametros = useParams<{ tipo: string; id: string }>();
   const tipo = buscarTipoAdmin(parametros?.tipo);

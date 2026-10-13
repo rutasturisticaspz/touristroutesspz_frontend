@@ -14,12 +14,12 @@ import { hrefContacto, iconoContacto, opcionesSlider, primeraImagen, rangoFechas
 import { useIdioma } from '../../../context/IdiomaContext';
 import type { Contacto, Evento, Sitio } from '../../../lib/tipos';
 
-// /evento/:id — el detalle de un evento.
-// La barra lateral muestra los sitios que participan. El backend
-// devuelve los seis vínculos ya aplanados, así que aquí es una tabla
-// en vez de los seis bloques copiados del original.
+// /evento/:id — the detail of an event.
+// The sidebar shows the participating sites. The backend returns the
+// six links already flattened, so here it is a table instead of the
+// six blocks copied from the original.
 
-// Los seis tipos de sitio que un evento puede tener asociados.
+// The six site types an event can have associated.
 const PARTICIPAN = [
   { campo: 'atracciones', tipoClave: 'atracciones', es: 'Atracciones', en: 'Attractions' },
   { campo: 'restaurantes', tipoClave: 'restaurantes', es: 'Restaurantes', en: 'Restaurants' },

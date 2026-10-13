@@ -14,7 +14,7 @@ import VeniAPerez from '../components/Home/VeniAPerez';
 import HomeMapa from '../components/Home/HomeMapa';
 import AtraccionesActionThree from '../components/Atracciones/AtraccionesActionThree';
 
-// Portada. Mismas secciones y en el mismo orden que el sitio actual.
+// Home page. Same sections and in the same order as the current site.
 export default function Inicio() {
   return (
     <div className="body_wrapper">

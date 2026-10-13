@@ -8,23 +8,16 @@ import FooterRutas from '../../components/Footer/FooterRutas';
 import BannerDetalle from '../../components/Banner/BannerDetalle';
 import { api } from '../../lib/api';
 import { validarTexto } from '../../lib/helpers';
+import { CONTACTOS } from '../../lib/contactos';
 
-// /contacto — el formulario público.
-// Cambios respecto al anterior:
-//  - El aviso de "enviado" es un mensaje en la misma página, no
-//    sweetalert2 (una dependencia entera para mostrar un recuadro).
-//  - El correo se valida antes de mandarlo; antes se aceptaba
-//    cualquier texto y el error salía después.
-//  - Los datos de contacto de la esquina son los de la página; están
-//    aquí para que la U los pueda cambiar en un solo lugar.
-
-const CONTACTOS = {
-  telefono: '(+506) 88388535',
-  telefonoLlamada: 'tel:+50688388535',
-  correo: 'erick.madrigal.villanueva@una.ac.cr',
-  facebook: 'https://www.facebook.com/rutasturisticaspz',
-  facebookRotulo: 'rutasturisticaspz',
-};
+// /contacto — the public form.
+// Changes from the previous one:
+//  - The "sent" notice is a message on the same page, not sweetalert2
+//    (an entire dependency to show a box).
+//  - The email is validated before sending; before, any text was
+//    accepted and the error came afterwards.
+//  - The contact details in the corner are the page's; they are here
+//    so the University can change them in a single place.
 
 type Estado = 'listo' | 'enviando' | 'enviado' | 'error';
 

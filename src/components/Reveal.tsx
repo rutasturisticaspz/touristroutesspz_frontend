@@ -2,10 +2,10 @@
 
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 
-// Aparición con animación al entrar en pantalla.
-// Reemplaza a react-reveal, que quedó sin mantenimiento y no funciona
-// con React 19. Usa IntersectionObserver y las clases de animate.css
-// que el proyecto ya traía, así que se ve igual que antes.
+// Animated appearance when entering the screen.
+// Replaces react-reveal, which became unmaintained and does not work
+// with React 19. It uses IntersectionObserver and the animate.css
+// classes the project already had, so it looks the same as before.
 export default function Reveal({
   children,
   effect = 'fadeInLeft',
@@ -24,7 +24,7 @@ export default function Reveal({
     const elemento = referencia.current;
     if (!elemento) return;
 
-    // Si el navegador no lo soporta, se muestra sin animación.
+    // If the browser does not support it, it is shown without animation.
     if (typeof IntersectionObserver === 'undefined') {
       setVisible(true);
       return;

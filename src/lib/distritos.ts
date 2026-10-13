@@ -1,14 +1,14 @@
-// Los doce distritos de Pérez Zeledón y su segmento de URL.
-// Antes esto vivía suelto dentro de helpers.js como `mapDistritos`, y
-// la función que lo consultaba devolvía `undefined` en silencio cuando
-// el nombre no coincidía —lo que producía enlaces a
-// /distritos/undefined—. Aquí la búsqueda no distingue mayúsculas ni
-// acentos, y quien llama decide qué hacer si no hay coincidencia.
+// The twelve districts of Pérez Zeledón and their URL segment.
+// This used to live loose inside helpers.js as `mapDistritos`, and the
+// function that queried it silently returned `undefined` when the name
+// did not match —which produced links to /distritos/undefined—. Here
+// the lookup ignores case and accents, and the caller decides what to
+// do if there is no match.
 
 export interface Distrito {
-  // Nombre tal como viene en la base de datos.
+  // Name as it comes in the database.
   nombre: string;
-  // Segmento en /distritos/:slug
+  // Segment in /distritos/:slug
   slug: string;
 }
 
@@ -27,7 +27,7 @@ export const DISTRITOS: Distrito[] = [
   { nombre: 'La Amistad', slug: 'laamistad' },
 ];
 
-// Quita acentos y baja a minúsculas, para comparar sin sorpresas.
+// Strips accents and lowercases, to compare without surprises.
 function normalizar(texto: string): string {
   return texto
     .normalize('NFD')
@@ -36,14 +36,14 @@ function normalizar(texto: string): string {
     .toLowerCase();
 }
 
-// Slug del distrito, o null si el nombre no corresponde a ninguno.
+// District slug, or null if the name does not match any.
 export function slugDistrito(nombre: string | null | undefined): string | null {
   if (!nombre) return null;
   const buscado = normalizar(nombre);
   return DISTRITOS.find((d) => normalizar(d.nombre) === buscado)?.slug ?? null;
 }
 
-// Distrito a partir del segmento de la URL.
+// District from the URL segment.
 export function distritoPorSlug(slug: string | undefined): Distrito | null {
   if (!slug) return null;
   return DISTRITOS.find((d) => d.slug === slug.toLowerCase()) ?? null;

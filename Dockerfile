@@ -1,24 +1,25 @@
 # ------------------------------------------------------------
-#  Sitio público — Rutas Turísticas Pérez Zeledón
+#  Public site — Rutas Turísticas Pérez Zeledón
 #
-#  OJO con las variables NEXT_PUBLIC_*: Next las incrusta en el
-#  JavaScript que se manda al navegador DURANTE LA COMPILACIÓN, no al
-#  arrancar. Por eso van como ARG y no sólo como variables de entorno
-#  del contenedor: si se pasan al arrancar, no llegan al navegador.
+#  NOTE on the NEXT_PUBLIC_* variables: Next embeds them in the
+#  JavaScript sent to the browser DURING THE BUILD, not at startup.
+#  That is why they go as ARG and not only as container environment
+#  variables: if they are passed at startup, they do not reach the
+#  browser.
 #
-#  Y por lo mismo, NEXT_PUBLIC_API_URL tiene que ser la dirección que
-#  ve el NAVEGADOR de la persona, no la de la red interna de Docker.
-#  Poner http://backend:2999 aquí compila un sitio que nadie puede
-#  usar: ese nombre sólo existe dentro de la red de contenedores.
+#  And for the same reason, NEXT_PUBLIC_API_URL has to be the address
+#  seen by the person's BROWSER, not the one on Docker's internal
+#  network. Putting http://backend:2999 here builds a site nobody can
+#  use: that name only exists inside the container network.
 # ------------------------------------------------------------
 
-# --- Etapa 1: dependencias ---
+# --- Stage 1: dependencies ---
 FROM node:22-bookworm-slim AS deps
 WORKDIR /app
 COPY package*.json ./
 RUN npm ci
 
-# --- Etapa 2: compilación ---
+# --- Stage 2: build ---
 FROM node:22-bookworm-slim AS build
 WORKDIR /app
 
@@ -32,7 +33,7 @@ COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 RUN npm run build
 
-# --- Etapa 3: ejecución ---
+# --- Stage 3: runtime ---
 FROM node:22-bookworm-slim AS runtime
 WORKDIR /app
 
@@ -41,8 +42,8 @@ ENV NEXT_TELEMETRY_DISABLED=1
 ENV PORT=3000
 ENV HOSTNAME=0.0.0.0
 
-# El servidor mínimo que arma `output: standalone`, más los estáticos
-# y las imágenes, que no van adentro de ese paquete.
+# The minimal server that `output: standalone` produces, plus the
+# static files and images, which are not inside that bundle.
 COPY --from=build /app/.next/standalone ./
 COPY --from=build /app/.next/static ./.next/static
 COPY --chown=node:node --from=build /app/public ./public

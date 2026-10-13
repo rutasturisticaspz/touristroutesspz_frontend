@@ -6,9 +6,9 @@ import { buscarTipo } from '../../../../../../../../lib/tiposSitio';
 import { leerLista } from '../../../../../../../../lib/filtrosBusqueda';
 
 // /buscar/:tipo/:filtro/:categorias/:pagina/:accesibilidad/:otros
-// La forma de la URL es la del sitio anterior, para que los enlaces
-// compartidos sigan sirviendo. "Todos" en cualquiera de los segmentos
-// significa "sin ese filtro".
+// The shape of the URL is the previous site's, so shared links keep
+// working. "Todos" in any of the segments means "without that
+// filter".
 export default function Pagina() {
   const p = useParams<{
     tipo: string;

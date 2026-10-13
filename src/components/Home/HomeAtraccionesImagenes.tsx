@@ -6,9 +6,9 @@ import Carrusel from '../Carrusel';
 import { opcionesSlider } from '../../lib/helpers';
 import { imagenesHome } from '../../lib/imagenesHome';
 
-// Galería de la portada.
-// Estas 15 fotos estaban quemadas como URLs de Firebase en el código;
-// ahora salen del backend, igual que el resto de las imágenes.
+// Home page gallery.
+// These 15 photos were hardcoded as Firebase URLs in the code; now
+// they come from the backend, like the rest of the images.
 export default function HomeAtraccionesImagenes() {
   const { t } = useTranslation('global');
 

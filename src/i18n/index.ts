@@ -6,12 +6,12 @@ import global_es from './es/global.json';
 import global_en from './en/global.json';
 import { IDIOMA_POR_DEFECTO } from '../lib/config';
 
-// Traducciones. Son los mismos archivos JSON del sitio anterior, sin
-// tocar, para que ni una etiqueta cambie de texto.
-// El idioma se lee de localStorage igual que antes. La diferencia es
-// que aquí se hace dentro de un efecto y no al importar el módulo:
-// en Next el código también corre en el servidor, donde localStorage
-// no existe, y leerlo directo tumbaba la página.
+// Translations. They are the same JSON files from the previous site,
+// untouched, so that not a single label changes its text.
+// The language is read from localStorage like before. The difference
+// is that here it is done inside an effect and not when importing the
+// module: in Next the code also runs on the server, where localStorage
+// does not exist, and reading it directly crashed the page.
 
 export const IDIOMAS = ['es', 'en'] as const;
 export type Idioma = (typeof IDIOMAS)[number];

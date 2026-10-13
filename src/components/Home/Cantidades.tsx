@@ -6,13 +6,13 @@ import { useTranslation } from 'react-i18next';
 import { api } from '../../lib/api';
 import '../../styles/cantidades.css';
 
-// Los seis círculos con la cantidad de sitios de cada tipo.
-// OJO con el cambio de forma: el API anterior devolvía
+// The six circles with the number of sites of each type.
+// NOTE on the change of shape: the previous API returned
 //     { "atracciones": [ { "count": 124 } ], "rentacars": [ ... ] }
-// y el componente lo leía como `counts?.[key]?.[0]?.count || 0`. Ese
-// `|| 0` escondía cualquier error: si la respuesta cambiaba, la
-// portada mostraba seis ceros sin avisar. El backend nuevo devuelve
-// números planos y las llaves cambiaron (`rentacars` → `rentadoras`).
+// and the component read it as `counts?.[key]?.[0]?.count || 0`. That
+// `|| 0` hid any error: if the response changed, the home page showed
+// six zeros without warning. The new backend returns plain numbers and
+// the keys changed (`rentacars` → `rentadoras`).
 
 const TIPOS = [
   { href: '/atracciones', clave: 'atracciones', etiqueta: 'attractions', caja: 'one' },

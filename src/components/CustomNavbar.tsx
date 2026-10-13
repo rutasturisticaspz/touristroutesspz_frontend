@@ -7,13 +7,15 @@ import { useTranslation } from 'react-i18next';
 import Sticky from './Sticky';
 import { usePlan } from '../context/PlanContext';
 import { useIdioma } from '../context/IdiomaContext';
+import { useNovedades, type Seccion } from '../context/NovedadesContext';
 import '../styles/navbar.css';
 
-// Barra de navegación.
-// Es la misma de antes, con el mismo marcado y las mismas clases de
-// Bootstrap 4, pero el menú colapsable y el desplegable se manejan con
-// estado de React en vez del JavaScript de Bootstrap. Eso saca del
-// proyecto a jQuery y a popper.js, que estaban sólo para esto.
+// Navigation bar.
+// It is the same as before, with the same markup and the same
+// Bootstrap 4 classes, but the collapsible menu and the dropdown are
+// handled with React state instead of Bootstrap's JavaScript. That
+// takes jQuery and popper.js out of the project, which were only
+// there for this.
 
 interface Props {
   mClass?: string;
@@ -25,12 +27,6 @@ interface Props {
 const ENLACE_INSTAGRAM =
   'https://www.instagram.com/quehacerenperez_com?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw/';
 
-// OJO: este enlace apunta a una carpeta de Drive personal. Queda igual
-// que en el sitio actual, pero es uno de los pendientes de la
-// migración: hay que moverlo a un archivo servido por la Universidad.
-const ENLACE_RECURSOS =
-  'https://drive.google.com/drive/folders/10OkYsHdGs9-HaJI7FgEdEbjNAOo32gZn?usp=sharing';
-
 export default function CustomNavbar({
   mClass = '',
   nClass = '',
@@ -40,12 +36,13 @@ export default function CustomNavbar({
   const { t } = useTranslation('global');
   const { planItems } = usePlan();
   const { idioma, cambiarIdioma } = useIdioma();
+  const novedades = useNovedades();
   const rutaActual = usePathname();
 
   const [menuAbierto, setMenuAbierto] = useState(false);
   const [submenuAbierto, setSubmenuAbierto] = useState(false);
 
-  // Animación del contador del plan, igual que antes.
+  // Plan counter animation, same as before.
   const conteoPrevio = useRef(planItems.length);
   const [animar, setAnimar] = useState(false);
 
@@ -58,23 +55,33 @@ export default function CustomNavbar({
     }
   }, [planItems.length]);
 
-  // Al cambiar de página se cierra el menú; en móvil quedaba abierto.
+  // When changing page the menu closes; on mobile it stayed open.
   useEffect(() => {
     setMenuAbierto(false);
     setSubmenuAbierto(false);
   }, [rutaActual]);
 
-  const enlace = (destino: string, etiqueta: string) => (
+  // Label with the "x new" badge on top, if the section has one.
+  const conInsignia = (etiqueta: string, cantidad: number) => (
+    <span className="rt_nav_etiqueta">
+      {etiqueta}
+      <InsigniaNuevos cantidad={cantidad} />
+    </span>
+  );
+
+  const enlace = (destino: string, etiqueta: string, seccion?: Seccion) => (
     <li className="nav-item">
       <Link
         title={etiqueta}
         className={`nav-link${rutaActual === destino ? ' active' : ''}`}
         href={destino}
       >
-        {etiqueta}
+        {conInsignia(etiqueta, seccion ? novedades[seccion] : 0)}
       </Link>
     </li>
   );
+
+  const novedadesDeMas = novedades.oficinas + novedades.operadores + novedades.rentadoras;
 
   const botonIdioma = (codigo: 'es' | 'en', etiqueta: string) => (
     <button
@@ -157,10 +164,11 @@ export default function CustomNavbar({
             >
               <ul className={`navbar-nav menu ml-auto ${nClass}`}>
                 {enlace('/inicio', t('global.home'))}
-                {enlace('/eventos', t('global.events'))}
-                {enlace('/atracciones', t('global.attractions'))}
-                {enlace('/restaurantes', t('global.restaurants'))}
-                {enlace('/hospedaje', t('global.lodgings'))}
+                {enlace('/eventos', t('global.events'), 'eventos')}
+                {enlace('/atracciones', t('global.attractions'), 'atracciones')}
+                {enlace('/restaurantes', t('global.restaurants'), 'restaurantes')}
+                {enlace('/hospedaje', t('global.lodgings'), 'hoteles')}
+                {enlace('/barometro', t('global.barometer'))}
 
                 <li className={`nav-item dropdown submenu${submenuAbierto ? ' show' : ''}`}>
                   <button
@@ -171,25 +179,15 @@ export default function CustomNavbar({
                     aria-expanded={submenuAbierto}
                     style={{ background: 'none', border: 'none' }}
                   >
-                    {t('global.more')}
+                    {conInsignia(t('global.more'), novedadesDeMas)}
                   </button>
                   <ul className={`dropdown-menu${submenuAbierto ? ' show' : ''}`}>
-                    {enlace('/oficinas-turisticas', t('global.touristic_offices'))}
-                    {enlace('/operadores-turisticos', t('global.tour_operators'))}
-                    {enlace('/renta-cars', t('global.rental_cars'))}
+                    {enlace('/oficinas-turisticas', t('global.touristic_offices'), 'oficinas')}
+                    {enlace('/operadores-turisticos', t('global.tour_operators'), 'operadores')}
+                    {enlace('/renta-cars', t('global.rental_cars'), 'rentadoras')}
                     {enlace('/perezzeledon', t('global.perez_zeledon'))}
                     {enlace('/mapas', t('global.maps'))}
                     {enlace('/contacto', t('global.contact'))}
-                    <li className="nav-item">
-                      <a
-                        className="nav-link"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        href={ENLACE_RECURSOS}
-                      >
-                        {t('global.downloadable_resources')}
-                      </a>
-                    </li>
                   </ul>
                 </li>
 
@@ -257,4 +255,11 @@ export default function CustomNavbar({
       </header>
     </Sticky>
   );
+}
+
+// "1 new", "20 new". It is not drawn if there is nothing new.
+function InsigniaNuevos({ cantidad }: { cantidad: number }) {
+  const { t } = useTranslation('global');
+  if (cantidad <= 0) return null;
+  return <span className="rt_insignia_nuevos">{t('global.new_count', { count: cantidad })}</span>;
 }

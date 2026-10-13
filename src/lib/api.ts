@@ -1,12 +1,12 @@
 import { API_URL } from './config';
-import type { Pagina, Sitio, TipoSitio } from './tipos';
+import type { Mapa, Pagina, Sitio, TipoSitio } from './tipos';
 
-// Cliente del API.
-// El sitio anterior tenía un archivo de servicios por cada tipo de
-// sitio —atracciones.js, hospedaje.js, restaurantes.js…— con las
-// mismas seis funciones copiadas en cada uno, y cada llamada armaba la
-// URL a mano con plantillas. Como el backend nuevo expone la misma
-// forma para los siete tipos, aquí basta una función parametrizada.
+// API client.
+// The previous site had a services file for each site type
+// —atracciones.js, hospedaje.js, restaurantes.js…— with the same six
+// functions copied into each one, and every call built the URL by hand
+// with templates. Since the new backend exposes the same shape for all
+// seven types, a single parameterized function is enough here.
 
 export class ErrorApi extends Error {
   constructor(
@@ -41,7 +41,7 @@ export async function pedir<T>(ruta: string, parametros?: Parametros): Promise<T
       const cuerpo = await respuesta.json();
       if (cuerpo?.error) mensaje = cuerpo.error;
     } catch {
-      // La respuesta no era JSON; queda el mensaje genérico.
+      // The response was not JSON; the generic message stays.
     }
     throw new ErrorApi(respuesta.status, mensaje);
   }
@@ -49,7 +49,7 @@ export async function pedir<T>(ruta: string, parametros?: Parametros): Promise<T
   return respuesta.json() as Promise<T>;
 }
 
-// POST con cuerpo JSON, con el mismo manejo de errores que `pedir`.
+// POST with a JSON body, with the same error handling as `pedir`.
 export async function enviar<T>(ruta: string, cuerpo: unknown): Promise<T> {
   const respuesta = await fetch(`${API_URL}${ruta}`, {
     method: 'POST',
@@ -63,7 +63,7 @@ export async function enviar<T>(ruta: string, cuerpo: unknown): Promise<T> {
       const datos = await respuesta.json();
       if (datos?.error) mensaje = datos.error;
     } catch {
-      // La respuesta no era JSON.
+      // The response was not JSON.
     }
     throw new ErrorApi(respuesta.status, mensaje);
   }
@@ -71,7 +71,7 @@ export async function enviar<T>(ruta: string, cuerpo: unknown): Promise<T> {
   return respuesta.json() as Promise<T>;
 }
 
-// Filtros que acepta el listado de cualquier tipo de sitio.
+// Filters accepted by the list of any site type.
 export interface FiltrosSitio {
   filtro?: string;
   provincia?: string;
@@ -79,6 +79,10 @@ export interface FiltrosSitio {
   distrito?: string;
   categorias?: string[];
   accesibilidad?: string[];
+  // Only events that have not ended yet (today's and future events).
+  proximos?: boolean;
+  // Days back that count as "new": those come first in /con-imagenes.
+  nuevos?: number;
   skip?: number;
   take?: number;
   ordenarPor?: string;
@@ -94,24 +98,27 @@ export const api = {
   conImagenes: (tipo: TipoSitio, filtros: FiltrosSitio = {}) =>
     pedir<Pagina<Sitio>>(`/${tipo}/con-imagenes`, filtros as Parametros),
 
-  // Otros sitios parecidos, para la barra lateral del detalle.
+  // Other similar sites, for the detail sidebar.
   relacionados: (tipo: TipoSitio, id: number, take = 3) =>
     pedir<Pagina<Sitio>>(`/${tipo}/${id}/relacionados`, { take }),
 
-  // Conteo global por tipo, para la portada.
+  // Global count by type, for the home page.
   conteo: () =>
     pedir<Record<string, number>>('/atracciones/conteo'),
 
+  mapas: () => pedir<Pagina<Mapa>>('/mapas'),
+
   categorias: (take = 100) => pedir<Pagina<unknown>>('/categorias', { take }),
 
-  // Formulario público de contacto. El campo del correo se llama
-  // `correo`, no `email`: así se llama en la tabla y así lo valida el backend.
+  // Public contact form. The email field is called `correo`, not
+  // `email`: that is its name in the table and how the backend
+  // validates it.
   enviarMensaje: (datos: { nombre: string; correo: string; asunto: string; mensaje: string }) =>
     enviar<{ ok: boolean; mensaje: string }>('/mensajes', datos),
 };
 
-// Las imágenes vienen del backend como rutas relativas (/uploads/...).
-// Antes eran URLs completas de Firebase con un token adentro.
+// Images come from the backend as relative paths (/uploads/...).
+// They used to be full Firebase URLs with a token inside.
 export function urlImagen(url: string | null | undefined): string {
   if (!url) return '/img/logoRT.png';
   if (url.startsWith('http')) return url;

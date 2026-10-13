@@ -6,7 +6,7 @@ import Reveal from '../Reveal';
 import { useIdioma } from '../../context/IdiomaContext';
 import { CONTACTO, SECCIONES, copywrite, copywriteEN } from './FooterData';
 
-// Pie de página. Mismo marcado y mismas clases que el sitio actual.
+// Footer. Same markup and same classes as the current site.
 export default function FooterRutas({ fClass = '' }: { fClass?: string }) {
   const { t } = useTranslation('global');
   const { esEspanol } = useIdioma();
@@ -99,6 +99,9 @@ export default function FooterRutas({ fClass = '' }: { fClass?: string }) {
           <div className="row">
             <div className="col-lg-6 col-md-6 col-sm-6">
               <p className="mb-0 f_400">{esEspanol ? copywrite() : copywriteEN()}</p>
+              <p className="mb-0 f_400">
+                <Link href="/privacidad">{t('footer.privacy_policy')}</Link>
+              </p>
             </div>
             <div className="col-lg-6 col-md-6 col-sm-6">
               <div className="f_social_icon_two text-right">

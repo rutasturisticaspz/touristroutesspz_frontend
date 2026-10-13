@@ -3,10 +3,10 @@
 import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 
-// Bienvenida con el video de YouTube.
-// El sitio anterior usaba react-player sólo para esto. Se reemplaza por
-// el iframe propio de YouTube: se ve igual y son 300 KB menos de
-// dependencias que mantener.
+// Welcome with the YouTube video.
+// The previous site used react-player only for this. It is replaced by
+// YouTube's own iframe: it looks the same and it is 300 KB less of
+// dependencies to maintain.
 export default function HomeBienvenida() {
   const { t } = useTranslation('global');
 

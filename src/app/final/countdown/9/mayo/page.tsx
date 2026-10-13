@@ -3,18 +3,19 @@
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
-// /final/countdown/9/mayo — la cuenta regresiva del lanzamiento.
-// Se conserva porque es parte de la historia del proyecto: el 9 de
-// mayo de 2022 a las 2:50 p.m. se presentó el sitio. La fecha ya pasó,
-// así que hoy siempre muestra la pantalla de bienvenida.
-// Tres arreglos respecto al original:
-//  - `setInterval` se llamaba sin intervalo y dentro de un useEffect
-//    sin arreglo de dependencias, así que arrancaba un temporizador
-//    nuevo en cada render y ninguno se limpiaba. La pestaña terminaba
-//    con cientos de temporizadores corriendo a la vez.
-//  - `clearInterval(interval.current)` nunca limpiaba nada, porque
-//    `interval` era un número, no una referencia.
-//  - El confeti venía de react-confetti; aquí es CSS, sin dependencia.
+// /final/countdown/9/mayo — the launch countdown.
+// It is kept because it is part of the project's history: on May 9,
+// 2022 at 2:50 p.m. the site was presented. The date has already
+// passed, so today it always shows the welcome screen.
+// Three fixes compared to the original:
+//  - `setInterval` was called without an interval and inside a
+//    useEffect without a dependency array, so it started a new timer
+//    on every render and none were cleared. The tab ended up with
+//    hundreds of timers running at once.
+//  - `clearInterval(interval.current)` never cleared anything, because
+//    `interval` was a number, not a ref.
+//  - The confetti came from react-confetti; here it is CSS, with no
+//    dependency.
 
 const FECHA_LANZAMIENTO = new Date('2022-05-09T14:50:00-06:00').getTime();
 
@@ -39,8 +40,8 @@ function calcular(): Restante {
 const dosDigitos = (n: number) => String(n).padStart(2, '0');
 
 export default function Pagina() {
-  // Arranca en null para que el servidor y el navegador pinten lo
-  // mismo; el reloj sólo existe del lado del navegador.
+  // Starts as null so the server and the browser paint the same thing;
+  // the clock only exists on the browser side.
   const [restante, setRestante] = useState<Restante | null>(null);
 
   useEffect(() => {

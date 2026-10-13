@@ -13,9 +13,9 @@ import SitiosDelDistrito, {
 import { fichaPorSlug } from '../../../lib/datosDistritos';
 import { useIdioma } from '../../../context/IdiomaContext';
 
-// /distritos/:slug — la ficha de un distrito.
-// La búsqueda de sitios usa el nombre sin acentos, porque así están
-// escritos los distritos en la tabla de ubicaciones.
+// /distritos/:slug — the page of a district.
+// The site search uses the name without accents, because that is how
+// the districts are written in the locations table.
 export default function Pagina() {
   const parametros = useParams<{ distrito: string }>();
   const ficha = fichaPorSlug(parametros?.distrito);

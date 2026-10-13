@@ -3,9 +3,9 @@ import type { ReactNode } from 'react';
 import Providers from './providers';
 import AccesibilidadWidget from '../components/Accesibilidad/AccesibilidadWidget';
 
-// Los estilos heredados, en el mismo orden en que los cargaba el sitio
-// anterior. El orden importa: main.css y responsive.css pisan a
-// Bootstrap a propósito.
+// The inherited styles, in the same order the previous site loaded
+// them. Order matters: main.css and responsive.css override Bootstrap
+// on purpose.
 import '../styles/themify-icon/themify-icons.css';
 import '../styles/simple-line-icon/simple-line-icons.css';
 import '../styles/font-awesome/css/all.css';

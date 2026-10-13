@@ -1,14 +1,14 @@
-// Ficha de los doce distritos.
-// Los datos vienen tal cual del archivo services/distritos.js del
-// sitio anterior: población, código postal, territorio, reseña en los
-// dos idiomas y el video. Lo único que se agregó es la ilustración,
-// que antes estaba repetida a mano en dos componentes distintos.
-// `poblacion: -1` significa "no hay dato" (La Amistad), igual que
-// antes; la ficha simplemente no muestra esa línea.
+// Profile of the twelve districts.
+// The data comes as is from the previous site's services/distritos.js
+// file: population, postal code, territory, description in both
+// languages and the video. The only thing added is the illustration,
+// which used to be repeated by hand in two different components.
+// `poblacion: -1` means "no data" (La Amistad), same as before; the
+// profile simply does not show that line.
 
 export interface FichaDistrito {
   nombre: string;
-  // Segmento en /distritos/:id
+  // Segment in /distritos/:id
   id: string;
   imagen: string;
   poblacion: number;
@@ -167,7 +167,7 @@ export const FICHAS_DISTRITO: FichaDistrito[] = [
     }
 ];
 
-// Ficha por segmento de URL, o null.
+// Profile by URL segment, or null.
 export function fichaPorSlug(slug: string | undefined): FichaDistrito | null {
   if (!slug) return null;
   return FICHAS_DISTRITO.find((d) => d.id === slug.toLowerCase()) ?? null;

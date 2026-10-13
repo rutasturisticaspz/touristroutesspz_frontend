@@ -1,32 +1,32 @@
 import type { TipoSitio } from './tipos';
 
-// Los seis tipos de sitio, en un solo lugar.
-// El sitio anterior tenía una página, un banner, un buscador y un
-// archivo de servicios POR CADA tipo — seis copias del mismo código con
-// distinto texto. Aquí cada tipo es una fila de esta tabla.
-// `clave` es el segmento que va en la URL /sitio/:tipo/:id. Se
-// conservan exactamente los del sitio actual (incluidos los que están
-// en camello, como operadoresTuristicos) para no romper los enlaces ya
-// publicados.
+// The six site types, in a single place.
+// The previous site had a page, a banner, a search box and a services
+// file FOR EACH type — six copies of the same code with different
+// text. Here each type is a row of this table.
+// `clave` is the segment that goes in the URL /sitio/:tipo/:id. The
+// ones from the current site are kept exactly (including those in
+// camel case, like operadoresTuristicos) so as not to break links
+// already published.
 
 export interface ConfigTipo {
-  // Segmento en /sitio/:tipo/:id
+  // Segment in /sitio/:tipo/:id
   clave: string;
-  // Tipo tal como lo llama el backend
+  // Type as the backend calls it
   api: TipoSitio;
-  // Llave de este tipo en la respuesta de /atracciones/conteo
+  // Key of this type in the /atracciones/conteo response
   conteo: string;
-  // Ruta del listado
+  // List route
   ruta: string;
-  // Clave de traducción del título del banner
+  // Translation key for the banner title
   titulo: string;
-  // Claves de traducción de las dos líneas de descripción
+  // Translation keys for the two description lines
   descripcion: [string, string?];
-  // Imagen del banner, en public/img
+  // Banner image, in public/img
   imagen: string;
-  // Clave de traducción del rótulo corto (menús, buscador)
+  // Translation key for the short label (menus, search box)
   etiqueta: string;
-  // true si el buscador ofrece filtro por categoría
+  // true if the search box offers filtering by category
   conCategorias: boolean;
 }
 
@@ -108,8 +108,8 @@ export const TIPOS: Record<string, ConfigTipo> = {
   },
 };
 
-// Alias que usaba el buscador del sitio anterior en la URL /buscar/…
-// ('oficinas' y 'operadores' en vez de los nombres largos).
+// Aliases the previous site's search box used in the URL /buscar/…
+// ('oficinas' and 'operadores' instead of the long names).
 const ALIAS: Record<string, string> = {
   oficinas: 'oficinasTuristicas',
   operadores: 'operadoresTuristicos',
@@ -118,7 +118,7 @@ const ALIAS: Record<string, string> = {
   rentadoras: 'rentacars',
 };
 
-// Devuelve la configuración de un tipo, aceptando los alias viejos.
+// Returns the configuration of a type, accepting the old aliases.
 export function buscarTipo(clave: string | undefined): ConfigTipo | null {
   if (!clave) return null;
   return TIPOS[clave] ?? TIPOS[ALIAS[clave] ?? ''] ?? null;

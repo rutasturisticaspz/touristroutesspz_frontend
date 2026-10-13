@@ -2,10 +2,10 @@
 
 import Modal from './Modal';
 
-// Confirmación antes de una acción que no se puede deshacer.
-// El admin anterior lo hacía con sweetalert2 y, al cancelar, mostraba
-// un segundo recuadro con icono de error diciendo "La atracción está a
-// salvo :)". Cancelar no es un error: acá simplemente se cierra.
+// Confirmation before an action that cannot be undone.
+// The previous admin did it with sweetalert2 and, on cancel, showed a
+// second box with an error icon saying "The attraction is safe :)".
+// Cancelling is not an error: here it simply closes.
 export default function Confirmacion({
   abierto,
   titulo,
