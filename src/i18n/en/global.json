@@ -65,7 +65,8 @@
         "all_rights_reserved": "All rights reserved",
         "developed_with_the": "Developed with the ",
         "by": " by: ",
-        "academic": "Academic"
+        "academic": "Academic",
+        "privacy_policy": "Privacy policy"
     },
     "browser":{
         "browser": "Browser",
@@ -241,6 +242,23 @@
         "see_event": "See event",
         "come": "Get carried away by the excitement of events in Pérez Zeledón and create unique memories at every occasion. ¡Vení a Pérez!",
         "see_all": "See all events"
+    },
+    "privacy": {
+        "privacy_title": "Privacy policy",
+        "privacy_description": "How we handle the data you share with us through quehacerenperez.com",
+        "site_title": "Who we are",
+        "site_text": "quehacerenperez.com is a project of the National University of Costa Rica (UNA) that promotes the attractions, lodging, restaurants and tour operators of Pérez Zeledón.",
+        "data_title": "What data we collect",
+        "data_text": "Only the data you type in the contact form: your name, your email address, the subject and the message.",
+        "use_title": "What we use it for",
+        "use_text": "Only to read and answer the message you send us.",
+        "email_title": "Email replies",
+        "email_text": "Replies are sent from a project Gmail account using the Gmail API, with the send-only permission (gmail.send). The application does not read, list or delete anyone's emails.",
+        "sharing_title": "Who we share the data with",
+        "sharing_text": "We do not sell or share your data with third parties, except what is strictly necessary to send you the reply.",
+        "rights_title": "Access to and deletion of your data",
+        "rights_text": "To request access to your data or its deletion, write to us or call us:",
+        "updated_label": "Last updated",
+        "updated_value": "October 13, 2026"
     }
-
 }
