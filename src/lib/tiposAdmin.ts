@@ -175,10 +175,25 @@ export function buscarTipoAdmin(clave: string | undefined): TipoAdmin | null {
   return TIPOS_ADMIN[clave] ?? null;
 }
 
+export type MenuIconKey =
+  | 'attractions'
+  | 'lodging'
+  | 'restaurants'
+  | 'operators'
+  | 'offices'
+  | 'rentals'
+  | 'events'
+  | 'categories'
+  | 'maps'
+  | 'messages'
+  | 'export'
+  | 'users';
+
 // The panel's side menu.
 export interface EntradaMenu {
   ruta: string;
   rotulo: string;
+  icon: MenuIconKey;
   // true if only an ADMIN sees it.
   soloAdmin?: boolean;
   // true while the section is not built yet: it is shown greyed out.
@@ -186,16 +201,16 @@ export interface EntradaMenu {
 }
 
 export const MENU: EntradaMenu[] = [
-  { ruta: '/admin/atracciones', rotulo: 'Atracciones' },
-  { ruta: '/admin/hoteles', rotulo: 'Hospedaje' },
-  { ruta: '/admin/restaurantes', rotulo: 'Restaurantes' },
-  { ruta: '/admin/operadores', rotulo: 'Operadores Turísticos' },
-  { ruta: '/admin/oficinas', rotulo: 'Oficinas Turísticas' },
-  { ruta: '/admin/rentadoras', rotulo: 'Rentadoras de vehículos' },
-  { ruta: '/admin/eventos', rotulo: 'Eventos' },
-  { ruta: '/admin/categorias', rotulo: 'Categorías' },
-  { ruta: '/admin/mapas', rotulo: 'Mapas' },
-  { ruta: '/admin/mensajes', rotulo: 'Mensajes' },
-  { ruta: '/admin/exportar', rotulo: 'Exportar a Excel' },
-  { ruta: '/admin/usuarios', rotulo: 'Usuarios y permisos', soloAdmin: true },
+  { ruta: '/admin/atracciones', rotulo: 'Atracciones', icon: 'attractions' },
+  { ruta: '/admin/hoteles', rotulo: 'Hospedaje', icon: 'lodging' },
+  { ruta: '/admin/restaurantes', rotulo: 'Restaurantes', icon: 'restaurants' },
+  { ruta: '/admin/operadores', rotulo: 'Operadores Turísticos', icon: 'operators' },
+  { ruta: '/admin/oficinas', rotulo: 'Oficinas Turísticas', icon: 'offices' },
+  { ruta: '/admin/rentadoras', rotulo: 'Rentadoras de vehículos', icon: 'rentals' },
+  { ruta: '/admin/eventos', rotulo: 'Eventos', icon: 'events' },
+  { ruta: '/admin/categorias', rotulo: 'Categorías', icon: 'categories' },
+  { ruta: '/admin/mapas', rotulo: 'Mapas', icon: 'maps' },
+  { ruta: '/admin/mensajes', rotulo: 'Mensajes', icon: 'messages' },
+  { ruta: '/admin/exportar', rotulo: 'Exportar a Excel', icon: 'export' },
+  { ruta: '/admin/usuarios', rotulo: 'Usuarios y permisos', icon: 'users', soloAdmin: true },
 ];
