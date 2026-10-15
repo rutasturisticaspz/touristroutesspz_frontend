@@ -127,4 +127,24 @@ export const apiAdmin = {
   // Renews the token by reading the user from the database, not from
   // the token.
   renovarToken: () => pedirAdmin<RespuestaSesion>('/usuarios/renovar-token', { metodo: 'POST' }),
+
+  // Password links. The three calls are public: whoever holds the link
+  // (or the email address) is who is asking.
+  requestPasswordLink: (email: string) =>
+    pedirAdmin<{ ok: boolean; message: string }>('/usuarios/forgot-password', {
+      metodo: 'POST',
+      cuerpo: { email },
+    }),
+
+  validatePasswordLink: (token: string) =>
+    pedirAdmin<{ nombre: string | null; email: string | null }>('/usuarios/validate-link', {
+      metodo: 'POST',
+      cuerpo: { token },
+    }),
+
+  choosePassword: (token: string, password: string) =>
+    pedirAdmin<{ ok: boolean }>('/usuarios/reset-with-link', {
+      metodo: 'POST',
+      cuerpo: { token, password },
+    }),
 };

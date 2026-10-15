@@ -5,6 +5,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, type ReactNode } from 'react';
 import { useSesion } from '../../context/SesionContext';
 import { MENU } from '../../lib/tiposAdmin';
+import MenuIcon from './MenuIcon';
 
 // Panel frame: side menu and session guard.
 // In the previous admin each page checked the session on its own
@@ -62,6 +63,7 @@ export default function Panel({
               // Section not built yet: it is shown greyed out instead of linking to
               // a page that would give a 404.
               <span key={entrada.ruta} className="pendiente" title="Todavía no está lista">
+                <MenuIcon name={entrada.icon} />
                 {entrada.rotulo}
               </span>
             ) : (
@@ -69,7 +71,9 @@ export default function Panel({
                 key={entrada.ruta}
                 href={entrada.ruta}
                 className={ruta?.startsWith(entrada.ruta) ? 'activo' : ''}
+                aria-current={ruta?.startsWith(entrada.ruta) ? 'page' : undefined}
               >
+                <MenuIcon name={entrada.icon} />
                 {entrada.rotulo}
               </Link>
             ),
@@ -78,9 +82,8 @@ export default function Panel({
 
         <div className="rt_admin_pie">
           <p>
-            {usuario.nombre || usuario.email}
-            <br />
-            {esAdmin ? 'Administrador' : 'Moderador'}
+            <strong>{usuario.nombre || usuario.email}</strong>
+            <span>{esAdmin ? 'Administrador' : 'Moderador'}</span>
           </p>
           <button
             type="button"
@@ -98,7 +101,7 @@ export default function Panel({
       <main className="rt_admin_contenido">
         <div className="rt_admin_titulo">
           <h1>{titulo}</h1>
-          {acciones}
+          {acciones && <div className="rt_admin_title_actions">{acciones}</div>}
         </div>
 
         {soloAdmin && !esAdmin ? (

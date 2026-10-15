@@ -138,7 +138,7 @@ export default function Pagina_() {
 
       <div className="rt_admin_tarjeta">
         <h2>Todo junto</h2>
-        <p style={{ color: '#6b7684' }}>
+        <p className="rt_text_muted">
           Un solo archivo con una pestaña por cada tipo. Es lo que conviene para un informe.
         </p>
         <button
@@ -153,13 +153,7 @@ export default function Pagina_() {
 
       <div className="rt_admin_tarjeta">
         <h2>Por tipo</h2>
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))',
-            gap: 12,
-          }}
-        >
+        <div className="rt_button_grid">
           {TIPOS.map((tipo) => (
             <button
               key={tipo.clave}
@@ -174,7 +168,7 @@ export default function Pagina_() {
         </div>
       </div>
 
-      <p style={{ fontSize: 13, color: '#6b7684' }}>
+      <p className="rt_note">
         Los archivos se arman en el navegador con los datos que devuelve el API, así que reflejan
         lo que hay en ese momento. No se guarda ninguna copia en el servidor.
       </p>

@@ -49,7 +49,7 @@ export default function Confirmacion({
         </>
       }
     >
-      {detalle && <p style={{ marginBottom: 0 }}>{detalle}</p>}
+      {detalle && <p>{detalle}</p>}
     </Modal>
   );
 }

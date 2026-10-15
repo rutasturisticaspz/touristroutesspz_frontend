@@ -95,41 +95,30 @@ export default function Galeria({
     <div className="rt_admin_tarjeta">
       <h2>Fotos</h2>
 
-      <p style={{ fontSize: 13, color: '#6b7684' }}>
+      <p className="rt_note">
         La primera foto es la que sale de portada en el sitio público y de fondo en la ficha.
       </p>
 
       {imagenes.length === 0 ? (
-        <p style={{ color: '#6b7684' }}>Todavía no hay fotos.</p>
+        <p className="rt_text_muted">Todavía no hay fotos.</p>
       ) : (
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(160px, 1fr))',
-            gap: 14,
-            marginBottom: 20,
-          }}
-        >
+        <div className="rt_gallery">
           {imagenes.map((imagen, indice) => (
-            <div
-              key={imagen.id}
-              style={{ border: '1px solid #e3e8ef', borderRadius: 8, overflow: 'hidden' }}
-            >
+            <div key={imagen.id} className="rt_gallery_item">
               <a href={urlImagen(imagen.url)} target="_blank" rel="noopener noreferrer">
                 <img
                   src={urlImagen(imagen.url)}
                   alt={imagen.nombre || sitio.nombre}
-                  style={{ width: '100%', height: 110, objectFit: 'cover', display: 'block' }}
+                  className="rt_gallery_img"
                 />
               </a>
-              <div style={{ padding: '8px 10px' }}>
+              <div className="rt_gallery_footer">
                 {indice === 0 && (
-                  <span style={{ fontSize: 12, color: '#00868f', fontWeight: 600 }}>Portada</span>
+                  <span className="rt_gallery_cover">Portada</span>
                 )}
                 <button
                   type="button"
-                  className="rt_boton rt_boton_peligro rt_boton_chico"
-                  style={{ width: '100%', marginTop: 6 }}
+                  className="rt_boton rt_boton_peligro rt_boton_chico rt_button_block"
                   onClick={() => setAQuitar(imagen)}
                 >
                   Quitar
@@ -155,7 +144,7 @@ export default function Galeria({
         />
       </div>
 
-      {subiendo && <p style={{ color: '#6b7684' }}>Subiendo…</p>}
+      {subiendo && <p className="rt_text_muted">Subiendo…</p>}
 
       <Confirmacion
         abierto={aQuitar !== null}

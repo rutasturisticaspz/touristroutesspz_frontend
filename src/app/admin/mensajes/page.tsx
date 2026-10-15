@@ -207,7 +207,7 @@ export default function Pagina_() {
 
       {error && <div className="rt_aviso rt_aviso_error">{error}</div>}
 
-      <div className="rt_admin_tarjeta" style={{ padding: 0, overflowX: 'auto' }}>
+      <div className="rt_admin_tarjeta rt_admin_card_table">
         <table className="rt_admin_tabla">
           <thead>
             <tr>
@@ -238,11 +238,11 @@ export default function Pagina_() {
             {!cargando &&
               filas.map((mensaje) => (
                 <tr key={mensaje.id}>
-                  <td style={{ whiteSpace: 'nowrap' }}>{conFecha(mensaje.createdAt)}</td>
+                  <td className="rt_cell_nowrap">{conFecha(mensaje.createdAt)}</td>
                   <td>
                     {mensaje.nombre}
                     <br />
-                    <a href={`mailto:${mensaje.correo}`} style={{ fontSize: 13 }}>
+                    <a href={`mailto:${mensaje.correo}`} className="rt_link_small">
                       {mensaje.correo}
                     </a>
                   </td>
@@ -259,7 +259,7 @@ export default function Pagina_() {
                       onClick={() => setAbierto(mensaje)}
                     >
                       Ver
-                    </button>{' '}
+                    </button>
                     <button
                       type="button"
                       className="rt_boton rt_boton_peligro rt_boton_chico"
@@ -320,15 +320,15 @@ export default function Pagina_() {
       >
         {abierto && (
           <>
-            <p style={{ fontSize: 13, color: '#6b7684' }}>
+            <p className="rt_note">
               {abierto.nombre} · <a href={`mailto:${abierto.correo}`}>{abierto.correo}</a>
               <br />
               {conFecha(abierto.createdAt)}
             </p>
-            <p style={{ whiteSpace: 'pre-wrap' }}>{abierto.mensaje}</p>
+            <p className="rt_text_multiline">{abierto.mensaje}</p>
 
             {respondiendo && (
-              <div className="rt_admin_campo" style={{ marginTop: 16 }}>
+              <div className="rt_admin_campo rt_admin_field_spaced">
                 <label htmlFor="cuerpoRespuesta">
                   Respuesta para {abierto.correo}
                 </label>
@@ -339,7 +339,7 @@ export default function Pagina_() {
                   onChange={(evento) => setCuerpoRespuesta(evento.target.value)}
                   disabled={enviandoRespuesta}
                 />
-                <p style={{ fontSize: 12, color: '#6b7684', marginTop: 4 }}>
+                <p className="rt_note">
                   El mensaje original se agrega automáticamente al final del correo, como
                   referencia para quien lo reciba.
                 </p>

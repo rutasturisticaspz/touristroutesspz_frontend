@@ -1,7 +1,9 @@
 'use client';
 
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import AccessCard from '../../components/Admin/AccessCard';
 import { useSesion } from '../../context/SesionContext';
 
 // /admin — panel sign-in.
@@ -63,44 +65,45 @@ export default function Pagina() {
   }
 
   return (
-    <div className="rt_login">
-      <div className="rt_login_caja">
-        <img src="/img/logoRT.png" alt="Rutas Turísticas" />
-        <h1>{texto}, iniciá sesión</h1>
-        <p className="ayuda">Panel de administración de Rutas Turísticas Pérez Zeledón.</p>
+    <AccessCard
+      title={`${texto}, iniciá sesión`}
+      help="Panel de administración de Rutas Turísticas Pérez Zeledón."
+    >
+      <form onSubmit={enviar}>
+        <div className="rt_admin_campo">
+          <label htmlFor="email">Correo electrónico</label>
+          <input
+            id="email"
+            type="email"
+            autoComplete="username"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+        </div>
 
-        <form onSubmit={enviar}>
-          <div className="rt_admin_campo">
-            <label htmlFor="email">Correo electrónico</label>
-            <input
-              id="email"
-              type="email"
-              autoComplete="username"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-          </div>
+        <div className="rt_admin_campo">
+          <label htmlFor="password">Contraseña</label>
+          <input
+            id="password"
+            type="password"
+            autoComplete="current-password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+        </div>
 
-          <div className="rt_admin_campo">
-            <label htmlFor="password">Contraseña</label>
-            <input
-              id="password"
-              type="password"
-              autoComplete="current-password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-          </div>
+        <p className="rt_login_links">
+          <Link href="/admin/forgot-password">¿Olvidaste tu contraseña?</Link>
+        </p>
 
-          {error && <div className="rt_aviso rt_aviso_error">{error}</div>}
+        {error && <div className="rt_aviso rt_aviso_error">{error}</div>}
 
-          <button type="submit" className="rt_boton" style={{ width: '100%' }} disabled={enviando}>
-            {enviando ? 'Entrando…' : 'Ingresar'}
-          </button>
-        </form>
-      </div>
-    </div>
+        <button type="submit" className="rt_boton rt_button_block" disabled={enviando}>
+          {enviando ? 'Entrando…' : 'Ingresar'}
+        </button>
+      </form>
+    </AccessCard>
   );
 }

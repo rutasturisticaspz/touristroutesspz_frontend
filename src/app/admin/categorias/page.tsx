@@ -175,7 +175,7 @@ export default function Pagina_() {
 
       {error && <div className="rt_aviso rt_aviso_error">{error}</div>}
 
-      <div className="rt_admin_tarjeta" style={{ padding: 0, overflowX: 'auto' }}>
+      <div className="rt_admin_tarjeta rt_admin_card_table">
         <table className="rt_admin_tabla">
           <thead>
             <tr>
@@ -215,7 +215,7 @@ export default function Pagina_() {
                       onClick={() => abrirEdicion(categoria)}
                     >
                       Editar
-                    </button>{' '}
+                    </button>
                     <button
                       type="button"
                       className="rt_boton rt_boton_peligro rt_boton_chico"
@@ -264,7 +264,7 @@ export default function Pagina_() {
               {campo.area ? (
                 <textarea
                   id={`cat-${campo.nombre}`}
-                  style={{ minHeight: 80 }}
+                  className="rt_field_short"
                   value={formulario[campo.nombre] ?? ''}
                   onChange={(evento) =>
                     setFormulario({ ...formulario, [campo.nombre]: evento.target.value })

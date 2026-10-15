@@ -104,14 +104,14 @@ export default function EditorContactos({
       <h2>Contactos</h2>
 
       {contactos.length === 0 ? (
-        <p style={{ color: '#6b7684' }}>Todavía no hay contactos.</p>
+        <p className="rt_text_muted">Todavía no hay contactos.</p>
       ) : (
-        <table className="rt_admin_tabla" style={{ marginBottom: 20 }}>
+        <table className="rt_admin_tabla rt_table_inner">
           <tbody>
             {contactos.map((contacto) => (
               <tr key={contacto.id}>
-                <td style={{ width: 140 }}>{contacto.tipo}</td>
-                <td style={{ wordBreak: 'break-all' }}>{contacto.valor}</td>
+                <td className="rt_cell_type">{contacto.tipo}</td>
+                <td className="rt_cell_wrap">{contacto.valor}</td>
                 <td className="acciones">
                   <button
                     type="button"

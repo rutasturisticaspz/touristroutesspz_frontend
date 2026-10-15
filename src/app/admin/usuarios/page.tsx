@@ -11,22 +11,18 @@ import type { Pagina } from '../../../lib/tipos';
 
 // /admin/usuarios — who gets into the panel and with what permissions.
 // Replaces Permisos.jsx + PermisosTableRow.jsx (330 lines).
-// About the password: the previous system generated one and emailed it
-// from a Gmail account whose app password was written inside the code,
-// in the repository. That was not ported. Now the backend generates
-// the password and returns it only once, here on screen: whoever
-// creates the account hands it to the person by whatever means they
-// like, and the person changes it on entering.
+// About the password: nobody types, sees or hands over a password here.
+// Creating an account, or resetting one, makes the backend email the
+// person a link to choose their own.
 // The list includes inactive accounts on purpose: they are the ones to
 // review. In the database there are several accounts with an
 // administrator role that have gone unused for years.
 
 const POR_PAGINA = 10;
 
-interface ContrasenaTemporal {
-  email: string;
-  password: string;
-  origen: 'creada' | 'restablecida';
+interface Notice {
+  type: 'ok' | 'error';
+  text: string;
 }
 
 interface Usuario {
@@ -62,8 +58,7 @@ export default function Pagina_() {
   const [rol, setRol] = useState<Rol>(ROLES.MODERADOR);
   const [guardando, setGuardando] = useState(false);
   const [errorCrear, setErrorCrear] = useState<string | null>(null);
-  // The generated password is shown only once.
-  const [temporal, setTemporal] = useState<ContrasenaTemporal | null>(null);
+  const [notice, setNotice] = useState<Notice | null>(null);
 
   const [aCambiar, setACambiar] = useState<Usuario | null>(null);
   const [aEliminar, setAEliminar] = useState<Usuario | null>(null);
@@ -111,24 +106,32 @@ export default function Pagina_() {
 
     setGuardando(true);
     setErrorCrear(null);
+    setNotice(null);
     try {
-      const respuesta = await pedirAdmin<{
+      const response = await pedirAdmin<{
         usuario: Usuario;
-        passwordTemporal: string;
+        emailSent: boolean;
       }>('/usuarios/moderadores', {
         metodo: 'POST',
         cuerpo: { nombre: nombre.trim(), email: correo.trim(), rol },
       });
 
+      const destination = response.usuario.email ?? correo.trim();
       setCreando(false);
       setNombre('');
       setCorreo('');
       setRol(ROLES.MODERADOR);
-      setTemporal({
-        email: respuesta.usuario.email ?? correo.trim(),
-        password: respuesta.passwordTemporal,
-        origen: 'creada',
-      });
+      setNotice(
+        response.emailSent
+          ? {
+              type: 'ok',
+              text: `Cuenta creada. Enviamos un enlace a ${destination} para que elija su contraseña; vence en 72 horas.`,
+            }
+          : {
+              type: 'error',
+              text: `La cuenta de ${destination} se creó, pero no se pudo enviar el correo. Usá «Restablecer contraseña» para intentarlo de nuevo.`,
+            },
+      );
       await cargar();
     } catch (problema) {
       setErrorCrear(problema instanceof Error ? problema.message : 'No se pudo crear el usuario');
@@ -154,21 +157,21 @@ export default function Pagina_() {
   const restablecerContrasena = async (usuario: Usuario) => {
     setTrabajando(true);
     setError(null);
+    setNotice(null);
     try {
-      const respuesta = await pedirAdmin<{ passwordTemporal: string }>(
+      const response = await pedirAdmin<{ email: string }>(
         `/usuarios/${usuario.id}/restablecer-contrasena`,
         { metodo: 'POST' },
       );
       setARestablecer(null);
-      setTemporal({
-        email: usuario.email ?? '',
-        password: respuesta.passwordTemporal,
-        origen: 'restablecida',
+      setNotice({
+        type: 'ok',
+        text: `Enviamos un enlace a ${response.email} para que elija una contraseña nueva; vence en 24 horas.`,
       });
     } catch (problema) {
       setARestablecer(null);
       setError(
-        problema instanceof Error ? problema.message : 'No se pudo restablecer la contraseña',
+        problema instanceof Error ? problema.message : 'No se pudo enviar el enlace al correo',
       );
     } finally {
       setTrabajando(false);
@@ -234,8 +237,13 @@ export default function Pagina_() {
       </div>
 
       {error && <div className="rt_aviso rt_aviso_error">{error}</div>}
+      {notice && (
+        <div className={notice.type === 'ok' ? 'rt_aviso rt_aviso_ok' : 'rt_aviso rt_aviso_error'}>
+          {notice.text}
+        </div>
+      )}
 
-      <div className="rt_admin_tarjeta" style={{ padding: 0, overflowX: 'auto' }}>
+      <div className="rt_admin_tarjeta rt_admin_card_table">
         <table className="rt_admin_tabla">
           <thead>
             <tr>
@@ -273,16 +281,15 @@ export default function Pagina_() {
                     <td>
                       {usuario.nombre || '—'}
                       {soyYo && (
-                        <span style={{ fontSize: 12, color: '#6b7684' }}> · es tu cuenta</span>
+                        <span className="rt_label_muted"> · es tu cuenta</span>
                       )}
                     </td>
-                    <td style={{ wordBreak: 'break-all' }}>{usuario.email}</td>
+                    <td className="rt_cell_wrap">{usuario.email}</td>
                     <td>
                       <select
                         value={usuario.rol}
                         disabled={trabajando || soyYo}
                         onChange={(evento) => cambiarRol(usuario, evento.target.value as Rol)}
-                        style={{ padding: '5px 8px', borderRadius: 6, border: '1px solid #cfd6e0' }}
                       >
                         {Object.values(ROLES).map((valor) => (
                           <option key={valor} value={valor}>
@@ -304,7 +311,7 @@ export default function Pagina_() {
                         disabled={trabajando}
                       >
                         Restablecer contraseña
-                      </button>{' '}
+                      </button>
                       {activo ? (
                         <button
                           type="button"
@@ -324,7 +331,7 @@ export default function Pagina_() {
                         >
                           Activar
                         </button>
-                      )}{' '}
+                      )}
                       <button
                         type="button"
                         className="rt_boton rt_boton_peligro rt_boton_chico"
@@ -389,7 +396,7 @@ export default function Pagina_() {
               onChange={(evento) => setCorreo(evento.target.value)}
             />
             {correo !== '' && !correoValido && (
-              <p style={{ fontSize: 13, color: '#a5352a', marginTop: 6 }}>
+              <p className="rt_note rt_note_error">
                 Ese correo no parece válido.
               </p>
             )}
@@ -409,45 +416,11 @@ export default function Pagina_() {
 
           {errorCrear && <div className="rt_aviso rt_aviso_error">{errorCrear}</div>}
 
-          <p style={{ fontSize: 13, color: '#6b7684', marginBottom: 0 }}>
-            El sistema genera la contraseña y la muestra una sola vez al terminar. No se manda
-            ningún correo.
+          <p className="rt_note rt_note_last">
+            La persona recibe un correo con un enlace para elegir su contraseña. El enlace vence
+            en 72 horas.
           </p>
         </form>
-      </Modal>
-
-      <Modal
-        titulo={temporal?.origen === 'restablecida' ? 'Contraseña restablecida' : 'Usuario creado'}
-        abierto={temporal !== null}
-        alCerrar={() => setTemporal(null)}
-        acciones={
-          <button type="button" className="rt_boton" onClick={() => setTemporal(null)}>
-            Ya la copié
-          </button>
-        }
-      >
-        {temporal && (
-          <>
-            <p>
-              Pasale estos datos a la persona por un medio seguro. La contraseña no se vuelve a
-              mostrar; si se pierde, se puede restablecer otra vez desde esta pantalla.
-            </p>
-            <div className="rt_admin_campo">
-              <label>Correo</label>
-              <input type="text" readOnly value={temporal.email} />
-            </div>
-            <div className="rt_admin_campo">
-              <label>Contraseña temporal</label>
-              <input
-                type="text"
-                readOnly
-                value={temporal.password}
-                style={{ fontFamily: 'monospace', fontSize: 16 }}
-                onFocus={(evento) => evento.currentTarget.select()}
-              />
-            </div>
-          </>
-        )}
       </Modal>
 
       <Confirmacion
@@ -469,10 +442,10 @@ export default function Pagina_() {
         titulo="¿Restablecer la contraseña?"
         detalle={
           aRestablecer
-            ? `${aRestablecer.nombre || aRestablecer.email}. Se genera una contraseña nueva y la actual deja de funcionar. Si la persona tiene una sesión abierta, esa sesión sigue activa hasta que expire.`
+            ? `${aRestablecer.nombre || aRestablecer.email}. Le enviamos un enlace a ${aRestablecer.email} para que elija una contraseña nueva. La contraseña actual sigue funcionando hasta que la cambie.`
             : undefined
         }
-        textoConfirmar="Restablecer"
+        textoConfirmar="Enviar enlace"
         trabajando={trabajando}
         alConfirmar={() => aRestablecer && restablecerContrasena(aRestablecer)}
         alCerrar={() => setARestablecer(null)}

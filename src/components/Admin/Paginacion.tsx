@@ -1,5 +1,7 @@
 'use client';
 
+import { Fragment } from 'react';
+
 // Pagination.
 // The previous admin's computed `(count / 10) + 1` without rounding
 // and built a `for` from 1 up to that number: with 24 records it gave
@@ -24,24 +26,35 @@ export default function Paginacion({
 
   return (
     <div className="rt_admin_paginacion">
-      <button type="button" disabled={pagina <= 1} onClick={() => alCambiar(pagina - 1)}>
+      <button
+        type="button"
+        aria-label="Página anterior"
+        disabled={pagina <= 1}
+        onClick={() => alCambiar(pagina - 1)}
+      >
         ‹
       </button>
 
       {numeros.map((n, indice) => (
-        <span key={n} style={{ display: 'contents' }}>
+        <Fragment key={n}>
           {indice > 0 && n - numeros[indice - 1] > 1 && <span>…</span>}
           <button
             type="button"
             className={n === pagina ? 'activo' : ''}
+            aria-current={n === pagina ? 'page' : undefined}
             onClick={() => alCambiar(n)}
           >
             {n}
           </button>
-        </span>
+        </Fragment>
       ))}
 
-      <button type="button" disabled={pagina >= ultima} onClick={() => alCambiar(pagina + 1)}>
+      <button
+        type="button"
+        aria-label="Página siguiente"
+        disabled={pagina >= ultima}
+        onClick={() => alCambiar(pagina + 1)}
+      >
         ›
       </button>
 
