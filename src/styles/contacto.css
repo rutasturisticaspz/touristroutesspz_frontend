@@ -1,0 +1,12 @@
+.rt_contacto_error {
+  margin: 6px 0 0;
+  color: #c0392b;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.rt_contacto_invalido,
+.rt_contacto_invalido:focus {
+  border-color: #c0392b !important;
+  box-shadow: 0 0 0 1px #c0392b;
+}

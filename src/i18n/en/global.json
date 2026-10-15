@@ -218,7 +218,14 @@
         "send_message": "Send message",
         "very_good": "Very good!",
         "very_good_message": "Your message has been sent successfully. Soon we will be communicating with you",
-        "bad_message": "Something went wrong while sending the message, please try again later"
+        "bad_message": "Something went wrong while sending the message, please try again later",
+        "required_fields_warning": "Some fields are missing. Please check the ones marked in red.",
+        "name_required": "Enter your name.",
+        "email_required": "Enter your email address.",
+        "email_invalid": "That email does not look valid.",
+        "reason_required": "Choose the reason for your message.",
+        "subject_required": "Enter the subject.",
+        "message_required": "Enter your message."
     }, 
     "maps":{
         "maps_title": "Maps",

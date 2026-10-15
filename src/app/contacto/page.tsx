@@ -9,6 +9,7 @@ import BannerDetalle from '../../components/Banner/BannerDetalle';
 import { api } from '../../lib/api';
 import { validarTexto } from '../../lib/helpers';
 import { CONTACTOS } from '../../lib/contactos';
+import '../../styles/contacto.css';
 
 // /contacto — the public form.
 // Changes from the previous one:
@@ -16,10 +17,16 @@ import { CONTACTOS } from '../../lib/contactos';
 //    (an entire dependency to show a box).
 //  - The email is validated before sending; before, any text was
 //    accepted and the error came afterwards.
+//  - When something is missing or invalid, the form says what and where
+//    instead of leaving a disabled button with no explanation.
 //  - The contact details in the corner are the page's; they are here
 //    so the University can change them in a single place.
 
 type Estado = 'listo' | 'enviando' | 'enviado' | 'error';
+type Campo = 'nombre' | 'correo' | 'motivo' | 'asunto' | 'mensaje';
+
+const ORDEN_CAMPOS: Campo[] = ['nombre', 'correo', 'motivo', 'asunto', 'mensaje'];
+const CORREO_VALIDO = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export default function Pagina() {
   const { t } = useTranslation('global');
@@ -30,6 +37,8 @@ export default function Pagina() {
   const [correo, setCorreo] = useState('');
   const [mensaje, setMensaje] = useState('');
   const [estado, setEstado] = useState<Estado>('listo');
+  const [intentoEnviar, setIntentoEnviar] = useState(false);
+  const [avisoFaltantes, setAvisoFaltantes] = useState(false);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -42,16 +51,49 @@ export default function Pagina() {
     else setAsunto('');
   };
 
-  const completo =
-    nombre.trim() !== '' &&
-    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correo.trim()) &&
-    asunto.trim() !== '' &&
-    mensaje.trim() !== '';
+  const calcularErrores = () => {
+    const errores: Partial<Record<Campo, string>> = {};
+    if (nombre.trim() === '') errores.nombre = 'contact.name_required';
+    if (correo.trim() === '') errores.correo = 'contact.email_required';
+    else if (!CORREO_VALIDO.test(correo.trim())) errores.correo = 'contact.email_invalid';
+    if (motivo === '0') errores.motivo = 'contact.reason_required';
+    else {
+      if (asunto.trim() === '') errores.asunto = 'contact.subject_required';
+      if (mensaje.trim() === '') errores.mensaje = 'contact.message_required';
+    }
+    return errores;
+  };
+
+  const errores = intentoEnviar ? calcularErrores() : {};
+
+  const propiedadesCampo = (campo: Campo) => ({
+    id: `contacto-${campo}`,
+    'aria-invalid': errores[campo] ? true : undefined,
+    'aria-describedby': errores[campo] ? `contacto-${campo}-error` : undefined,
+    className: errores[campo] ? 'rt_contacto_invalido' : undefined,
+  });
+
+  const mensajeError = (campo: Campo) =>
+    errores[campo] && (
+      <p id={`contacto-${campo}-error`} className="rt_contacto_error" role="alert">
+        {t(errores[campo])}
+      </p>
+    );
 
   const enviar = async (evento: React.FormEvent) => {
     evento.preventDefault();
-    if (!completo || estado === 'enviando') return;
+    if (estado === 'enviando') return;
 
+    setIntentoEnviar(true);
+    const pendientes = calcularErrores();
+    const primero = ORDEN_CAMPOS.find((campo) => pendientes[campo]);
+    if (primero) {
+      setAvisoFaltantes(true);
+      document.getElementById(`contacto-${primero}`)?.focus();
+      return;
+    }
+
+    setAvisoFaltantes(false);
     setEstado('enviando');
     try {
       await api.enviarMensaje({
@@ -66,6 +108,7 @@ export default function Pagina() {
       setAsunto('');
       setMensaje('');
       setMotivo('0');
+      setIntentoEnviar(false);
     } catch (error) {
       console.error('No se pudo enviar el mensaje:', error);
       setEstado('error');
@@ -113,6 +156,7 @@ export default function Pagina() {
                   <div className="col-lg-6">
                     <div className="form-group text_box">
                       <input
+                        {...propiedadesCampo('nombre')}
                         type="text"
                         maxLength={60}
                         placeholder={t('contact.your_name')}
@@ -122,24 +166,28 @@ export default function Pagina() {
                           if (e.key !== 'Enter') validarTexto(e, /[^a-zA-ZñáéíóúÁÉÍÓÚ' ]/g);
                         }}
                       />
+                      {mensajeError('nombre')}
                     </div>
                   </div>
                   <div className="col-lg-6">
                     <div className="form-group text_box">
                       <input
+                        {...propiedadesCampo('correo')}
                         type="email"
                         maxLength={60}
                         placeholder={t('contact.your_email')}
                         value={correo}
                         onChange={(e) => setCorreo(e.target.value)}
                       />
+                      {mensajeError('correo')}
                     </div>
                   </div>
 
                   <div className="col-lg-12">
                     <div className="form-group text_box">
                       <select
-                        className="form-control selectpickers"
+                        {...propiedadesCampo('motivo')}
+                        className={`form-control selectpickers${errores.motivo ? ' rt_contacto_invalido' : ''}`}
                         value={motivo}
                         onChange={(e) => cambiarMotivo(e.target.value)}
                       >
@@ -150,6 +198,7 @@ export default function Pagina() {
                         <option value="2">{t('contact.reason_two')}</option>
                         <option value="3">{t('contact.reason_three')}</option>
                       </select>
+                      {mensajeError('motivo')}
                     </div>
                   </div>
 
@@ -157,6 +206,7 @@ export default function Pagina() {
                     <div className="col-lg-12">
                       <div className="form-group text_box">
                         <input
+                          {...propiedadesCampo('asunto')}
                           type="text"
                           maxLength={100}
                           placeholder="Asunto"
@@ -167,6 +217,7 @@ export default function Pagina() {
                               validarTexto(e, /[^a-zA-Z0-9, ñáéíóúÁÉÍÓÚ]/g);
                           }}
                         />
+                        {mensajeError('asunto')}
                       </div>
                     </div>
                   )}
@@ -175,6 +226,7 @@ export default function Pagina() {
                     <div className="col-lg-12">
                       <div className="form-group text_box">
                         <textarea
+                          {...propiedadesCampo('mensaje')}
                           maxLength={250}
                           cols={30}
                           rows={10}
@@ -182,12 +234,13 @@ export default function Pagina() {
                           value={mensaje}
                           onChange={(e) => setMensaje(e.target.value)}
                         />
+                        {mensajeError('mensaje')}
                       </div>
                     </div>
                   )}
                 </div>
 
-                <button className="btn_three" type="submit" disabled={!completo || estado === 'enviando'}>
+                <button className="btn_three" type="submit" disabled={estado === 'enviando'}>
                   {t('contact.send_message')}
                 </button>
               </form>
@@ -196,6 +249,12 @@ export default function Pagina() {
           </div>
         </div>
       </section>
+
+      {avisoFaltantes && (
+        <Toast tipo="error" alCerrar={() => setAvisoFaltantes(false)}>
+          {t('contact.required_fields_warning')}
+        </Toast>
+      )}
 
       {estado === 'enviado' && (
         <Toast tipo="ok" alCerrar={() => setEstado('listo')}>

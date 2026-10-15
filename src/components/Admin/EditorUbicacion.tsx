@@ -211,7 +211,7 @@ export default function EditorUbicacion({
         )}
 
         {punto && (
-          <p style={{ fontSize: 13, color: '#6b7684' }}>
+          <p className="rt_note">
             En decimales: {punto.lat.toFixed(5)}, {punto.lng.toFixed(5)} ·{' '}
             <a
               href={`https://www.google.com/maps/search/?api=1&query=${punto.lat},${punto.lng}`}

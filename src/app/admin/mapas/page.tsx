@@ -105,7 +105,7 @@ export default function Pagina_() {
     >
       {error && <div className="rt_aviso rt_aviso_error">{error}</div>}
 
-      <div className="rt_admin_tarjeta" style={{ padding: 0, overflowX: 'auto' }}>
+      <div className="rt_admin_tarjeta rt_admin_card_table">
         <table className="rt_admin_tabla">
           <thead>
             <tr>
@@ -135,7 +135,7 @@ export default function Pagina_() {
               mapas.map((mapa) => (
                 <tr key={mapa.id}>
                   <td>{mapa.nombre}</td>
-                  <td style={{ wordBreak: 'break-all' }}>
+                  <td className="rt_cell_wrap">
                     <a href={mapa.enlace} target="_blank" rel="noopener noreferrer">
                       {mapa.enlace}
                     </a>
@@ -148,7 +148,7 @@ export default function Pagina_() {
                       disabled={trabajando}
                     >
                       Editar
-                    </button>{' '}
+                    </button>
                     <button
                       type="button"
                       className="rt_boton rt_boton_peligro rt_boton_chico"
@@ -211,7 +211,7 @@ export default function Pagina_() {
               onChange={(evento) => setEnlace(evento.target.value)}
             />
             {enlace !== '' && !enlaceValido && (
-              <p style={{ fontSize: 13, color: '#a5352a', marginTop: 6 }}>
+              <p className="rt_note rt_note_error">
                 El enlace debe empezar con https://drive.google.com/
               </p>
             )}
@@ -219,7 +219,7 @@ export default function Pagina_() {
 
           {errorFormulario && <div className="rt_aviso rt_aviso_error">{errorFormulario}</div>}
 
-          <p style={{ fontSize: 13, color: '#6b7684', marginBottom: 0 }}>
+          <p className="rt_note rt_note_last">
             En Drive, compartí el archivo como “Cualquier persona con el enlace” para que los
             visitantes puedan abrirlo. La imagen de vista previa sale del propio archivo.
           </p>

@@ -178,7 +178,7 @@ export default function ListadoAdmin({ tipo }: { tipo: TipoAdmin }) {
 
       {error && <div className="rt_aviso rt_aviso_error">{error}</div>}
 
-      <div className="rt_admin_tarjeta" style={{ padding: 0, overflowX: 'auto' }}>
+      <div className="rt_admin_tarjeta rt_admin_card_table">
         <table className="rt_admin_tabla">
           <thead>
             <tr>
@@ -221,7 +221,7 @@ export default function ListadoAdmin({ tipo }: { tipo: TipoAdmin }) {
                       className="rt_boton rt_boton_secundario rt_boton_chico"
                     >
                       Editar
-                    </Link>{' '}
+                    </Link>
                     <button
                       type="button"
                       className="rt_boton rt_boton_peligro rt_boton_chico"
@@ -293,7 +293,7 @@ export default function ListadoAdmin({ tipo }: { tipo: TipoAdmin }) {
 
           {errorCrear && <div className="rt_aviso rt_aviso_error">{errorCrear}</div>}
 
-          <p style={{ fontSize: 13, color: '#6b7684', marginBottom: 0 }}>
+          <p className="rt_note rt_note_last">
             Las fotos, la ubicación y los contactos se agregan en la ficha, después de crearlo.
           </p>
         </form>

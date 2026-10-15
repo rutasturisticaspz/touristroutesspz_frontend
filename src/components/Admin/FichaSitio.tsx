@@ -187,7 +187,7 @@ export default function FichaSitio({ tipo, id }: { tipo: TipoAdmin; id: number }
         <>
           <Link href={`/admin/${tipo.clave}`} className="rt_boton rt_boton_secundario">
             Volver a la lista
-          </Link>{' '}
+          </Link>
           <Link
             href={
               tipo.claveSitio ? `/sitio/${tipo.claveSitio}/${sitio.id}` : `/evento/${sitio.id}`
@@ -265,7 +265,7 @@ export default function FichaSitio({ tipo, id }: { tipo: TipoAdmin; id: number }
           )}
 
           {tipo.clave === 'eventos' && (
-            <p style={{ fontSize: 13, color: '#6b7684' }}>
+            <p className="rt_note">
               Las dos primeras fechas son cuándo ocurre el evento; las dos de publicación son
               cuándo aparece en el sitio. El sistema anterior las mezclaba.
             </p>
@@ -276,20 +276,11 @@ export default function FichaSitio({ tipo, id }: { tipo: TipoAdmin; id: number }
           <div className="rt_admin_tarjeta">
             <h2>Categorías</h2>
             {categorias.length === 0 ? (
-              <p style={{ color: '#6b7684' }}>No se pudo cargar la lista de categorías.</p>
+              <p className="rt_text_muted">No se pudo cargar la lista de categorías.</p>
             ) : (
-              <div
-                style={{
-                  display: 'grid',
-                  gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
-                  gap: 8,
-                }}
-              >
+              <div className="rt_check_list">
                 {categorias.map((categoria) => (
-                  <label
-                    key={categoria.id}
-                    style={{ display: 'flex', gap: 8, fontSize: 14, fontWeight: 400 }}
-                  >
+                  <label key={categoria.id} className="rt_check">
                     <input
                       type="checkbox"
                       checked={elegidas.includes(categoria.id)}
@@ -313,14 +304,14 @@ export default function FichaSitio({ tipo, id }: { tipo: TipoAdmin; id: number }
         {tipo.accesibilidad.length > 0 && (
           <div className="rt_admin_tarjeta">
             <h2>Accesibilidad</h2>
-            <p style={{ fontSize: 13, color: '#6b7684' }}>
+            <p className="rt_note">
               Lo que se escriba en cada descripción es lo que el visitante ve al pasar el mouse
               sobre el distintivo en la ficha del sitio.
             </p>
 
             {tipo.accesibilidad.map((campo) => (
-              <div key={campo} style={{ marginBottom: 18 }}>
-                <label style={{ display: 'flex', gap: 8, fontSize: 14, fontWeight: 600 }}>
+              <div key={campo} className="rt_admin_block">
+                <label className="rt_check rt_check_title">
                   <input
                     type="checkbox"
                     checked={campos[campo] === true}
@@ -330,12 +321,12 @@ export default function FichaSitio({ tipo, id }: { tipo: TipoAdmin; id: number }
                 </label>
 
                 {!SIN_DESCRIPCION.has(campo) && campos[campo] === true && (
-                  <div className="rt_admin_fila" style={{ marginTop: 10 }}>
+                  <div className="rt_admin_fila rt_admin_row_sub">
                     <div className="rt_admin_campo">
                       <label htmlFor={`${campo}-es`}>Descripción</label>
                       <textarea
                         id={`${campo}-es`}
-                        style={{ minHeight: 70 }}
+                        className="rt_field_short"
                         value={String(campos[`${campo}Descripcion`] ?? '')}
                         onChange={(e) => cambiar(`${campo}Descripcion`, e.target.value)}
                       />
@@ -344,7 +335,7 @@ export default function FichaSitio({ tipo, id }: { tipo: TipoAdmin; id: number }
                       <label htmlFor={`${campo}-en`}>Descripción en inglés</label>
                       <textarea
                         id={`${campo}-en`}
-                        style={{ minHeight: 70 }}
+                        className="rt_field_short"
                         value={String(campos[`${campo}DescripcionIngles`] ?? '')}
                         onChange={(e) => cambiar(`${campo}DescripcionIngles`, e.target.value)}
                       />
@@ -367,13 +358,13 @@ export default function FichaSitio({ tipo, id }: { tipo: TipoAdmin; id: number }
           {guardando ? 'Guardando…' : 'Guardar cambios'}
         </button>
         {!hayCambios && !guardando && (
-          <span style={{ marginLeft: 12, fontSize: 13, color: '#6b7684' }}>
+          <span className="rt_note rt_note_inline">
             No hay cambios sin guardar.
           </span>
         )}
       </form>
 
-      <div style={{ marginTop: 20 }}>
+      <div className="rt_admin_section">
         <Galeria tipo={tipo} sitio={sitio} alGuardar={cargar} />
         <EditorUbicacion tipo={tipo} sitio={sitio} alGuardar={cargar} />
         {tipo.conContactos && <EditorContactos tipo={tipo} sitio={sitio} alGuardar={cargar} />}
