@@ -16,6 +16,7 @@ import { itemDePlan, usePlan } from '../../context/PlanContext';
 import { useIdioma } from '../../context/IdiomaContext';
 import type { ConfigTipo } from '../../lib/tiposSitio';
 import type { Contacto, Sitio } from '../../lib/tipos';
+import OptimizedImage from '../OptimizedImage';
 
 // Detail page of a site, common to the six types.
 // Before, SitioIndividual.js repeated the same loading block six
@@ -128,7 +129,7 @@ export default function DetalleSitio({ tipo, id }: { tipo: ConfigTipo; id: numbe
                       {imagenes.map((imagen) => (
                         <div className="iitem" key={imagen.id}>
                           <div className="sitio_single_item">
-                            <img src={urlImagen(imagen.url)} alt={imagen.nombre || sitio.nombre} />
+                            <OptimizedImage src={urlImagen(imagen.url)} alt={imagen.nombre || sitio.nombre} sizes="(max-width: 768px) 100vw, 800px" />
                           </div>
                         </div>
                       ))}
@@ -229,7 +230,7 @@ export default function DetalleSitio({ tipo, id }: { tipo: ConfigTipo; id: numbe
                           <div className="col-lg-4 col-sm-6" key={lugar.id}>
                             <div className="blog_post_item">
                               <div className="blog_img">
-                                <img src={primeraImagen(lugar)} alt={lugar.nombre} />
+                                <OptimizedImage src={primeraImagen(lugar)} alt={lugar.nombre} sizes="(max-width: 768px) 100vw, 480px" />
                               </div>
                               <div className="blog_content">
                                 <div className="entry_post_info">{t(tipo.etiqueta)}</div>

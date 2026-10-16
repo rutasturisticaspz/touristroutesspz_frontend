@@ -13,6 +13,7 @@ import { api, urlImagen } from '../../../lib/api';
 import { hrefContacto, iconoContacto, opcionesSlider, primeraImagen, rangoFechas } from '../../../lib/helpers';
 import { useIdioma } from '../../../context/IdiomaContext';
 import type { Contacto, Evento, Sitio } from '../../../lib/tipos';
+import OptimizedImage from '../../../components/OptimizedImage';
 
 // /evento/:id — the detail of an event.
 // The sidebar shows the participating sites. The backend returns the
@@ -116,7 +117,7 @@ export default function Pagina() {
                       {imagenes.map((imagen) => (
                         <div className="iitem" key={imagen.id}>
                           <div className="sitio_single_item">
-                            <img src={urlImagen(imagen.url)} alt={imagen.nombre || nombre} />
+                            <OptimizedImage src={urlImagen(imagen.url)} alt={imagen.nombre || nombre} sizes="(max-width: 768px) 100vw, 800px" />
                           </div>
                         </div>
                       ))}

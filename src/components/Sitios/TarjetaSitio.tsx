@@ -5,6 +5,7 @@ import { hrefContacto, iconoContacto, primeraImagen } from '../../lib/helpers';
 import EtiquetaNuevo from '../Nuevo/EtiquetaNuevo';
 import { esNuevo } from '../../lib/nuevos';
 import type { Sitio } from '../../lib/tipos';
+import OptimizedImage from '../OptimizedImage';
 
 // Card of a site, with the contacts on mouse hover. The whole card is a
 // link to the detail page; the contact icons stay clickable on top.
@@ -29,7 +30,7 @@ export default function TarjetaSitio({
     <div className="ex_team_item">
       {nuevo && <EtiquetaNuevo />}
       <Link href={destino} className="rt_tarjeta_enlace" tabIndex={-1} aria-hidden="true" />
-      <img src={primeraImagen(sitio)} alt={sitio.nombre} />
+      <OptimizedImage src={primeraImagen(sitio)} alt={sitio.nombre} sizes="(max-width: 768px) 100vw, 480px" />
       <div className="team_content">
         <Link href={destino}>
           <h3 className="f_p f_size_16 f_600 t_color3">{sitio.nombre}</h3>

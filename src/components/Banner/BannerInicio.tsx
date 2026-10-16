@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import OptimizedImage from '../OptimizedImage';
 import '../../styles/banner-inicio.css';
 
 // Home page banner: four photos that alternate.
@@ -33,7 +34,9 @@ export default function BannerInicio() {
   return (
     <section className="rutas_turisticas_banner_area">
       <div className="parallax-effect">
-        <img
+        <OptimizedImage
+          priority
+          sizes="100vw"
           src={IMAGENES[indice]}
           alt=""
           className={`banner-image ${animando ? 'fade-out' : 'fade-in'}`}

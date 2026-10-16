@@ -2,6 +2,7 @@
 
 import { useTranslation } from 'react-i18next';
 import Reveal from '../Reveal';
+import OptimizedImage from '../OptimizedImage';
 
 export default function VeniAPerez() {
   const { t } = useTranslation('global');
@@ -35,7 +36,7 @@ export default function VeniAPerez() {
           </div>
           <div className="col-lg-6">
             <div className="seo_features_img">
-              <img src="/img/home/veniaperez.png" alt="" />
+              <OptimizedImage src="/img/home/veniaperez.png" alt="" />
             </div>
           </div>
         </div>

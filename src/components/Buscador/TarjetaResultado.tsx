@@ -10,6 +10,7 @@ import EtiquetaNuevo from '../Nuevo/EtiquetaNuevo';
 import { esNuevo } from '../../lib/nuevos';
 import type { ConfigTipo } from '../../lib/tiposSitio';
 import type { Sitio } from '../../lib/tipos';
+import OptimizedImage from '../OptimizedImage';
 
 // A row of search results.
 export default function TarjetaResultado({ sitio, tipo }: { sitio: Sitio; tipo: ConfigTipo }) {
@@ -33,7 +34,7 @@ export default function TarjetaResultado({ sitio, tipo }: { sitio: Sitio; tipo: 
       >
         {nuevo && <EtiquetaNuevo />}
         <Link href={destino}>
-          <img className="img-fluid" src={primeraImagen(sitio)} alt={sitio.nombre} />
+          <OptimizedImage className="img-fluid" src={primeraImagen(sitio)} alt={sitio.nombre} sizes="(max-width: 768px) 100vw, 480px" />
         </Link>
         <div className="blog_content">
           <Link href={destino}>

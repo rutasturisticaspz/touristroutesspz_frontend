@@ -1,19 +1,4 @@
-# ------------------------------------------------------------
-#  Public site — Rutas Turísticas Pérez Zeledón
-#
-#  NOTE on the NEXT_PUBLIC_* variables: Next embeds them in the
-#  JavaScript sent to the browser DURING THE BUILD, not at startup.
-#  That is why they go as ARG and not only as container environment
-#  variables: if they are passed at startup, they do not reach the
-#  browser.
-#
-#  And for the same reason, NEXT_PUBLIC_API_URL has to be the address
-#  seen by the person's BROWSER, not the one on Docker's internal
-#  network. Putting http://backend:2999 here builds a site nobody can
-#  use: that name only exists inside the container network.
-# ------------------------------------------------------------
 
-# --- Stage 1: dependencies ---
 FROM node:22-bookworm-slim AS deps
 WORKDIR /app
 COPY package*.json ./
@@ -47,6 +32,8 @@ ENV HOSTNAME=0.0.0.0
 COPY --from=build /app/.next/standalone ./
 COPY --from=build /app/.next/static ./.next/static
 COPY --chown=node:node --from=build /app/public ./public
+
+RUN mkdir -p .next/cache && chown -R node:node .next/cache
 
 USER node
 

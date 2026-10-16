@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
+import OptimizedImage from '../OptimizedImage';
 
 export default function Contactanos() {
   const { t } = useTranslation('global');
@@ -11,7 +12,7 @@ export default function Contactanos() {
       <div className="container">
         <div className="row align-items-center">
           <div className="col-lg-4 col-md-4">
-            <img src="/img/resources/contactanos.png" alt="" />
+            <OptimizedImage src="/img/resources/contactanos.png" alt="" />
           </div>
           <div className="col-lg-8 col-md-8">
             <div className="erp_content">

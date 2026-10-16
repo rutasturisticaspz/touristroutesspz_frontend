@@ -7,6 +7,7 @@ import { urlImagen } from '../../lib/api';
 import { usePlan, type ItemPlan } from '../../context/PlanContext';
 import { useIdioma } from '../../context/IdiomaContext';
 import DocumentoPlan from './DocumentoPlan';
+import OptimizedImage from '../OptimizedImage';
 
 // The itinerary the visitor has been building.
 // Changes from the original:
@@ -192,7 +193,7 @@ export default function VistaPlan() {
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    <img src={urlImagen(imagen.url)} alt={imagen.nombre || item.nombre} />
+                    <OptimizedImage src={urlImagen(imagen.url)} alt={imagen.nombre || item.nombre} sizes="(max-width: 768px) 100vw, 800px" />
                   </a>
                 ))}
               </div>

@@ -9,6 +9,7 @@ import { usePlan } from '../context/PlanContext';
 import { useIdioma } from '../context/IdiomaContext';
 import { useNovedades, type Seccion } from '../context/NovedadesContext';
 import '../styles/navbar.css';
+import OptimizedImage from './OptimizedImage';
 
 // Navigation bar.
 // It is the same as before, with the same markup and the same
@@ -130,7 +131,9 @@ export default function CustomNavbar({
               target="_blank"
               rel="noopener noreferrer"
             >
-              <img
+              <OptimizedImage
+                priority
+                sizes="160px"
                 style={{ height: '5vh' }}
                 src="/img/destinoAccesible.png"
                 alt="Destino accesible"
