@@ -7,6 +7,7 @@ import { useIdioma } from '../../context/IdiomaContext';
 import EtiquetaNuevo from '../Nuevo/EtiquetaNuevo';
 import { esNuevo } from '../../lib/nuevos';
 import type { Evento } from '../../lib/tipos';
+import OptimizedImage from '../OptimizedImage';
 
 // Large event card, for the /eventos page.
 // The previous site's linked the photo to /eventos/evento/:id and the
@@ -29,7 +30,7 @@ export default function TarjetaEvento({ evento }: { evento: Evento }) {
       <div className={`h_blog_item${nuevo ? ' rt_tarjeta_con_etiqueta' : ''}`}>
         {nuevo && <EtiquetaNuevo />}
         <Link href={destino}>
-          <img src={primeraImagen(evento)} alt={nombre} />
+          <OptimizedImage src={primeraImagen(evento)} alt={nombre} sizes="(max-width: 768px) 100vw, 480px" />
         </Link>
         <div className="h_blog_content">
           {evento.ubicacion?.distrito && (

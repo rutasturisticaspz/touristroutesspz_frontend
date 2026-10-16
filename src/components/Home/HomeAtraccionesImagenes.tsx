@@ -5,6 +5,7 @@ import Sectitle from '../Title/Sectitle';
 import Carrusel from '../Carrusel';
 import { opcionesSlider } from '../../lib/helpers';
 import { imagenesHome } from '../../lib/imagenesHome';
+import OptimizedImage from '../OptimizedImage';
 
 // Home page gallery.
 // These 15 photos were hardcoded as Firebase URLs in the code; now
@@ -27,7 +28,7 @@ export default function HomeAtraccionesImagenes() {
                 {imagenesHome.map((imagen) => (
                   <div className="iitem" key={imagen.archivo}>
                     <div className="home_imagenes_item">
-                      <img src={imagen.url} alt="" />
+                      <OptimizedImage src={imagen.url} alt="" />
                     </div>
                   </div>
                 ))}

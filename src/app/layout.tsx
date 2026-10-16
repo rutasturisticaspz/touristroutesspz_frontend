@@ -25,9 +25,21 @@ export const metadata: Metadata = {
     'Atracciones, hospedaje, restaurantes, eventos y operadores turísticos del cantón de Pérez Zeledón.',
 };
 
+// Poppins used to be pulled in with an @import inside main.css, which
+// made the browser wait for that whole file before it even asked for the
+// font. A <link> lets it start right away, and `display=swap` shows the
+// text in a system font until Poppins arrives.
+const POPPINS_URL =
+  'https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;900&display=swap';
+
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="es">
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link rel="stylesheet" href={POPPINS_URL} />
+      </head>
       <body>
         <Providers>
           {children}

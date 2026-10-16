@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import Reveal from '../Reveal';
 import { useIdioma } from '../../context/IdiomaContext';
 import { CONTACTO, SECCIONES, copywrite, copywriteEN } from './FooterData';
+import OptimizedImage from '../OptimizedImage';
 
 // Footer. Same markup and same classes as the current site.
 export default function FooterRutas({ fClass = '' }: { fClass?: string }) {
@@ -33,7 +34,8 @@ export default function FooterRutas({ fClass = '' }: { fClass?: string }) {
                     />
                   </Link>
                   <Link href="/" className="f-logo">
-                    <img
+                    <OptimizedImage
+                      sizes="160px"
                       style={{ height: '5vh' }}
                       src="/img/destinoAccesible.png"
                       alt="Destino accesible"

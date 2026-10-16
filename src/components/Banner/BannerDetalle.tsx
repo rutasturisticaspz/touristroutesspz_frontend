@@ -1,5 +1,9 @@
 'use client';
 
+import { optimizedUrl } from '../../lib/optimizedImage';
+
+const BACKGROUND_WIDTH = 1920;
+
 // Banner of the detail and search pages: the background photo with
 // the name on top. A single one instead of the three of the previous
 // site (SitioIndividualBanner, EventoIndividualBanner and the one the
@@ -20,7 +24,7 @@ export default function BannerDetalle({
       <div
         className="parallax-effect"
         style={{
-          background: `linear-gradient(rgba(0, 0, 0, 0.5),rgba(0, 0, 0, 0.5)), url(${fondo}) center center/cover no-repeat`,
+          background: `linear-gradient(rgba(0, 0, 0, 0.5),rgba(0, 0, 0, 0.5)), url(${optimizedUrl(fondo, BACKGROUND_WIDTH)}) center center/cover no-repeat`,
         }}
       />
       <div className="container">

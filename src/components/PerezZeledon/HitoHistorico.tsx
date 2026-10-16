@@ -1,6 +1,7 @@
 'use client';
 
 import Reveal from '../Reveal';
+import OptimizedImage from '../OptimizedImage';
 
 // A milestone of the canton's history timeline.
 export default function HitoHistorico({
@@ -23,7 +24,7 @@ export default function HitoHistorico({
       <div className="col-lg-6">
         <Reveal effect="fadeInLeft">
           <div className="agency_featured_img text-center">
-            <img src={`/img/distritos/${imagen}`} alt="" />
+            <OptimizedImage src={`/img/distritos/${imagen}`} alt="" />
           </div>
         </Reveal>
       </div>

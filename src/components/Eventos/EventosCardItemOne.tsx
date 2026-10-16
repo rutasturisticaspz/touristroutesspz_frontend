@@ -5,6 +5,7 @@ import { hrefContacto, iconoContacto } from '../../lib/helpers';
 import EtiquetaNuevo from '../Nuevo/EtiquetaNuevo';
 import { esNuevo } from '../../lib/nuevos';
 import type { Contacto } from '../../lib/tipos';
+import OptimizedImage from '../OptimizedImage';
 
 // Event card. Same markup as the previous site, but the whole card is a
 // link to the event; the contact icons stay clickable on top.
@@ -32,7 +33,7 @@ export default function EventosCardItemOne({
     <div className="ex_team_item">
       {nuevo && <EtiquetaNuevo />}
       <Link href={`/evento/${id}`} className="rt_tarjeta_enlace" tabIndex={-1} aria-hidden="true" />
-      <img src={img} alt={nombre} />
+      <OptimizedImage src={img} alt={nombre} sizes="(max-width: 768px) 100vw, 480px" />
       <div className="team_content">
         <Link href={`/evento/${id}`}>
           <h3 className="f_p f_size_16 f_600 t_color3">{nombre}</h3>

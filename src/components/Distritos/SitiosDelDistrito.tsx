@@ -7,6 +7,7 @@ import { api } from '../../lib/api';
 import { primeraImagen, primerTelefono } from '../../lib/helpers';
 import { TIPOS, type ConfigTipo } from '../../lib/tiposSitio';
 import type { Sitio } from '../../lib/tipos';
+import OptimizedImage from '../OptimizedImage';
 
 // The sites of one type that are in a district.
 // The original repeated this block four times —attractions,
@@ -52,7 +53,7 @@ export default function SitiosDelDistrito({
             <div className="col-lg-4 col-sm-6" key={lugar.id}>
               <div className="blog_post_item">
                 <div className="blog_img distrito">
-                  <img src={primeraImagen(lugar)} alt={lugar.nombre} />
+                  <OptimizedImage src={primeraImagen(lugar)} alt={lugar.nombre} sizes="(max-width: 768px) 100vw, 480px" />
                 </div>
                 <div className="blog_content">
                   <div className="entry_post_info">

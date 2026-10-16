@@ -12,6 +12,7 @@ import SitiosDelDistrito, {
 } from '../../../components/Distritos/SitiosDelDistrito';
 import { fichaPorSlug } from '../../../lib/datosDistritos';
 import { useIdioma } from '../../../context/IdiomaContext';
+import OptimizedImage from '../../../components/OptimizedImage';
 
 // /distritos/:slug — the page of a district.
 // The site search uses the name without accents, because that is how
@@ -42,7 +43,7 @@ export default function Pagina() {
             <div className="col-lg-5 pr_70">
               <div className="job_info">
                 <div className="info_head">
-                  <img src={`/img/distritos/escudos/${ficha.id}.jpeg`} alt={ficha.nombre} />
+                  <OptimizedImage src={`/img/distritos/escudos/${ficha.id}.jpeg`} alt={ficha.nombre} sizes="(max-width: 768px) 50vw, 240px" />
                   <h6 className="f_p f_600 f_size_18 t_color3">{ficha.nombre}</h6>
                 </div>
                 <div className="info_item">

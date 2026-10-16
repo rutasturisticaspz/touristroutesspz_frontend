@@ -6,6 +6,7 @@ import { pedirAdmin } from '../../lib/apiAdmin';
 import Confirmacion from './Confirmacion';
 import type { TipoAdmin } from '../../lib/tiposAdmin';
 import type { Imagen, Sitio } from '../../lib/tipos';
+import OptimizedImage from '../OptimizedImage';
 
 // Site photo gallery.
 // Replaces the seven Galeria*.jsx files of the previous panel
@@ -106,10 +107,11 @@ export default function Galeria({
           {imagenes.map((imagen, indice) => (
             <div key={imagen.id} className="rt_gallery_item">
               <a href={urlImagen(imagen.url)} target="_blank" rel="noopener noreferrer">
-                <img
+                <OptimizedImage
                   src={urlImagen(imagen.url)}
                   alt={imagen.nombre || sitio.nombre}
                   className="rt_gallery_img"
+                  sizes="200px"
                 />
               </a>
               <div className="rt_gallery_footer">
