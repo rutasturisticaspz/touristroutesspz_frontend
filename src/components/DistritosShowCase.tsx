@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import Sectitle from './Title/Sectitle';
 import Carrusel from './Carrusel';
 import { opcionesSlider } from '../lib/helpers';
+import OptimizedImage from './OptimizedImage';
 
 // The twelve districts of the canton, with their illustration.
 const DISTRITOS = [
@@ -40,7 +41,7 @@ export default function DistritosShowCase() {
               <div className="item" key={distrito.url}>
                 <div className="screenshot_img">
                   <Link href={distrito.url} className="image-link">
-                    <img src={`/img/distritos/${distrito.img}`} alt={distrito.nombre} />
+                    <OptimizedImage src={`/img/distritos/${distrito.img}`} alt={distrito.nombre} sizes="(max-width: 768px) 100vw, 480px" />
                   </Link>
                 </div>
               </div>

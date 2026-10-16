@@ -10,6 +10,7 @@ import { slugDistrito } from '../../lib/distritos';
 import { TIPOS, type ConfigTipo } from '../../lib/tiposSitio';
 import type { Sitio } from '../../lib/tipos';
 import '../../styles/buscador.css';
+import OptimizedImage from '../OptimizedImage';
 
 // Sidebar of the detail page: search box, similar sites and the count
 // by type.
@@ -99,7 +100,7 @@ export default function BarraLateralSitio({
             const slug = slugDistrito(s.ubicacion?.distrito);
             return (
               <div className="media post_item" key={s.id}>
-                <img src={primeraImagen(s)} alt={s.nombre} />
+                <OptimizedImage src={primeraImagen(s)} alt={s.nombre} sizes="(max-width: 768px) 100vw, 480px" />
                 <div className="media-body">
                   <Link href={`/sitio/${tipo.clave}/${s.id}`}>
                     <h3 className="f_size_16 f_p f_400">{s.nombre}</h3>

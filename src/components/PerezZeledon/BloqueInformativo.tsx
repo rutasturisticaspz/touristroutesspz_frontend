@@ -1,6 +1,7 @@
 'use client';
 
 import Reveal from '../Reveal';
+import OptimizedImage from '../OptimizedImage';
 
 // Text block with a photo: geology, geography, flora and fauna.
 // Replaces PerezZeledonInfoItem and Biodiversidad, which were the
@@ -27,7 +28,7 @@ export default function BloqueInformativo({
           {imagen && (
             <div className="col-lg-6">
               <div className="seo_features_img">
-                <img src={`/img/distritos/${imagen}`} alt="" />
+                <OptimizedImage src={`/img/distritos/${imagen}`} alt="" />
               </div>
             </div>
           )}

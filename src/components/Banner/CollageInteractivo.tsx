@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useRef, type CSSProperties, type MouseEvent } from 'react';
 import EtiquetaNuevo from '../Nuevo/EtiquetaNuevo';
 import '../../styles/collage.css';
+import OptimizedImage from '../OptimizedImage';
 
 // Photo collage for the banners of the list pages.
 // It replaces a flat image: each tile is a real photo of the section and
@@ -59,7 +60,7 @@ export default function CollageInteractivo({
 
   // Too few photos make a sad collage: the flat image is shown instead.
   if (fotos.length < MIN_FOTOS_COLLAGE) {
-    return <img src={imagenDeRespaldo} alt="" className="rt_collage_respaldo" />;
+    return <OptimizedImage src={imagenDeRespaldo} alt="" className="rt_collage_respaldo" />;
   }
 
   // The pointer position goes to CSS as two variables between -1 and 1;
@@ -100,7 +101,7 @@ export default function CollageInteractivo({
         return (
           <Link key={foto.id} href={foto.href} className="rt_collage_foto" style={estilo}>
             {foto.nuevo && <EtiquetaNuevo />}
-            <img src={foto.url} alt="" loading="lazy" />
+            <OptimizedImage src={foto.url} alt="" sizes="(max-width: 768px) 50vw, 320px" />
             <span className="rt_collage_nombre">{foto.nombre}</span>
           </Link>
         );

@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 import Sectitle from '../Title/Sectitle';
 import { FICHAS_DISTRITO } from '../../lib/datosDistritos';
+import OptimizedImage from '../OptimizedImage';
 
 // The grid of the twelve districts.
 export default function TarjetasDistrito({ id }: { id?: string }) {
@@ -22,7 +23,7 @@ export default function TarjetasDistrito({ id }: { id?: string }) {
           {FICHAS_DISTRITO.map((ficha) => (
             <div className="col-lg-3 col-sm-6" key={ficha.id}>
               <div className="distritos_item">
-                <img src={ficha.imagen} alt={ficha.nombre} />
+                <OptimizedImage src={ficha.imagen} alt={ficha.nombre} sizes="(max-width: 768px) 100vw, 480px" />
                 <div className="team_content">
                   <h3 className="f_p f_size_16 f_600 t_color3">{ficha.nombre}</h3>
                 </div>

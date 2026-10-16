@@ -1,5 +1,12 @@
 import path from 'node:path';
 import type { NextConfig } from 'next';
+import {
+  DEVICE_WIDTHS,
+  IMAGE_QUALITY,
+  SMALL_WIDTHS,
+} from './src/lib/optimizedImage';
+
+const THIRTY_DAYS_IN_SECONDS = 60 * 60 * 24 * 30;
 
 /**
  * The previous site was a create-react-app SPA served as static
@@ -10,11 +17,19 @@ import type { NextConfig } from 'next';
 const nextConfig: NextConfig = {
   reactStrictMode: true,
 
-  // Images go in public/ and are served as is, without Next's
-  // optimizer: they are the same ones the old project had and at this
-  // stage the idea is for the site to look identical, not to change its
-  // image pipeline.
-  images: { unoptimized: true },
+  images: {
+    // Resized copies of the photos are made on demand (see
+    // src/lib/optimizedImage.ts). Only local images are allowed, and
+    // WebP is used because AVIF costs far more CPU to produce.
+    deviceSizes: [...DEVICE_WIDTHS],
+    imageSizes: [...SMALL_WIDTHS],
+    qualities: [IMAGE_QUALITY],
+    formats: ['image/webp'],
+    localPatterns: [{ pathname: '/uploads/**' }, { pathname: '/img/**' }],
+    // Photos are replaced by uploading a new file, not by editing one,
+    // so a resized copy can be kept for a month.
+    minimumCacheTTL: THIRTY_DAYS_IN_SECONDS,
+  },
 
   // Without this, Turbopack walks up looking for a package-lock.json and
   // ends up taking the user's home folder as the project root.
@@ -31,6 +46,22 @@ const nextConfig: NextConfig = {
   // no published port and the code has no hardcoded domains or
   // localhost.
   // Note: with `output: standalone` this is resolved at build time.
+  // The files in public/img keep their name when they change, so they
+  // cannot be cached forever; a month with revalidation is a fair middle.
+  async headers() {
+    return [
+      {
+        source: '/img/:path*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: `public, max-age=${THIRTY_DAYS_IN_SECONDS}, stale-while-revalidate=86400`,
+          },
+        ],
+      },
+    ];
+  },
+
   async rewrites() {
     const backend = process.env.BACKEND_INTERNAL_URL ?? 'http://backend:2999';
     return [

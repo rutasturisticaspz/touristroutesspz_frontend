@@ -22,6 +22,7 @@ export default function HomeBienvenida() {
                   src="https://www.youtube.com/embed/YETNzIqQ6eU?autoplay=1&mute=1"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                   allowFullScreen
+                  loading="lazy"
                   style={{
                     position: 'absolute',
                     inset: 0,
