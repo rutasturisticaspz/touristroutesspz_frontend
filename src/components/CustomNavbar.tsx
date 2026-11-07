@@ -98,47 +98,49 @@ export default function CustomNavbar({
   return (
     <Sticky>
       <header className="header_area">
-        <nav className={`navbar navbar-expand-lg menu_one ${mClass}`}>
+        <nav className={`navbar navbar-expand-xl menu_one rt_navbar ${mClass}`}>
           <div className={`container ${cClass}`}>
-            <a
-              className={`navbar-brand ${slogo}`}
-              href={ENLACE_INSTAGRAM}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <img style={{ height: '6vh' }} src="/img/logoRT.png" alt="Rutas Turísticas" />
-              <img style={{ height: '6vh' }} src="/img/logoRTC.png" alt="" />
-            </a>
+            <div className="rt_marcas">
+              <a
+                className={`navbar-brand ${slogo}`}
+                href={ENLACE_INSTAGRAM}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <img className="rt_logo" src="/img/logoRT.png" alt="Rutas Turísticas" />
+                <img className="rt_logo" src="/img/logoRTC.png" alt="" />
+              </a>
 
-            <Link className={`navbar-brand ${slogo}`} href="/">
-              <img style={{ height: '6vh' }} src="/img/logoVP.png" alt="Vení a Pérez" />
-              <img style={{ height: '6vh' }} src="/img/logoVPC.png" alt="" />
-            </Link>
+              <Link className={`navbar-brand ${slogo}`} href="/">
+                <img className="rt_logo" src="/img/logoVP.png" alt="Vení a Pérez" />
+                <img className="rt_logo" src="/img/logoVPC.png" alt="" />
+              </Link>
 
-            <a
-              className={`navbar-brand ${slogo}`}
-              href="https://www.una.ac.cr/"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <img style={{ height: '6vh' }} src="/img/logoUNA.png" alt="Universidad Nacional" />
-              <img style={{ height: '6vh' }} src="/img/logoUNAC.png" alt="" />
-            </a>
+              <a
+                className={`navbar-brand ${slogo}`}
+                href="https://www.una.ac.cr/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <img className="rt_logo" src="/img/logoUNA.png" alt="Universidad Nacional" />
+                <img className="rt_logo" src="/img/logoUNAC.png" alt="" />
+              </a>
 
-            <a
-              className={`navbar-brand rt_marca_simple ${slogo}`}
-              href={ENLACE_INSTAGRAM}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <OptimizedImage
-                priority
-                sizes="160px"
-                style={{ height: '5vh' }}
-                src="/img/destinoAccesible.png"
-                alt="Destino accesible"
-              />
-            </a>
+              <a
+                className={`navbar-brand rt_marca_simple ${slogo}`}
+                href={ENLACE_INSTAGRAM}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <OptimizedImage
+                  priority
+                  sizes="160px"
+                  className="rt_logo rt_logo_accesible"
+                  src="/img/destinoAccesible.png"
+                  alt="Destino accesible"
+                />
+              </a>
+            </div>
 
             <button
               className={`navbar-toggler${menuAbierto ? '' : ' collapsed'}`}
@@ -194,33 +196,16 @@ export default function CustomNavbar({
                   </ul>
                 </li>
 
-                <li
-                  className="nav-item"
-                  style={{
-                    display: 'flex',
-                    gap: 10,
-                    marginLeft: 20,
-                    alignItems: 'center',
-                  }}
-                >
+                <li className="nav-item rt_nav_idiomas">
                   {botonIdioma('es', 'Español')}
                   {botonIdioma('en', 'English')}
                 </li>
 
-                <li
-                  className="nav-item"
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    position: 'relative',
-                    fontWeight: 600,
-                  }}
-                >
+                <li className="nav-item rt_nav_plan">
                   <Link
                     title={t('global.Plan')}
-                    className="nav-link"
+                    className="nav-link rt_plan_enlace"
                     href="/planLugares"
-                    style={{ display: 'inline-flex', alignItems: 'center', position: 'relative' }}
                   >
                     {t('global.Plan')}
                     {planItems.length > 0 && (
